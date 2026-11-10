@@ -7,6 +7,8 @@
 **Allocate field jobs and plan notebook rotations — right in your browser.**
 <br/>No sign-in · No server · Your data never leaves your machine
 
+<sub>Author: <a href="https://github.com/gurkanfikretgunak"><b>gurkanfikretgunak</b></a></sub>
+
 <br/>
 
 ![Next.js](https://img.shields.io/badge/Next.js-16-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)
@@ -17,6 +19,7 @@
 ![Languages](https://img.shields.io/badge/languages-TR_·_EN_·_FR_·_DE_·_JA_·_ZH-C92830?style=flat-square)
 ![Privacy](https://img.shields.io/badge/privacy-100%25_client--side-1F2A44?style=flat-square)
 ![Engines](https://img.shields.io/badge/engines-v1_·_v2_·_v4-1F2A44?style=flat-square)
+![Author](https://img.shields.io/badge/author-gurkanfikretgunak-1F2A44?style=flat-square&logo=github&logoColor=white)
 ![Purpose](https://img.shields.io/badge/purpose-educational-F59E0B?style=flat-square)
 ![Status](https://img.shields.io/badge/status-active_development-success?style=flat-square)
 
