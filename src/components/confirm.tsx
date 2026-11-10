@@ -1,6 +1,7 @@
 "use client";
 import * as Dialog from "@radix-ui/react-dialog";
 import { createContext, useCallback, useContext, useRef, useState, type ReactNode } from "react";
+import { useT } from "@/i18n";
 import { Button } from "./ui";
 
 export type ConfirmOpts = {
@@ -21,6 +22,7 @@ export const useConfirm = () => useContext(C);
 export function ConfirmProvider({ children }: { children: ReactNode }) {
   const [opts, setOpts] = useState<ConfirmOpts | null>(null);
   const resolver = useRef<((v: boolean) => void) | null>(null);
+  const { t } = useT();
 
   const confirm = useCallback<Ctx>((o) => {
     setOpts(o);
@@ -52,11 +54,11 @@ export function ConfirmProvider({ children }: { children: ReactNode }) {
             <div className="mt-4 flex justify-end gap-2">
               {!opts?.infoOnly && (
                 <Button onClick={() => close(false)} data-testid="confirm-cancel">
-                  {opts?.cancelLabel ?? "Vazgeç"}
+                  {opts?.cancelLabel ?? t("c.cancel")}
                 </Button>
               )}
               <Button variant={opts?.tone === "danger" ? "danger" : "primary"} onClick={() => close(true)} data-testid="confirm-ok" autoFocus>
-                {opts?.confirmLabel ?? "Onayla"}
+                {opts?.confirmLabel ?? t("c.confirm")}
               </Button>
             </div>
           </Dialog.Content>

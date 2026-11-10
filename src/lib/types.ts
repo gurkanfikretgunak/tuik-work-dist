@@ -88,28 +88,15 @@ export type EventLog = {
   data?: Record<string, unknown>;
 };
 
-export const RULE_META: Record<
-  RuleId,
-  { label: string; desc: string }
-> = {
-  il: { label: "İl bazlı eşleştirme", desc: "İş, aynı ilde görevli çalışana verilir." },
-  mahalle: {
-    label: "Mahalle / yerleşim bazlı gruplama",
-    desc: "Aynı mahalledeki işler mümkün olduğunca tek çalışana verilir.",
-  },
-  denge: {
-    label: "Kapasiteye orantılı denge",
-    desc: "Doluluk oranı (atanan ÷ efektif kapasite) dengelenir.",
-  },
-  kir: {
-    label: "Kır / kent koşulu",
-    desc: "Kır işleri ağırlık çarpanıyla sayılır; kır görevi yapamayan çalışana kır işi verilmez.",
-  },
-  gecenAy: {
-    label: "Geçen ay tekrarı",
-    desc: "Geçen ay görüşen kişiyle ilgili yön (rotasyon veya süreklilik) uygulanır.",
-  },
-};
+import { tx } from "@/i18n";
+
+/** Kural etiketleri geçerli dile göre erişim anında çevrilir. */
+export const RULE_META = Object.fromEntries(
+  (["il", "mahalle", "denge", "kir", "gecenAy"] as const).map((id) => [
+    id,
+    { get label() { return tx(`rule.${id}.label`); }, get desc() { return tx(`rule.${id}.desc`); } },
+  ]),
+) as Record<RuleId, { label: string; desc: string }>;
 
 export const DEFAULT_RULESET: RuleSet = {
   rules: [

@@ -1,7 +1,8 @@
 "use client";
 import clsx from "clsx";
 import { Check } from "lucide-react";
-import { useSyncExternalStore } from "react";
+import { useEffect, useSyncExternalStore } from "react";
+import { initLang, LANGS, LANG_META, useLangStore, useT, type Lang } from "@/i18n";
 import { useStore } from "@/lib/store";
 import { ConfirmProvider } from "./confirm";
 import Screen0 from "@/screens/Screen0";
@@ -18,17 +19,7 @@ import RotationApp from "@/rotation/RotationApp";
 import { useApp } from "@/lib/appstore";
 import { useConfirm } from "./confirm";
 
-export const STEPS = [
-  "Karşılama",
-  "Personel ve Kapasite",
-  "Kural Seçimi",
-  "İş Yükleme",
-  "Dağıtım",
-  "Ön Onay",
-  "Onay ve Çıktı",
-  "Süreç Raporu",
-  "Genel Özet ve Paylaşım",
-];
+export const STEP_KEYS = Array.from({ length: 9 }, (_, i) => `step.v1.${i}`);
 
 const SCREENS = [Screen0, Screen1, Screen2, Screen3, Screen4, Screen5, Screen6, Screen7, Screen8];
 
@@ -36,6 +27,10 @@ function Inner() {
   const engine = useApp((a) => a.engine);
   const setEngine = useApp((a) => a.setEngine);
   const confirm = useConfirm();
+  const { t, lang } = useT();
+  const setLang = useLangStore((x) => x.setLang);
+  useEffect(() => { initLang(); }, []);
+  useEffect(() => { document.title = t("app.title"); }, [lang]); // eslint-disable-line react-hooks/exhaustive-deps
   const step = useStore((s) => s.step);
   const maxStep = useStore((s) => s.maxStep);
   const go = useStore((s) => s.go);
@@ -49,30 +44,37 @@ function Inner() {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/tuik-logo.svg" alt="TÜİK" className="h-8 w-auto" />
           <div className="border-l border-slate-300 pl-4">
-            <div className="text-[13px] font-semibold text-[#1F2A44]">{engine === "v2" ? "Defter Rotasyon Motoru (v2)" : engine === "v1" ? "İş Dağıtım Motoru (v1)" : "Dağıtım Araçları"}</div>
-            <div className="text-[11px] text-slate-500">Veriler yalnızca tarayıcıda işlenir; sunucuya gönderilmez.</div>
+            <div className="text-[13px] font-semibold text-[#1F2A44]">{engine === "v2" ? t("app.v2") : engine === "v1" ? t("app.v1") : t("app.tools")}</div>
+            <div className="text-[11px] text-slate-500">{t("app.privacy")}</div>
           </div>
+          {engine === "home" && <span className="ml-auto" />}
           {engine !== "home" && (
             <button
               data-testid="to-home"
               onClick={async () => {
-                const ok = await confirm({ title: "Motor seçimine dönülsün mü?", body: "Açık motorun verileri bu oturumda korunur; yeniden açtığınızda kaldığınız yerden devam edersiniz.", confirmLabel: "Ana sayfaya dön" });
+                const ok = await confirm({ title: t("app.toHome.title"), body: t("app.toHome.body"), confirmLabel: t("app.toHome.confirm") });
                 if (ok) setEngine("home");
               }}
               className="ml-auto rounded border border-slate-300 px-2.5 py-1 text-xs font-medium hover:bg-slate-50"
             >
-              ← Motor seçimi
+              {t("app.toHome")}
             </button>
           )}
+          <label className="flex items-center gap-1.5 text-xs text-slate-600">
+            <span className="sr-only sm:not-sr-only">{t("app.lang")}</span>
+            <select data-testid="lang-select" aria-label={t("app.lang")} value={lang} onChange={(e) => setLang(e.target.value as Lang)} className="h-7 rounded border border-slate-300 bg-white px-1.5 text-xs">
+              {LANGS.map((l) => <option key={l} value={l}>{LANG_META[l].name}</option>)}
+            </select>
+          </label>
         </div>
         {engine === "v1" && (
-        <nav aria-label="Adımlar" className="mx-auto flex max-w-[1400px] gap-0.5 overflow-x-auto px-4 pb-0">
-          {STEPS.map((s, i) => {
+        <nav aria-label={t("app.steps")} className="mx-auto flex max-w-[1400px] gap-0.5 overflow-x-auto px-4 pb-0">
+          {STEP_KEYS.map((key, i) => {
             const reachable = i <= maxStep;
             const done = i < maxStep;
             return (
               <button
-                key={s}
+                key={key}
                 disabled={!reachable}
                 onClick={() => go(i)}
                 aria-current={i === step ? "step" : undefined}
@@ -92,7 +94,7 @@ function Inner() {
                 >
                   {done ? <Check className="h-3 w-3" /> : i}
                 </span>
-                {s}
+                {t(key)}
               </button>
             );
           })}
