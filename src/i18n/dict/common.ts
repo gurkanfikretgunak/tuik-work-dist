@@ -2,6 +2,8 @@ import type { Dict } from "../index";
 
 export const common: Dict = {
   tr: {
+    "def.person": "Personel {n}",
+    "def.notebook": "Defter {n}",
     "app.title": "TÜİK İş Dağıtım Aracı",
     "app.privacy": "Veriler yalnızca tarayıcıda işlenir; sunucuya gönderilmez.",
     "app.tools": "Dağıtım Araçları",
@@ -48,6 +50,8 @@ export const common: Dict = {
     "rule.gecenAy.desc": "Geçen ay görüşen kişiyle ilgili yön (rotasyon veya süreklilik) uygulanır.",
   },
   en: {
+    "def.person": "Staff {n}",
+    "def.notebook": "Notebook {n}",
     "app.title": "TurkStat Work Allocation Tool",
     "app.privacy": "Data is processed in your browser only; nothing is sent to a server.",
     "app.tools": "Allocation Tools",
@@ -94,6 +98,8 @@ export const common: Dict = {
     "rule.gecenAy.desc": "A direction (rotation or continuity) is applied for the person who did the job last month.",
   },
   fr: {
+    "def.person": "Agent {n}",
+    "def.notebook": "Carnet {n}",
     "app.title": "Outil de répartition du travail TÜİK",
     "app.privacy": "Les données sont traitées uniquement dans votre navigateur ; rien n'est envoyé à un serveur.",
     "app.tools": "Outils de répartition",
@@ -140,6 +146,8 @@ export const common: Dict = {
     "rule.gecenAy.desc": "Un sens (rotation ou continuité) est appliqué à la personne qui a réalisé la tâche le mois dernier.",
   },
   de: {
+    "def.person": "Person {n}",
+    "def.notebook": "Heft {n}",
     "app.title": "TÜİK-Werkzeug zur Arbeitsverteilung",
     "app.privacy": "Die Daten werden nur in Ihrem Browser verarbeitet; es wird nichts an einen Server gesendet.",
     "app.tools": "Verteilungswerkzeuge",
@@ -186,6 +194,8 @@ export const common: Dict = {
     "rule.gecenAy.desc": "Für die Person, die den Auftrag im Vormonat bearbeitet hat, wird eine Richtung (Rotation oder Kontinuität) angewandt.",
   },
   ja: {
+    "def.person": "担当者{n}",
+    "def.notebook": "帳簿{n}",
     "app.title": "TÜİK 業務配分ツール",
     "app.privacy": "データはブラウザ内でのみ処理され、サーバーには送信されません。",
     "app.tools": "配分ツール",
@@ -232,6 +242,8 @@ export const common: Dict = {
     "rule.gecenAy.desc": "前月に担当した人について、方向（ローテーションまたは継続）が適用されます。",
   },
   zh: {
+    "def.person": "人员{n}",
+    "def.notebook": "账册{n}",
     "app.title": "TÜİK 工作分配工具",
     "app.privacy": "数据仅在浏览器中处理，不会发送到服务器。",
     "app.tools": "分配工具",

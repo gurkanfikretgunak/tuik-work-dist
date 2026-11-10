@@ -1,6 +1,6 @@
 "use client";
 import { create } from "zustand";
-import { monthName } from "@/i18n";
+import { LANGS, monthName, tx, useLangStore } from "@/i18n";
 import type { Candidate, GenResult } from "./engine";
 import type { Plan } from "./validator";
 import type { Leave } from "./leave";
@@ -50,8 +50,8 @@ type S = {
 };
 
 const mk = (n: number, old: Person[] = [], oldNb: Notebook[] = []) => ({
-  people: Array.from({ length: n }, (_, i) => old[i] ?? { id: `P-${String(i + 1).padStart(2, "0")}`, name: `Personel ${i + 1}` }),
-  notebooks: Array.from({ length: n }, (_, i) => oldNb[i] ?? { no: i + 1, name: `Defter ${i + 1}`, weight: 1, group: -1, special: [1, 3, 6].includes(i + 1) }),
+  people: Array.from({ length: n }, (_, i) => old[i] ?? { id: `P-${String(i + 1).padStart(2, "0")}`, name: tx("def.person", { n: i + 1 }) }),
+  notebooks: Array.from({ length: n }, (_, i) => oldNb[i] ?? { no: i + 1, name: tx("def.notebook", { n: i + 1 }), weight: 1, group: -1, special: [1, 3, 6].includes(i + 1) }),
 });
 
 const init = () => ({
@@ -87,3 +87,13 @@ export const monthLabel = (startMonth: number, t: number, year: number) => {
   return { ay: monthName(idx % 12), yil: year + Math.floor(idx / 12), no: (idx % 12) + 1 };
 };
 export type { Candidate };
+
+// Dil değişince hâlâ varsayılan adı taşıyan personel/defter adlarını yeni dile çevir (kullanıcının düzenlediği adlara dokunma).
+useLangStore.subscribe((st, prev) => {
+  if (st.lang === prev.lang) return;
+  const isDef = (name: string, key: string, n: number) => LANGS.some((l) => tx(key, { n }, l) === name);
+  useRot.setState((s) => ({
+    people: s.people.map((p, i) => (isDef(p.name, "def.person", i + 1) ? { ...p, name: tx("def.person", { n: i + 1 }, st.lang) } : p)),
+    notebooks: s.notebooks.map((d, i) => (isDef(d.name, "def.notebook", i + 1) ? { ...d, name: tx("def.notebook", { n: i + 1 }, st.lang) } : d)),
+  }));
+});
