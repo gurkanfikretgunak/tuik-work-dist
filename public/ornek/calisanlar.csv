@@ -1,0 +1,13 @@
+﻿calisan_id,ad_soyad,rol,il,ilce,donemlik_kapasite,musait_oran,kir_gorevi_yapabilir,aktif,kapasite_notu
+C-001,Ali Yıldız,Anketör,Ankara,Çankaya,20,100,Evet,Evet,
+C-002,Burak Polat,Anketör,Ankara,Çankaya,25,100,Hayır,Evet,
+C-003,Burak Şahin,Anketör,Ankara,Polatlı,25,100,Evet,Evet,
+C-004,Derya Koç,Anketör,Ankara,Çankaya,20,100,Evet,Evet,
+C-005,Fatma Polat,Anketör,İzmir,Bornova,20,100,Evet,Evet,
+C-006,Hasan Demir,Anketör,İzmir,Bornova,20,50,Evet,Evet,Yarı zamanlı
+C-007,Burak Aydın,Anketör,İzmir,Karşıyaka,25,100,Evet,Evet,
+C-008,Can Öztürk,Anketör,İzmir,Karşıyaka,25,100,Evet,Evet,
+C-009,Ali Çelik,Anketör,Konya,Selçuklu,25,100,Hayır,Evet,
+C-010,Selin Yıldız,Anketör,Konya,Ereğli,30,100,Evet,Hayır,Deneyimli
+C-011,Fatma Yıldız,Anketör,Konya,Ereğli,20,100,Hayır,Evet,
+C-012,Burak Şahin,Anketör,Konya,Selçuklu,30,100,Hayır,Evet,Deneyimli
