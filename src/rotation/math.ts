@@ -53,3 +53,44 @@ export function calcMath(n: number, m: number, g: number): RotMath {
     pairLower, warnings, feasible,
   };
 }
+
+export type Strategy = "ek" | "bos"; // açıkta kalan defter: başkasına ek atama | boş bırak
+
+export type Targets = {
+  D: number; // esas dağıtım sayısı: planda fiilen yapılacak toplam defter–kişi ataması
+  a: number[]; // kişi başına müsait ay
+  A: number; // toplam müsait kişi-ay
+  k: number[]; // ay başına müsait kişi
+  Dp: number[]; // kişi başına hedef pay
+  e: number[][]; // kişi × defter beklenen sayı
+  lo: number[][];
+  hi: number[][];
+  badMonths: number[]; // ek atama kişi başı üst sınırı aşan aylar
+  maxPer: number;
+};
+
+/**
+ * Eşitlik hedefleri esas dağıtım sayısı D'den türetilir:
+ *   D = Σ_ay (dağıtılan defter sayısı)
+ *   D_p = D · a_p / Σa,   e_pd = D_p / N   (defterler eşit paylaşılır)
+ * İzin yokken D = N·M ve e = M/N (mevcut K3 ile aynı).
+ */
+export function calcTargets(n: number, m: number, absent?: boolean[][], strategy: Strategy = "ek", maxPer = 2): Targets {
+  const ab = absent ?? Array.from({ length: m }, () => Array(n).fill(false));
+  const k = ab.map((row) => row.filter((x) => !x).length);
+  const a = Array.from({ length: n }, (_, p) => ab.reduce((s, row) => s + (row[p] ? 0 : 1), 0));
+  const A = a.reduce((x, y) => x + y, 0);
+  let D = 0;
+  const badMonths: number[] = [];
+  k.forEach((kt, t) => {
+    if (kt === 0) return;
+    D += strategy === "ek" ? n : Math.min(kt, n);
+    if (strategy === "ek" && Math.ceil(n / kt) > maxPer) badMonths.push(t);
+  });
+  const Dp = a.map((x) => (A ? (D * x) / A : 0));
+  const e = Dp.map((d) => Array(n).fill(d / n));
+  const eps = 1e-9;
+  const lo = e.map((r) => r.map((v) => Math.floor(v + eps)));
+  const hi = e.map((r) => r.map((v) => Math.ceil(v - eps)));
+  return { D, a, A, k, Dp, e, lo, hi, badMonths, maxPer };
+}
