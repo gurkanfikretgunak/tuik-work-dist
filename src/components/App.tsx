@@ -13,6 +13,10 @@ import Screen5 from "@/screens/Screen5";
 import Screen6 from "@/screens/Screen6";
 import Screen7 from "@/screens/Screen7";
 import Screen8 from "@/screens/Screen8";
+import Home from "@/screens/Home";
+import RotationApp from "@/rotation/RotationApp";
+import { useApp } from "@/lib/appstore";
+import { useConfirm } from "./confirm";
 
 export const STEPS = [
   "Karşılama",
@@ -28,7 +32,10 @@ export const STEPS = [
 
 const SCREENS = [Screen0, Screen1, Screen2, Screen3, Screen4, Screen5, Screen6, Screen7, Screen8];
 
-export function App() {
+function Inner() {
+  const engine = useApp((a) => a.engine);
+  const setEngine = useApp((a) => a.setEngine);
+  const confirm = useConfirm();
   const step = useStore((s) => s.step);
   const maxStep = useStore((s) => s.maxStep);
   const go = useStore((s) => s.go);
@@ -36,16 +43,29 @@ export function App() {
   const Screen = SCREENS[step];
 
   return (
-    <ConfirmProvider>
+    <>
       <div className="no-print border-b border-slate-200 bg-white">
         <div className="mx-auto flex max-w-[1400px] items-center gap-4 px-4 py-2">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/tuik-logo.svg" alt="TÜİK" className="h-8 w-auto" />
           <div className="border-l border-slate-300 pl-4">
-            <div className="text-[13px] font-semibold text-[#1F2A44]">İş Dağıtım Aracı</div>
+            <div className="text-[13px] font-semibold text-[#1F2A44]">{engine === "v2" ? "Defter Rotasyon Motoru (v2)" : engine === "v1" ? "İş Dağıtım Motoru (v1)" : "Dağıtım Araçları"}</div>
             <div className="text-[11px] text-slate-500">Veriler yalnızca tarayıcıda işlenir; sunucuya gönderilmez.</div>
           </div>
+          {engine !== "home" && (
+            <button
+              data-testid="to-home"
+              onClick={async () => {
+                const ok = await confirm({ title: "Motor seçimine dönülsün mü?", body: "Açık motorun verileri bu oturumda korunur; yeniden açtığınızda kaldığınız yerden devam edersiniz.", confirmLabel: "Ana sayfaya dön" });
+                if (ok) setEngine("home");
+              }}
+              className="ml-auto rounded border border-slate-300 px-2.5 py-1 text-xs font-medium hover:bg-slate-50"
+            >
+              ← Motor seçimi
+            </button>
+          )}
         </div>
+        {engine === "v1" && (
         <nav aria-label="Adımlar" className="mx-auto flex max-w-[1400px] gap-0.5 overflow-x-auto px-4 pb-0">
           {STEPS.map((s, i) => {
             const reachable = i <= maxStep;
@@ -77,8 +97,19 @@ export function App() {
             );
           })}
         </nav>
+        )}
       </div>
-      <main className="mx-auto max-w-[1400px] px-4 py-4">{mounted ? <Screen /> : null}</main>
+      <main className="mx-auto max-w-[1400px] px-4 py-4">
+        {mounted ? engine === "home" ? <Home /> : engine === "v1" ? <Screen /> : <RotationApp /> : null}
+      </main>
+    </>
+  );
+}
+
+export function App() {
+  return (
+    <ConfirmProvider>
+      <Inner />
     </ConfirmProvider>
   );
 }
