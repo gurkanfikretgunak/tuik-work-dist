@@ -20,7 +20,7 @@
 ![Purpose](https://img.shields.io/badge/purpose-educational-F59E0B?style=flat-square)
 ![Status](https://img.shields.io/badge/status-active_development-success?style=flat-square)
 
-[**Guide (PDF, Turkish)**](docs/Is_Dagitim_Araci_Kullanim_Kilavuzu.pdf) &nbsp;·&nbsp; [**Quick start**](#quick-start) &nbsp;·&nbsp; [**v1 Engine**](#v1--work-allocation-engine) &nbsp;·&nbsp; [**v2 Engine**](#v2--notebook-rotation-engine) &nbsp;·&nbsp; [**v4 Engine**](#v4--notebook-rotation-engine---2) &nbsp;·&nbsp; [**Data formats**](#data-formats) &nbsp;·&nbsp; [**Structure**](#project-structure) &nbsp;·&nbsp; [**i18n**](#internationalisation)
+[**Guide (PDF, Turkish)**](docs/Is_Dagitim_Araci_Kullanim_Kilavuzu.pdf) &nbsp;·&nbsp; [**v4 Guide (PDF, Turkish)**](docs/Defter_Rotasyon_Motoru_2_Kullanim_Kilavuzu.pdf) &nbsp;·&nbsp; [**Quick start**](#quick-start) &nbsp;·&nbsp; [**v1 Engine**](#v1--work-allocation-engine) &nbsp;·&nbsp; [**v2 Engine**](#v2--notebook-rotation-engine) &nbsp;·&nbsp; [**v4 Engine**](#v4--notebook-rotation-engine---2) &nbsp;·&nbsp; [**Data formats**](#data-formats) &nbsp;·&nbsp; [**Structure**](#project-structure) &nbsp;·&nbsp; [**i18n**](#internationalisation)
 
 </div>
 
@@ -203,3 +203,7 @@ Known limitations: event-log and validation messages are stored in the language 
 <sub>Educational project for learning software development with AI tools · runs offline in any modern browser</sub>
 
 </div>
+
+## Author
+
+Developed by [**gurkanfikretgunak**](https://github.com/gurkanfikretgunak).
