@@ -79,7 +79,7 @@ export default function Screen1() {
   ];
 
   const act = useMemo(() => activeEmployees(employees), [employees]);
-  const activeOnes = act.filter((e) => e.aktif);
+  const activeOnes = useMemo(() => act.filter((e) => e.aktif), [act]);
   const total = activeOnes.reduce((s, e) => s + effCap(e), 0);
   const byIl = useMemo(() => {
     const m = new Map<string, { n: number; cap: number }>();

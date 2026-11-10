@@ -1,7 +1,7 @@
 "use client";
 import clsx from "clsx";
 import { Check } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 import { useStore } from "@/lib/store";
 import { ConfirmProvider } from "./confirm";
 import Screen0 from "@/screens/Screen0";
@@ -32,8 +32,7 @@ export function App() {
   const step = useStore((s) => s.step);
   const maxStep = useStore((s) => s.maxStep);
   const go = useStore((s) => s.go);
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+  const mounted = useSyncExternalStore(() => () => {}, () => true, () => false);
   const Screen = SCREENS[step];
 
   return (

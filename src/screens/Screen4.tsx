@@ -3,7 +3,7 @@ import { ArrowRight, Play, RotateCw } from "lucide-react";
 import { useState } from "react";
 import { useConfirm } from "@/components/confirm";
 import { Badge, Button, Card, Collapsible, InfoCard, ScreenTitle, Stat } from "@/components/ui";
-import { effCap, round1, sumEffCap, weightOf } from "@/lib/engine";
+import { round1, sumEffCap, weightOf } from "@/lib/engine";
 import { executeDistribution } from "@/lib/run";
 import { activeEmployees, activeJobs, useStore } from "@/lib/store";
 import { RULE_META } from "@/lib/types";

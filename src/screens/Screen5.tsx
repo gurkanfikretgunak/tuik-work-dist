@@ -22,7 +22,7 @@ export default function Screen5() {
   const [moving, setMoving] = useState<Job | null>(null);
   const [busy, setBusy] = useState(false);
 
-  const A = result?.assignments ?? [];
+  const A = useMemo(() => result?.assignments ?? [], [result]);
   const jm = useMemo(() => new Map(js.map((j) => [j.is_id, j])), [js]);
   const loads = useMemo(() => computeLoads(A, js, rules), [A, js, rules]);
 
