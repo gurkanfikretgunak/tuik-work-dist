@@ -63,9 +63,9 @@ export function summaryText(r: Report): string {
   const t = r.totals;
   const flags: string[] = [];
   if (t.atanamayan) flags.push(`${t.atanamayan} iş atanamadı`);
-  const hi = r.perEmp.filter((p) => p.doluluk > 0.95).length;
+  const hi = r.perEmp.filter((p) => p.doluluk >= 0.95).length;
   const lo = r.perEmp.filter((p) => p.kapasite > 0 && p.doluluk < 0.5).length;
-  if (hi) flags.push(`${hi} çalışan %95 üzeri dolu`);
+  if (hi) flags.push(`${hi} çalışan %95 ve üzeri dolu`);
   if (lo) flags.push(`${lo} çalışan %50 altı dolu`);
   if (t.uyariSayisi) flags.push(`${t.uyariSayisi} atamada uyarı var`);
   return `İş dağıtımı özeti

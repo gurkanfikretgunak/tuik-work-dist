@@ -59,7 +59,7 @@ export default function Screen8() {
 
   const warnList: string[] = [];
   if (t.atanamayan) warnList.push(`${t.atanamayan} iş atanamadı`);
-  rep.perEmp.filter((p) => p.doluluk > 0.95).forEach((p) => warnList.push(`${p.ad}: %${Math.round(p.doluluk * 100)} dolu (aşırı dolu)`));
+  rep.perEmp.filter((p) => p.doluluk >= 0.95).forEach((p) => warnList.push(`${p.ad}: %${Math.round(p.doluluk * 100)} dolu (${p.doluluk > 1 ? "kapasite aşımı" : "çok dolu"})`));
   rep.perEmp.filter((p) => p.kapasite > 0 && p.doluluk < 0.5).forEach((p) => warnList.push(`${p.ad}: %${Math.round(p.doluluk * 100)} dolu (çok boş)`));
   A.filter((a) => a.uyari).forEach((a) => warnList.push(`${a.jobId}: ${a.uyari}`));
 
