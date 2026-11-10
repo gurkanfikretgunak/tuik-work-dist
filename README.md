@@ -1,15 +1,54 @@
-# TurkStat (TÜİK) Work Allocation Tool
+<div align="center">
 
-A login-free, server-less web tool that runs entirely in the browser. It bundles two independent engines, selectable from the home page:
+<img src="public/tuik-logo.svg" alt="TÜİK – Turkish Statistical Institute" width="340" />
 
-| Engine | Purpose |
-|---|---|
-| **v1 – Work Allocation Engine** | Distributes jobs (`isler.csv`) to field staff (`calisanlar.csv`) according to capacity and rules, with pre-approval, manual edits, a process report and sharing packages. |
-| **v2 – Notebook Rotation Engine** | Builds a yearly monthly rotation plan for *N* staff and *N* notebooks ("defter"), with equality, repeat and follow-up constraints, staff leave, and a validator. |
+# Work Allocation Tool
 
-**Privacy:** all files are parsed and processed in the browser. Nothing is uploaded to a server and there is no sign-in. Shared files (CSV/ZIP/HTML) are generated locally.
+**Allocate field jobs and plan notebook rotations — right in your browser.**
+<br/>No sign-in · No server · Your data never leaves your machine
 
-**Languages:** Turkish (default), English, French, German, Japanese, Simplified Chinese. Switch from the selector in the header; the choice is remembered in the browser.
+<br/>
+
+![Next.js](https://img.shields.io/badge/Next.js-16-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind-4-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)
+![Vitest](https://img.shields.io/badge/Tested_with-Vitest-6E9F18?style=for-the-badge&logo=vitest&logoColor=white)
+
+![Languages](https://img.shields.io/badge/languages-TR_·_EN_·_FR_·_DE_·_JA_·_ZH-C92830?style=flat-square)
+![Privacy](https://img.shields.io/badge/privacy-100%25_client--side-1F2A44?style=flat-square)
+![Engines](https://img.shields.io/badge/engines-v1_·_v2-1F2A44?style=flat-square)
+![Status](https://img.shields.io/badge/status-active_development-success?style=flat-square)
+
+[**Quick start**](#quick-start) &nbsp;·&nbsp; [**v1 Engine**](#v1--work-allocation-engine) &nbsp;·&nbsp; [**v2 Engine**](#v2--notebook-rotation-engine) &nbsp;·&nbsp; [**Data formats**](#data-formats) &nbsp;·&nbsp; [**Structure**](#project-structure) &nbsp;·&nbsp; [**i18n**](#internationalisation)
+
+</div>
+
+---
+
+## Overview
+
+Two independent engines, selectable from the home page:
+
+<table>
+  <tr>
+    <th width="50%" align="center">v1 · Work Allocation Engine</th>
+    <th width="50%" align="center">v2 · Notebook Rotation Engine <sup>new</sup></th>
+  </tr>
+  <tr>
+    <td valign="top">
+      Distributes jobs (<code>isler.csv</code>) to field staff (<code>calisanlar.csv</code>) by capacity and rules, with pre-approval, manual edits, a process report and sharing packages.
+    </td>
+    <td valign="top">
+      Builds a yearly monthly rotation plan for <i>N</i> staff and <i>N</i> notebooks (<i>defter</i>) with equality, repeat and follow-up constraints, staff leave, and an independent validator.
+    </td>
+  </tr>
+</table>
+
+> [!NOTE]
+> **Privacy:** all files are parsed and processed in the browser. Nothing is uploaded and there is no sign-in. Shared files (CSV / ZIP / HTML) are generated locally.
+
+> [!TIP]
+> **Languages:** Turkish (default), English, French, German, Japanese, Simplified Chinese — switch from the selector in the header; your choice is remembered.
 
 ## Quick start
 
@@ -59,6 +98,9 @@ Measured on the reference setup (M = 12, G = 2): N = 4–11 reach the theoretica
 
 ## Data formats
 
+<details open>
+<summary><b>CSV schemas and accepted values</b></summary>
+
 CSV column names, JSON keys and file names are a stable schema and are **not translated**, whatever the UI language is. Delimiter (`,` or `;`) is auto-detected; UTF-8 and Windows-1254 are accepted.
 
 ```csv
@@ -71,6 +113,8 @@ calisan_id,baslangic,bitis,not
 ```
 
 Boolean values accept `Evet/Hayır` (also yes/no/true/false/1/0); `yerlesim_tipi` is `Kent` or `Kır`; `oncelik` is `Yüksek`, `Normal` or `Düşük`; leave dates are `YYYY-MM-DD` or `DD.MM.YYYY`.
+
+</details>
 
 ## Project structure
 
@@ -101,3 +145,11 @@ Known limitations: event-log and validation messages are stored in the language 
 - v2 leave is month-based (threshold rule); week-level handling is not implemented. Notebook weights are not used in equality.
 - Adding leave after a plan was generated regenerates the whole plan; "keep past months fixed" is not available yet.
 - The search runs on the main thread (with progress and cancel); a Web Worker would help for large N.
+
+---
+
+<div align="center">
+
+<sub>Built for the Turkish Statistical Institute (TÜİK) workflows · runs offline in any modern browser</sub>
+
+</div>
