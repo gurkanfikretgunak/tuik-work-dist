@@ -5,7 +5,9 @@ import { useConfirm } from "@/components/confirm";
 import { DataTable, type Col, type TRow } from "@/components/DataTable";
 import { Badge, Button, Card, Collapsible, Field, InfoCard, ScreenTitle, inputCls } from "@/components/ui";
 import { calcMath, specialWarnings } from "./math";
-import { specialOf } from "./params";
+import { specialOf, absenceOf } from "./params";
+import LeaveSection from "./LeaveSection";
+import { calcTargets } from "./math";
 import { MONTHS, useRot } from "./store";
 
 export default function R1() {
@@ -16,7 +18,7 @@ export default function R1() {
   const limit = s.pairOverride ?? x.pairLower;
   const spN = specialOf(s).length;
   const spW = specialWarnings(n, spN, s.specialGap);
-  const spBlock = spW.some((w) => w.tone === "error");
+  const spBlock = spW.some((w) => w.tone === "error") || calcTargets(n, m, absenceOf(s).absent, s.strategy).badMonths.length > 0;
   const [fp, setFp] = useState({ p: 0, d: 0 });
   const [fx, setFx] = useState({ t: 0, p: 0, d: 0 });
 
@@ -46,6 +48,7 @@ export default function R1() {
           <li>K1: aynı defter aynı kişiye sonraki {g} ayda tekrar düşmez</li>
           <li>K2: çift tekrar sınırı {limit}{s.pairOverride === null ? " (otomatik)" : ""}</li>
           <li>K6: haftalık özel defterler ({spN} adet) aynı kişiye {s.specialGap === 0 ? "serbest" : s.specialGap === 1 ? "peş peşe aylarda düşmez" : `${s.specialGap} ay arayla düşer`}</li>
+          <li>İzinler: {s.leaves.filter((l) => l.included).length} kayıt, eşik %{s.leaveThreshold * 100}, açıkta kalan defter: {s.strategy === "ek" ? "ek atama" : "boş bırak"}</li>
           <li>K5 grup dengesi: {s.useGroups ? "açık" : "kapalı"} · yasak çift {s.forbidden.length} · sabit atama {s.fixed.length}</li>
           <li>Tohum {s.seed}</li>
         </ul>
@@ -108,6 +111,8 @@ export default function R1() {
             onEdit={(id, k, v) => s.setNotebook(id - 2, k === "no" ? {} : k === "special" ? { special: Boolean(v) } : k === "name" ? { name: String(v) } : k === "weight" ? { weight: Number(v) || 1 } : { group: v === "" ? -1 : Math.max(-1, Math.floor(Number(v)) || 0) })} />
         </div>
       </div>
+
+      <LeaveSection />
 
       <div className="mt-3 grid gap-3 lg:grid-cols-2">
         <Card title={`Yasak çiftler (${s.forbidden.length})`}>

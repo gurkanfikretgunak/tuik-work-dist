@@ -2,6 +2,8 @@
 import { create } from "zustand";
 import type { Candidate, GenResult } from "./engine";
 import type { Plan } from "./validator";
+import type { Leave } from "./leave";
+import type { Strategy } from "./math";
 
 export type Person = { id: string; name: string };
 export type Notebook = { no: number; name: string; weight: number; group: number; special: boolean }; // group -1 = yok
@@ -18,6 +20,9 @@ type S = {
   m: number;
   g: number;
   specialGap: number; // K6: özel defterler arası en az ay farkı (1 = peş peşe yasak)
+  leaves: Leave[];
+  leaveThreshold: number; // ay içi izin oranı bu eşiğe ulaşırsa kişi o ay "yok" sayılır
+  strategy: Strategy; // açıkta kalan defter: ek atama | boş bırak
   pairOverride: number | null; // null = otomatik
   useGroups: boolean;
   forbidden: [number, number][];
@@ -50,7 +55,7 @@ const mk = (n: number, old: Person[] = [], oldNb: Notebook[] = []) => ({
 
 const init = () => ({
   step: 0, maxStep: 0, n: 9, ...mk(9),
-  year: new Date().getFullYear() + 1, startMonth: 1, m: 12, g: 2, specialGap: 1, pairOverride: null as number | null,
+  year: new Date().getFullYear() + 1, startMonth: 1, m: 12, g: 2, specialGap: 1, leaves: [] as Leave[], leaveThreshold: 0.5, strategy: "ek" as Strategy, pairOverride: null as number | null,
   useGroups: false, forbidden: [] as [number, number][], fixed: [] as Fixed[],
   seed: 1, timeMs: 4000, result: null as GenResult | null, picked: 0, plan: null as Plan | null,
   swaps: [] as S["swaps"], approved: false, log: [] as S["log"],

@@ -5,7 +5,7 @@ import { useConfirm } from "@/components/confirm";
 import { Button, Card, Collapsible, InfoCard, ScreenTitle, Stat } from "@/components/ui";
 import { download, zipBlob } from "@/lib/share";
 import { calcMath } from "./math";
-import { rulesOf } from "./params";
+import { absenceOf, rulesOf } from "./params";
 import { monthLabel, useRot } from "./store";
 import { validatePlan } from "./validator";
 import Papa from "papaparse";
@@ -16,20 +16,28 @@ export default function R4() {
   const confirm = useConfirm();
   const s = useRot();
   const { plan, people, notebooks, result } = s;
-  const [pick, setPick] = useState({ plan: true, dogrulama: true, param: true, matris: true });
+  const [pick, setPick] = useState({ plan: true, izin: true, dogrulama: true, param: true, matris: true });
   if (!plan || !result) return (<div><ScreenTitle no={4} title="Onay ve Çıktı (R4)" /><InfoCard tone="warn">Önce plan üretin.</InfoCard></div>);
 
   const rules = rulesOf(s);
   const v = validatePlan(plan, rules);
   const x = calcMath(s.n, s.m, s.g);
+  const ab = absenceOf(s);
 
   const files = () => {
     const f: Record<string, string> = {};
     if (pick.plan)
-      f["defter_plani.csv"] = csv(["yil", "ay", "calisan_id", "defter_no"], plan.flatMap((row, t) => row.map((d, p) => { const ml = monthLabel(s.startMonth, t, s.year); return [ml.yil, ml.no, people[p].id, notebooks[d].no]; })));
+      f["defter_plani.csv"] = csv(["yil", "ay", "calisan_id", "defter_no", "durum"], plan.flatMap((row, t) => {
+        const ml = monthLabel(s.startMonth, t, s.year);
+        return row.map((p, d) => [ml.yil, ml.no, p >= 0 ? people[p].id : "", notebooks[d].no, p < 0 ? "acik" : v.loads[t][p] > 1 ? "ek atama" : "normal"]);
+      }));
+    if (pick.izin)
+      f["izin_ozeti.csv"] = csv(["ay", "calisan_id", "izin_gun", "ay_gun", "durum"], ab.days.flatMap((row, t) => row.flatMap((c, p) => (c > 0 ? [[`${monthLabel(s.startMonth, t, s.year).yil}-${String(monthLabel(s.startMonth, t, s.year).no).padStart(2, "0")}`, people[p].id, c, ab.dim[t], ab.absent[t][p] ? "yok (defter verilmedi)" : "kısmi izin"]] : []))));
     if (pick.dogrulama)
       f["dogrulama_raporu.json"] = JSON.stringify({
-        zorunluKurallarGecti: v.ok, aylikEslestirme: v.monthlyOk, aylikHatalar: v.monthlyErrors,
+        zorunluKurallarGecti: v.ok,
+        esasDagitimSayisi: { hedefD: v.targets.D, gerceklesen: v.actualD, acikta: v.openCount, kisiBasinaHedef: people.map((p, i) => ({ calisan: p.id, musaitAy: v.targets.a[i], hedef: Math.round(v.targets.Dp[i] * 100) / 100, gerceklesen: v.counts[i].reduce((a, b) => a + b, 0) })) },
+        izinler: { esik: s.leaveThreshold, strateji: s.strategy, kayitlar: s.leaves.filter((l) => l.included).map((l) => ({ calisan: l.personId, baslangic: l.start, bitis: l.end, not: l.note })) }, aylikEslestirme: v.monthlyOk, aylikHatalar: v.monthlyErrors,
         K1: { g: s.g, ihlal: v.k1.map((k) => ({ calisan: people[k.person].id, defter: notebooks[k.notebook].no, aylar: k.months.map((a) => a + 1) })) },
         K2: { sinir: rules.pairLimit, enCokTekrar: v.maxPair, asan: v.pairOver.map((o) => ({ kimden: people[o.from].id, kime: people[o.to].id, adet: o.count })) },
         K3: { alt: x.lo, ust: x.hi, sapma: v.k3.map((k) => ({ calisan: people[k.person].id, defter: notebooks[k.notebook].no, adet: k.count })) },
@@ -38,7 +46,7 @@ export default function R4() {
         gevsetilenKurallar: result.relaxed, elleTakaslar: s.swaps, olaylar: s.log,
       }, null, 2);
     if (pick.param)
-      f["parametreler.json"] = JSON.stringify({ n: s.n, m: s.m, yil: s.year, baslangicAyi: s.startMonth, g: s.g, istenenCiftSiniri: rules.pairLimit === result.usedPairLimit ? rules.pairLimit : s.pairOverride ?? x.pairLower, kullanilanCiftSiniri: result.usedPairLimit, tohum: result.candidates[s.picked]?.seed ?? s.seed, ilkTohum: s.seed, personel: people, defterler: notebooks, yasakCiftler: s.forbidden, sabitAtamalar: s.fixed, k5: s.useGroups }, null, 2);
+      f["parametreler.json"] = JSON.stringify({ n: s.n, m: s.m, yil: s.year, baslangicAyi: s.startMonth, g: s.g, istenenCiftSiniri: rules.pairLimit === result.usedPairLimit ? rules.pairLimit : s.pairOverride ?? x.pairLower, kullanilanCiftSiniri: result.usedPairLimit, tohum: result.candidates[s.picked]?.seed ?? s.seed, ilkTohum: s.seed, personel: people, defterler: notebooks, izinler: s.leaves.filter((l) => l.included), izinEsigi: s.leaveThreshold, acikDefterStratejisi: s.strategy, yasakCiftler: s.forbidden, sabitAtamalar: s.fixed, k5: s.useGroups }, null, 2);
     if (pick.matris) {
       f["sayim_matrisi.csv"] = csv(["calisan_id", ...notebooks.map((d) => `D${d.no}`)], v.counts.map((r, i) => [people[i].id, ...r]));
       f["devir_matrisi.csv"] = csv(["kimden\\kime", ...people.map((p) => p.id)], v.pairCounts.map((r, i) => [people[i].id, ...r]));
@@ -76,8 +84,9 @@ export default function R4() {
     <div>
       <ScreenTitle no={4} title="Onay ve Çıktı (R4)" />
       <div className="mb-3"><Collapsible title="Çıktılar">defter_plani.csv (yil, ay, calisan_id, defter_no), doğrulama raporu, parametre dosyası (aynı tohumla yeniden üretim için), sayım ve devir matrisleri. Ana araca aktarma bir sonraki aşamadadır.</Collapsible></div>
-      <div className="mb-3 grid grid-cols-2 gap-2 md:grid-cols-5">
+      <div className="mb-3 grid grid-cols-2 gap-2 md:grid-cols-6">
         <Stat label="Personel / defter" value={s.n} />
+        <Stat label="Esas dağıtım D" value={`${v.actualD} / ${v.targets.D}`} />
         <Stat label="Ay" value={s.m} />
         <Stat label="Zorunlu kurallar" value={v.ok ? "Geçti" : "Kaldı"} tone={v.ok ? "green" : "red"} />
         <Stat label="Çift sınırı" value={`${v.maxPair} / ${rules.pairLimit}`} />
@@ -88,7 +97,7 @@ export default function R4() {
           {s.approved ? <InfoCard tone="ok"><span className="flex items-center gap-1 font-medium"><CheckCircle2 className="h-4 w-4" /> Plan onaylandı.</span></InfoCard> : <Button variant="primary" onClick={approve} data-testid="r4-approve"><CheckCircle2 className="h-3.5 w-3.5" /> Planı onayla</Button>}
         </Card>
         <Card title="Çıktı dosyaları">
-          <div className="space-y-1.5">{chk("plan", "defter_plani.csv")}{chk("dogrulama", "dogrulama_raporu.json")}{chk("param", "parametreler.json")}{chk("matris", "sayim_matrisi.csv, devir_matrisi.csv")}</div>
+          <div className="space-y-1.5">{chk("plan", "defter_plani.csv")}{chk("izin", "izin_ozeti.csv")}{chk("dogrulama", "dogrulama_raporu.json")}{chk("param", "parametreler.json")}{chk("matris", "sayim_matrisi.csv, devir_matrisi.csv")}</div>
           <div className="mt-3 flex gap-2">
             <Button variant="primary" disabled={!s.approved} onClick={() => dl(false)} data-testid="r4-download"><Download className="h-3.5 w-3.5" /> Seçilenleri indir</Button>
             <Button disabled={!s.approved} onClick={() => dl(true)} data-testid="r4-zip"><Download className="h-3.5 w-3.5" /> ZIP</Button>
