@@ -10,7 +10,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 # TÜİK Work Distribution Tool — agent/developer guide
 
-A login-free, serverless work-distribution tool that runs entirely in the browser. Data is never sent to a server (the UI carries a KVKK/privacy notice and `layout.tsx` states it in the page description). Do NOT add network calls, analytics, or external services that would break this. The UI and the domain field names are in Turkish.
+A login-free, serverless work-distribution tool that runs entirely in the browser. Data is never sent to a server (the UI carries a KVKK/privacy notice and `layout.tsx` states it in the page description). Do NOT add network calls, analytics, or external services that would break this. The single exception is **v3** (read-only download of public TÜİK statistics through the allow-listed `/api/tuik/*` route handlers); never send user data upstream. The UI and the domain field names are in Turkish.
 
 ## Stack
 Next.js 16.4.6 (App Router, `cacheComponents` and `partialPrefetching` enabled, Turbopack) · React 19 · TypeScript (strict) · Tailwind 4 (`@tailwindcss/turbopack`) · Zustand · PapaParse · Zod 4 · Recharts · JSZip · Radix Dialog · Vitest. Path alias `@/*` → `src/*`.
@@ -32,7 +32,7 @@ node scripts/ornek-veri.mjs      # regenerates the public/ornek/*.csv sample dat
 Before finishing a change, `npx tsc --noEmit`, `npx eslint src` and `npx vitest run` must be clean.
 
 ## Architecture
-Two independent engines, selected on the home screen (`src/lib/appstore.ts`: `engine = "home" | "v1" | "v2"`).
+Three independent tools, selected on the home screen (`src/lib/appstore.ts`: `engine = "home" | "v1" | "v2" | "v3"`).
 
 ### v1 — Job Distribution Engine (`src/screens`, `src/lib`)
 Flow (9 screens, `Screen0..8`): Staff → Capacity → Rules → Job upload → Distribution → Pre-approval → Approval/Output → Process report → Overall summary/sharing.
@@ -47,6 +47,9 @@ A monthly rotation plan for N staff / N notebooks. Flow (`RotationApp.tsx`): R0 
 - `math.ts` (targets/feasibility warnings, `calcTargets`), `engine.ts` (seeded generation via `mulberry32`, `RotParams`), `validator.ts` (`Plan[month][notebook] = person index`, -1 = unassigned), `leave.ts` (leave parsing/validation; date formats YYYY-MM-DD, DD.MM.YYYY, DD/MM/YYYY), `params.ts` (store → `RotParams`/`RotRules`; single source of truth), `store.ts`.
 - The engine and the validator MUST share the same rules: when a rule changes, update `engine.ts`, `validator.ts` and `math.ts` together and run `rotation.test.ts` and `leave.test.ts`.
 
+### v3 — Open Data Explorer (`src/opendata`, `src/app/api/tuik`, `src/lib/{tuikProxy,tuikCatalog,jsonstat}.ts`)
+Browses TÜİK Veri Portalı datasets (`databrowser2.tuik.gov.tr`; no CORS, hence the proxy). `tuikProxy.ts` holds the validators (`validDatasetId`, `sanitizeCriteria`), `sameOrigin` and `relay` (fixed upstream, 45 s timeout, 25 MB cap) used by the three route handlers (`catalog`, `structure`, `data`). `jsonstat.ts` parses JSON-stat 2.0 and builds rows/pivot/series/CSV; `tuikCatalog.ts` builds and searches the catalogue (offline snapshot `public/tuik/catalog.json`, script `scripts/tuik-catalog.mjs`). Screens D0 (catalogue) and D1 (dataset); store in `opendata/store.ts`. Route handlers must not use route-segment config (`cacheComponents` is on) — they are dynamic because they read the request. Tests: `src/lib/jsonstat.test.ts`.
+
 ## Internationalization (i18n) — mandatory
 Languages: tr (default), en, fr, de, ja, zh. Core: `src/i18n/index.ts`; detailed rules are in **`docs-i18n.md`** (read it first — note it is written in Turkish).
 - In components use `const { t, rt } = useT()`; outside components use `tx()` / `rtx()`. Keys must be constant string literals (`t("v1.s3.title")`) — a test scans for them.
@@ -55,9 +58,9 @@ Languages: tr (default), en, fr, de, ja, zh. Core: `src/i18n/index.ts`; detailed
 - Never translated: CSV column names, file names, JSON keys, identifiers, `data-testid`, code comments.
 
 ## Known state (keep updated)
-- **i18n migration in progress:** `v1ui.ts`, `v1core.ts`, `v2ui.ts`, `v2core.ts` are currently empty skeletons (`tr: {}, …`); only `common.ts` is populated. As a result ~54 `v1core.*` keys used in `src/lib/*` are missing from the dictionary and the "every constant key used in code exists in the dictionary" test in `npx vitest run` **fails**; the other tests pass (46 of 47). The working tree may contain uncommitted changes from this migration — do not delete or revert someone else's half-finished work.
-- `src/rotation/store.ts:64` — a single eslint warning for an unused `get`.
-- The step titles in `RotationApp.tsx` and some v2 strings are still hardcoded Turkish.
+- i18n is complete for v1, v2 and v3 (6 languages); `npx vitest run` is expected to be fully green. Event-log and validation messages are stored in the language active when produced (accepted limitation); translations are machine-written.
+- `src/rotation/store.ts` — a single eslint warning for an unused `get`.
+- v3 depends on an undocumented upstream API and needs a running Next.js server.
 
 ## Rules and pitfalls
 - Do not add network/server dependencies; data stays in the browser. Persistence is `localStorage` only (`tuik-lang`, the v1 settings set).

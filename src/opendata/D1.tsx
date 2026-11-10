@@ -101,7 +101,7 @@ function Body({ js, loading, filters, fmt, view, setView, apply, dl, sourceId }:
       </div>
       {obs > 50000 && <InfoCard tone="warn">{t("v3.d1.big", { n: obs.toLocaleString() })}</InfoCard>}
 
-      <FilterPanel key={jsKey(js)} js={js} filters={filters} loading={loading} apply={apply} />
+      <Collapsible title={t("v3.d1.filters")}><FilterPanel key={jsKey(js)} js={js} filters={filters} loading={loading} apply={apply} /></Collapsible>
 
       <Card
         title={
@@ -149,8 +149,11 @@ function FilterPanel({ js, filters, loading, apply }: { js: JsData; filters: Fil
   const loadAll = (id: string) => void apply({ ...filters, [id]: null });
 
   return (
-    <Card title={t("v3.d1.filters")} right={<Button size="sm" variant="primary" disabled={!dirty || empty || loading} onClick={run} data-testid="f-apply">{loading ? t("v3.d1.loading") : t("v3.d1.f.apply")}</Button>}>
-      <p className="mb-2 text-[12px] text-slate-600">{t("v3.d1.f.hint")}</p>
+    <div>
+      <div className="mb-2 flex items-center justify-between gap-2">
+        <p className="text-[12px] text-slate-600">{t("v3.d1.f.hint")}</p>
+        <Button size="sm" variant="primary" disabled={!dirty || empty || loading} onClick={run} data-testid="f-apply">{loading ? t("v3.d1.loading") : t("v3.d1.f.apply")}</Button>
+      </div>
       <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
         {js.dims.map((d) => (
           <fieldset key={d.id} className="rounded border border-slate-200 p-2">
@@ -171,7 +174,7 @@ function FilterPanel({ js, filters, loading, apply }: { js: JsData; filters: Fil
         ))}
       </div>
       {empty && <div className="mt-2 text-[12px] text-[#C92830]">{t("v3.d1.f.empty")}</div>}
-    </Card>
+    </div>
   );
 }
 

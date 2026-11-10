@@ -31,7 +31,7 @@
 
 ## Overview
 
-Two independent engines, selectable from the home page:
+Three independent tools, selectable from the home page:
 
 <table>
   <tr>
@@ -48,8 +48,19 @@ Two independent engines, selectable from the home page:
   </tr>
 </table>
 
+<table>
+  <tr>
+    <th align="center">v3 · Open Data Explorer <sup>new</sup></th>
+  </tr>
+  <tr>
+    <td valign="top">
+      Browses the <b>516 open statistical datasets</b> of the TurkStat Data Portal: search and category filters, dimension filters, table / pivot / chart views and CSV or JSON-stat download. Data is fetched read-only through a small allow-listed proxy (<code>/api/tuik/*</code>) because the portal sends no CORS headers; nothing you enter is sent upstream.
+    </td>
+  </tr>
+</table>
+
 > [!NOTE]
-> **Privacy:** all files are parsed and processed in the browser. Nothing is uploaded and there is no sign-in. Shared files (CSV / ZIP / HTML) are generated locally.
+> **Privacy:** v1 and v2 process everything in the browser: nothing is uploaded and there is no sign-in. v3 only *downloads* public statistics through a read-only proxy (`/api/tuik/*`) that accepts a fixed set of validated requests; none of your own data is sent to TurkStat.
 
 > [!TIP]
 > **Languages:** Turkish (default), English, French, German, Japanese, Simplified Chinese — switch from the selector in the header; your choice is remembered.
@@ -100,6 +111,23 @@ Rules:
 
 Measured on the reference setup (M = 12, G = 2): N = 4–11 reach the theoretical hand-over lower bound within milliseconds; N = 12–15 reach it +1; N = 3 with G = 2 has no solution (use G = 1).
 
+## v3 – Open Data Explorer
+
+Source: the TurkStat Data Portal (`databrowser2.tuik.gov.tr`, a .Stat-style data browser). Its REST API is public and anonymous but sends **no CORS headers**, so the browser cannot call it directly; the app therefore exposes three small Next.js route handlers:
+
+| Route | Upstream | Notes |
+|---|---|---|
+| `GET /api/tuik/catalog` | `/api/core/nodes/1/catalog` | live catalogue refresh |
+| `GET /api/tuik/structure?id=…` | `/datasets/{id}/structure` | dimensions, default filters, Turkish title |
+| `POST /api/tuik/data?id=…` | `/datasets/{id}/data` | body = array of `{id, filterValues}` filters; response is JSON-stat 2.0 |
+
+Safeguards: dataset ids and filters are validated against allow-list patterns, the upstream host and paths are fixed, cross-origin browser calls are rejected, requests time out after 45 s and responses are capped at 25 MB. The catalogue also ships as an offline snapshot (`public/tuik/catalog.json`, regenerate with `node scripts/tuik-catalog.mjs`).
+
+Screens: D0 catalogue (search, category chips, pagination, live refresh) → D1 dataset (statistics, collapsible filters, table / pivot / chart views, CSV and JSON-stat download).
+
+> [!WARNING]
+> The portal API has no published stability guarantee and its terms of use for reuse were not reviewed; this is an educational demo. Catalogue titles come from the API in English; the Turkish title is shown when a dataset is opened.
+
 ## Data formats
 
 <details open>
@@ -145,6 +173,7 @@ Known limitations: event-log and validation messages are stored in the language 
 
 ## Limitations and next steps
 
+- v3 depends on an undocumented upstream API that may change; it needs a running Next.js server (it does not work as a static export).
 - Linking a rotation plan to v1 (a "follow the notebook plan" rule using a `defter_no` column) is not implemented yet.
 - v2 leave is month-based (threshold rule); week-level handling is not implemented. Notebook weights are not used in equality.
 - Adding leave after a plan was generated regenerates the whole plan; "keep past months fixed" is not available yet.
