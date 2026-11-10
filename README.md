@@ -17,6 +17,7 @@
 ![Languages](https://img.shields.io/badge/languages-TR_·_EN_·_FR_·_DE_·_JA_·_ZH-C92830?style=flat-square)
 ![Privacy](https://img.shields.io/badge/privacy-100%25_client--side-1F2A44?style=flat-square)
 ![Engines](https://img.shields.io/badge/engines-v1_·_v2-1F2A44?style=flat-square)
+![Purpose](https://img.shields.io/badge/purpose-educational-F59E0B?style=flat-square)
 ![Status](https://img.shields.io/badge/status-active_development-success?style=flat-square)
 
 [**Quick start**](#quick-start) &nbsp;·&nbsp; [**v1 Engine**](#v1--work-allocation-engine) &nbsp;·&nbsp; [**v2 Engine**](#v2--notebook-rotation-engine) &nbsp;·&nbsp; [**Data formats**](#data-formats) &nbsp;·&nbsp; [**Structure**](#project-structure) &nbsp;·&nbsp; [**i18n**](#internationalisation)
@@ -24,6 +25,9 @@
 </div>
 
 ---
+
+> [!IMPORTANT]
+> **Educational project.** This repository was created for **educational purposes**: to teach software-engineering practice and **how to work with AI tools** (AI-assisted design, coding, testing and documentation). It is a learning exercise, not production software, and it is not an official product of the Turkish Statistical Institute. The TÜİK name and logo belong to their owner and appear here only for demonstration. Do not use it with real or personal data without your own review.
 
 ## Overview
 
@@ -150,6 +154,6 @@ Known limitations: event-log and validation messages are stored in the language 
 
 <div align="center">
 
-<sub>Built for the Turkish Statistical Institute (TÜİK) workflows · runs offline in any modern browser</sub>
+<sub>Educational project for learning software development with AI tools · runs offline in any modern browser</sub>
 
 </div>
