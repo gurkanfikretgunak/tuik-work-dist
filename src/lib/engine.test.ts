@@ -16,7 +16,7 @@ const rs = (o: Partial<RuleSet> = {}): RuleSet => ({ ...DEFAULT_RULESET, kapasit
 describe("dağıtım motoru", () => {
   it("orantılı hedef: X=20, Y=30, 40 iş → 16/24", async () => {
     const jobs = Array.from({ length: 40 }, (_, i) => job(i));
-    const a = await runDistribution([emp("X", 20), emp("Y", 30)], jobs, rs());
+    const a = await runDistribution([emp("X", 20), emp("Y", 30)], jobs, rs({ sapma: 0 }));
     const l = computeLoads(a, jobs, rs());
     expect(l.get("X")).toBe(16);
     expect(l.get("Y")).toBe(24);
