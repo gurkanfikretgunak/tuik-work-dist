@@ -6,11 +6,13 @@ import { buildFromLive, type CatalogData, type CatalogItem } from "@/lib/tuikCat
 export type View = "table" | "pivot" | "chart";
 export type Filters = Record<string, string[] | null>;
 
-type Struct = { dims: { id: string; label: string }[]; defaults: Filters; titleTr?: string; timeDim?: string };
+type Struct = { dims: { id: string; label: string }[]; defaults: Filters; timeDim?: string };
+type ApiLang = "tr" | "en";
 
 type S = {
   step: number;
   maxStep: number;
+  apiLang: ApiLang;
   catalog: CatalogData | null;
   catalogStatus: "idle" | "loading" | "ready" | "error";
   query: string;
@@ -32,6 +34,7 @@ type S = {
   setPage: (p: number) => void;
   setView: (v: View) => void;
   loadCatalog: (live?: boolean) => Promise<void>;
+  switchLang: (l: ApiLang) => Promise<void>;
   openDataset: (item: CatalogItem) => Promise<void>;
   applyFilters: (f: Filters) => Promise<void>;
   reset: () => void;
@@ -50,7 +53,7 @@ async function getJson(url: string, init?: RequestInit) {
 const criteriaOf = (f: Filters) => Object.entries(f).filter(([, v]) => v && v.length).map(([id, filterValues]) => ({ id, filterValues, type: "CodeValues" }));
 
 export const useOpen = create<S>((set, get) => ({
-  step: 0, maxStep: 0, catalog: null, catalogStatus: "idle", query: "", top: null, page: 0,
+  step: 0, maxStep: 0, apiLang: "tr", catalog: null, catalogStatus: "idle", query: "", top: null, page: 0,
   selected: null, status: "idle", error: "", struct: null, filters: {}, js: null, raw: "", view: "table", token: 0,
 
   go: (n) => set((s) => ({ step: n, maxStep: Math.max(s.maxStep, n) })),
@@ -63,10 +66,10 @@ export const useOpen = create<S>((set, get) => ({
     set({ catalogStatus: "loading" });
     try {
       if (live) {
-        const raw = await (await getJson("/api/tuik/catalog")).json();
+        const raw = await (await getJson(`/api/tuik/catalog?lang=${get().apiLang}`)).json();
         set({ catalog: buildFromLive(raw), catalogStatus: "ready" });
       } else {
-        const data = (await (await getJson("/tuik/catalog.json")).json()) as CatalogData;
+        const data = (await (await getJson(`/tuik/catalog.${get().apiLang}.json`)).json()) as CatalogData;
         set({ catalog: data, catalogStatus: "ready" });
       }
     } catch {
@@ -79,12 +82,12 @@ export const useOpen = create<S>((set, get) => ({
     const token = get().token + 1;
     set({ selected: item, status: "loading", error: "", js: null, raw: "", struct: null, filters: {}, view: "table", token, step: 1, maxStep: Math.max(get().maxStep, 1) });
     try {
-      const sres = await (await getJson(`/api/tuik/structure?id=${encodeURIComponent(item.id)}`)).json();
+      const sres = await (await getJson(`/api/tuik/structure?id=${encodeURIComponent(item.id)}&lang=${get().apiLang}`)).json();
       const defaults: Filters = {};
       for (const c of sres?.template?.criteria ?? []) if (c?.type === "CodeValues" && Array.isArray(c.filterValues) && c.filterValues.length) defaults[c.id] = c.filterValues;
       const struct: Struct = {
         dims: (sres?.criteria ?? []).map((c: { id: string; label: string }) => ({ id: c.id, label: c.label })),
-        defaults, titleTr: sres?.template?.title?.tr, timeDim: sres?.timeDimension,
+        defaults, timeDim: sres?.timeDimension,
       };
       if (get().token !== token) return;
       set({ struct });
@@ -101,11 +104,25 @@ export const useOpen = create<S>((set, get) => ({
     try { await fetchData(token, selected.id, f, false); } catch (e) { if (get().token === token) set({ status: "error", error: (e as Error).message }); }
   },
 
+  switchLang: async (l) => {
+    if (get().apiLang === l) return;
+    set({ apiLang: l });
+    await get().loadCatalog(false);
+    const { selected, catalog, js, filters, token } = get();
+    if (selected && catalog) {
+      const fresh = catalog.datasets.find((d) => d.id === selected.id);
+      if (fresh) set({ selected: fresh });
+    }
+    if (selected && js) {
+      try { await fetchData(token, selected.id, filters, false); } catch { /* etiketler eski dilde kalır */ }
+    }
+  },
+
   reset: () => set({ step: 0, maxStep: 0, selected: null, status: "idle", js: null, raw: "", struct: null, filters: {}, token: get().token + 1 }),
 }));
 
 async function fetchData(token: number, id: string, filters: Filters, allowFallback: boolean) {
-  const res = await getJson(`/api/tuik/data?id=${encodeURIComponent(id)}`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(criteriaOf(filters)) });
+  const res = await getJson(`/api/tuik/data?id=${encodeURIComponent(id)}&lang=${useOpen.getState().apiLang}`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(criteriaOf(filters)) });
   const text = await res.text();
   const js = parseJsonStat(JSON.parse(text));
   if (useOpen.getState().token !== token) return;

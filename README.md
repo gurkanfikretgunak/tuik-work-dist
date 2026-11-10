@@ -121,12 +121,12 @@ Source: the TurkStat Data Portal (`databrowser2.tuik.gov.tr`, a .Stat-style data
 | `GET /api/tuik/structure?id=…` | `/datasets/{id}/structure` | dimensions, default filters, Turkish title |
 | `POST /api/tuik/data?id=…` | `/datasets/{id}/data` | body = array of `{id, filterValues}` filters; response is JSON-stat 2.0 |
 
-Safeguards: dataset ids and filters are validated against allow-list patterns, the upstream host and paths are fixed, cross-origin browser calls are rejected, requests time out after 45 s and responses are capped at 25 MB. The catalogue also ships as an offline snapshot (`public/tuik/catalog.json`, regenerate with `node scripts/tuik-catalog.mjs`).
+Safeguards: dataset ids and filters are validated against allow-list patterns, the upstream host and paths are fixed, cross-origin browser calls are rejected, requests time out after 45 s and responses are capped at 25 MB. The catalogue also ships as offline snapshots (`public/tuik/catalog.tr.json` and `catalog.en.json`, regenerate with `node scripts/tuik-catalog.mjs`).
 
 Screens: D0 catalogue (search, category chips, pagination, live refresh) → D1 dataset (statistics, collapsible filters, table / pivot / chart views, CSV and JSON-stat download).
 
 > [!WARNING]
-> The portal API has no published stability guarantee and its terms of use for reuse were not reviewed; this is an educational demo. Catalogue titles come from the API in English; the Turkish title is shown when a dataset is opened.
+> The portal API has no published stability guarantee and its terms of use for reuse were not reviewed; this is an educational demo. The API only provides Turkish and English labels (selected with the `UserLang` header, forwarded by the proxy as `?lang=tr|en`); the other interface languages show the English labels. Switching language re-labels the open dataset.
 
 ## Data formats
 

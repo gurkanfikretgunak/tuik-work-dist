@@ -106,7 +106,7 @@ export default function LeaveSection() {
 
         <div className="lg:col-span-2">
           <DataTable
-            sheetName="izinler"
+            sheetName={t("sheet.leave")}
             columns={cols}
             rows={rows}
             height={230}

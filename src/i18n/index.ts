@@ -100,4 +100,6 @@ export const monthName = (i0: number, lang?: Lang) => {
 export const fmtDateTime = (iso: string | number | Date) => new Date(iso).toLocaleString(localeOf());
 export const fmtDate = (iso: string | number | Date) => new Date(iso).toLocaleDateString(localeOf());
 export const fmtTime = (iso: string | number | Date) => new Date(iso).toLocaleTimeString(localeOf());
+/** Veri enum değerlerini (Kent/Kır, Yüksek/Normal/Düşük) görüntüde geçerli dile çevirir; CSV/şema değeri değişmez. */
+export const enumLabel = (v: string) => (`enum.${v}` in TABLE[useLangStore.getState().lang] || `enum.${v}` in TABLE.tr ? tx(`enum.${v}`) : v);
 export const collate = (a: string, b: string) => a.localeCompare(b, localeOf());

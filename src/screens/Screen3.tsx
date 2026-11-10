@@ -2,7 +2,7 @@
 import { ArrowRight, FileUp } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useConfirm } from "@/components/confirm";
-import { useT } from "@/i18n";
+import { enumLabel, useT } from "@/i18n";
 import { DataTable, type Col, type TRow } from "@/components/DataTable";
 import { FileDrop } from "@/components/FileDrop";
 import { Badge, Button, Card, Collapsible, InfoCard, ScreenTitle, Stat } from "@/components/ui";
@@ -65,11 +65,11 @@ export default function Screen3() {
     { key: "il", label: "il", width: 80 },
     { key: "ilce", label: "ilce", width: 90 },
     { key: "mahalle", label: "mahalle", width: 100 },
-    { key: "yerlesim_tipi", label: "yerlesim_tipi", width: 90 },
+    { key: "yerlesim_tipi", label: "yerlesim_tipi", width: 90, render: (v) => enumLabel(String(v)) },
     { key: "birim_no", label: "birim_no", width: 90 },
     { key: "gorusme_sayisi", label: "gorusme_sayisi", type: "num", width: 100 },
     { key: "onceki_ay_gorusen_calisan_id", label: "onceki_ay_gorusen_calisan_id", width: 160 },
-    { key: "oncelik", label: "oncelik", width: 70 },
+    { key: "oncelik", label: "oncelik", width: 70, render: (v) => enumLabel(String(v)) },
     { key: "anket_turu", label: "anket_turu", width: 140 },
   ];
 

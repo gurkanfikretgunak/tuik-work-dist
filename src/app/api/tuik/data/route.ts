@@ -1,4 +1,4 @@
-import { relay, sameOrigin, jsonError, validDatasetId, sanitizeCriteria } from "@/lib/tuikProxy";
+import { toApiLang, relay, sameOrigin, jsonError, validDatasetId, sanitizeCriteria } from "@/lib/tuikProxy";
 
 export async function POST(request: Request) {
   if (!sameOrigin(request)) return jsonError(403, "forbidden");
@@ -12,5 +12,5 @@ export async function POST(request: Request) {
   }
   const criteria = sanitizeCriteria(body);
   if (!criteria) return jsonError(400, "bad_criteria");
-  return relay(`/datasets/${encodeURIComponent(id)}/data`, { method: "POST", body: JSON.stringify(criteria) });
+  return relay(`/datasets/${encodeURIComponent(id)}/data`, { method: "POST", body: JSON.stringify(criteria), lang: toApiLang(new URL(request.url).searchParams.get("lang")) });
 }

@@ -26,10 +26,10 @@ function errText(t: ReturnType<typeof useT>["t"], code: string) {
 
 export default function D1() {
   const confirm = useConfirm();
-  const { t, locale, lang } = useT();
-  const { selected, status, error, struct, js, raw, filters, view, setView, applyFilters, openDataset, go } = useOpen();
+  const { t, locale } = useT();
+  const { selected, status, error, js, raw, filters, view, setView, applyFilters, openDataset, go } = useOpen();
 
-  const title = selected ? (lang === "tr" && struct?.titleTr ? struct.titleTr : selected.title) : "";
+  const title = selected ? (js?.label || selected.title) : "";
 
   if (!selected)
     return (

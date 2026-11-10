@@ -2,7 +2,7 @@
 import clsx from "clsx";
 import { ArrowRight, MoveRight, RotateCw } from "lucide-react";
 import { useMemo, useState } from "react";
-import { collate, useT } from "@/i18n";
+import { collate, enumLabel, useT } from "@/i18n";
 import { Modal, useConfirm } from "@/components/confirm";
 import { Badge, Button, Card, Collapsible, FillBar, InfoCard, ScreenTitle, Stat, inputCls } from "@/components/ui";
 import { checkMove, computeLoads, effCap, reasonText, round1, uyariText, violText, weightOf } from "@/lib/engine";
@@ -159,7 +159,7 @@ export default function Screen5() {
                     </td>
                     <td className="pr-2">{j.il}</td>
                     <td className="pr-2">{j.mahalle}</td>
-                    <td className="pr-2">{j.yerlesim_tipi}</td>
+                    <td className="pr-2">{enumLabel(j.yerlesim_tipi)}</td>
                     <td className="pr-2 text-right tabular-nums">{j.gorusme_sayisi}</td>
                     <td className="pr-2 text-right tabular-nums">{round1(weightOf(j, rules))}</td>
                     <td className="text-right">
@@ -228,7 +228,7 @@ export default function Screen5() {
                       <tr key={a.jobId} className="border-t border-slate-100">
                         <td className="py-1 font-mono">{a.jobId}</td>
                         <td>
-                          {j.il} / {j.mahalle} ({j.yerlesim_tipi})
+                          {j.il} / {j.mahalle} ({enumLabel(j.yerlesim_tipi)})
                         </td>
                         <td className="text-red-800">{reasonText(a.sebep)}</td>
                         <td className="text-right">
@@ -401,7 +401,7 @@ function MoveModal({
       {job && (
         <div className="space-y-2.5">
           <div className="text-[12.5px] text-slate-700">
-            {job.il} / {job.ilce} / {job.mahalle} · {job.yerlesim_tipi} · {t("v1core.s5.nInterviews", { n: job.gorusme_sayisi })}
+            {job.il} / {job.ilce} / {job.mahalle} · {enumLabel(job.yerlesim_tipi)} · {t("v1core.s5.nInterviews", { n: job.gorusme_sayisi })}
           </div>
           <select className={inputCls} value={to} onChange={(e) => setTo(e.target.value)} aria-label={t("v1core.s5.targetEmp")} data-testid="move-target">
             <option value="">{t("v1core.s5.pickEmp")}</option>

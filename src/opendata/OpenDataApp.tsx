@@ -1,6 +1,7 @@
 "use client";
 import clsx from "clsx";
 import { Check } from "lucide-react";
+import { useEffect } from "react";
 import { useT } from "@/i18n";
 import D0 from "./D0";
 import D1 from "./D1";
@@ -9,8 +10,9 @@ import { useOpen } from "./store";
 const SCREENS = [D0, D1];
 
 export default function OpenDataApp() {
-  const { t } = useT();
-  const { step, maxStep, go } = useOpen();
+  const { t, lang } = useT();
+  const { step, maxStep, go, switchLang } = useOpen();
+  useEffect(() => { void switchLang(lang === "tr" ? "tr" : "en"); }, [lang, switchLang]);
   const Screen = SCREENS[step];
   return (
     <div>

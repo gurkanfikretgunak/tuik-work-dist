@@ -224,10 +224,10 @@ function StepVarlik({ spW }: { spW: { tone: "warn" | "error"; text: string }[] }
         ))}
       </div>
       {tab === "p" ? (
-        <DataTable sheetName="personel" columns={pCols} rows={pRows} height={300} onEdit={(id, k, v) => s.setPerson(id - 2, { [k]: String(v) })} />
+        <DataTable sheetName={t("sheet.staff")} columns={pCols} rows={pRows} height={300} onEdit={(id, k, v) => s.setPerson(id - 2, { [k]: String(v) })} />
       ) : (
         <>
-          <DataTable sheetName="defterler" columns={nCols} rows={nRows} height={300}
+          <DataTable sheetName={t("sheet.notebooks")} columns={nCols} rows={nRows} height={300}
             onEdit={(id, k, v) => s.setNotebook(id - 2, k === "no" ? {} : k === "special" ? { special: Boolean(v) } : k === "name" ? { name: String(v) } : k === "weight" ? { weight: Number(v) || 1 } : { group: v === "" ? -1 : Math.max(-1, Math.floor(Number(v)) || 0) })} />
           {spW.map((w) => <InfoCard key={w.text} tone={w.tone}>{w.text}</InfoCard>)}
         </>

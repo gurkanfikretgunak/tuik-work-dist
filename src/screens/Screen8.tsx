@@ -1,7 +1,7 @@
 "use client";
 import { Clipboard, Download, Mail, Printer } from "lucide-react";
 import { useMemo, useState } from "react";
-import { fmtDate, useT } from "@/i18n";
+import { enumLabel, fmtDate, useT } from "@/i18n";
 import { useConfirm } from "@/components/confirm";
 import { Badge, Button, Card, Collapsible, Field, InfoCard, ScreenTitle, Stat, inputCls } from "@/components/ui";
 import { toCsv } from "@/lib/csv";
@@ -201,7 +201,7 @@ export default function Screen8() {
             <div className="mt-2 max-h-44 overflow-auto rounded border border-slate-200">
               <table className="w-full text-[12px]" data-testid="emp-preview">
                 <thead className="sticky top-0 bg-slate-50 text-left"><tr>{SHARE_COLS.map((c) => <th key={c} className="px-1.5 py-1">{c}</th>)}</tr></thead>
-                <tbody>{selJobs.map((j) => <tr key={j.is_id} className="border-t border-slate-100">{SHARE_COLS.map((c) => <td key={c} className="px-1.5 py-0.5 whitespace-nowrap">{String(j[c])}</td>)}</tr>)}</tbody>
+                <tbody>{selJobs.map((j) => <tr key={j.is_id} className="border-t border-slate-100">{SHARE_COLS.map((c) => <td key={c} className="px-1.5 py-0.5 whitespace-nowrap">{c === "yerlesim_tipi" || c === "oncelik" ? enumLabel(String(j[c])) : String(j[c])}</td>)}</tr>)}</tbody>
               </table>
             </div>
             <div className="mt-2 flex gap-2">
