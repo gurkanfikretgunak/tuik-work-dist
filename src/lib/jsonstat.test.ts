@@ -67,3 +67,24 @@ describe("proxy doğrulama", () => {
     expect(sanitizeCriteria([{ id: "A", filterValues: [] }])).toBeNull();
   });
 });
+
+import { buildFromLive, searchCatalog, topCategories } from "./tuikCatalog";
+describe("katalog", () => {
+  const live = {
+    categoryGroups: [{ categories: [{ label: "Education", datasetIdentifiers: ["A"], childrenCategories: [{ label: "Spend", datasetIdentifiers: ["B"], childrenCategories: [] }] }, { label: "Energy", datasetIdentifiers: ["C"] }] }],
+    datasetMap: { A: { title: "Students" }, B: { title: "Education expenditure", description: "per student" }, C: { title: "Energy use" } },
+  };
+  it("canlı katalogdan düz liste ve kategori yolu", () => {
+    const c = buildFromLive(live, new Date("2026-01-01"));
+    expect(c.count).toBe(3);
+    expect(c.datasets.find((d) => d.id === "B")?.path).toEqual(["Education", "Spend"]);
+    expect(topCategories(c.datasets)).toEqual([["Education", 2], ["Energy", 1]]);
+  });
+  it("arama ve kategori süzgeci", () => {
+    const { datasets } = buildFromLive(live);
+    expect(searchCatalog(datasets, "student", null, "en").map((d) => d.id).sort()).toEqual(["A", "B"]);
+    expect(searchCatalog(datasets, "education spend", "Education", "en").map((d) => d.id)).toEqual(["B"]);
+    expect(searchCatalog(datasets, "", "Energy", "en")).toHaveLength(1);
+    expect(() => buildFromLive({})).toThrow();
+  });
+});
