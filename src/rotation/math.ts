@@ -14,6 +14,16 @@ export type RotMath = {
   feasible: boolean;
 };
 
+/** K6 uygulanabilirliği: özel defter sayısı s için, peş peşe yasağında s ≤ N − s gerekir (özel olmayan defter sayısı en az özel kadar). */
+export function specialWarnings(n: number, special: number, gap: number): { tone: "warn" | "error"; text: string }[] {
+  if (special <= 0) return [];
+  const out: { tone: "warn" | "error"; text: string }[] = [];
+  if (gap >= 1 && special > n - special)
+    out.push({ tone: "error", text: `K6 imkânsız: ${special} özel defter var, özel olmayan ${n - special}. Her ay özel defter alan kişi sayısı (${special}), önceki ay özel almamış kişi sayısını (${n - special}) aşıyor; peş peşe özel defter kaçınılmaz. Özel defter sayısını azaltın veya N'yi artırın.` });
+  else if (gap >= 1 && special * (gap + 1) > n) out.push({ tone: "warn", text: `K6 sıkı: ${special} özel defter ve ${gap} ay ara için N=${n} sınırda; çözüm bulunamayabilir.` });
+  return out;
+}
+
 export function calcMath(n: number, m: number, g: number): RotMath {
   const warnings: RotMath["warnings"] = [];
   let feasible = true;

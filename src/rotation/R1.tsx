@@ -4,7 +4,8 @@ import { useState } from "react";
 import { useConfirm } from "@/components/confirm";
 import { DataTable, type Col, type TRow } from "@/components/DataTable";
 import { Badge, Button, Card, Collapsible, Field, InfoCard, ScreenTitle, inputCls } from "@/components/ui";
-import { calcMath } from "./math";
+import { calcMath, specialWarnings } from "./math";
+import { specialOf } from "./params";
 import { MONTHS, useRot } from "./store";
 
 export default function R1() {
@@ -13,6 +14,9 @@ export default function R1() {
   const { n, people, notebooks, m, g, go, addLog } = s;
   const x = calcMath(n, m, g);
   const limit = s.pairOverride ?? x.pairLower;
+  const spN = specialOf(s).length;
+  const spW = specialWarnings(n, spN, s.specialGap);
+  const spBlock = spW.some((w) => w.tone === "error");
   const [fp, setFp] = useState({ p: 0, d: 0 });
   const [fx, setFx] = useState({ t: 0, p: 0, d: 0 });
 
@@ -27,6 +31,7 @@ export default function R1() {
     { key: "name", label: "ad", editable: true, width: 160 },
     { key: "weight", label: "ağırlık", type: "num", editable: true, width: 70 },
     { key: "group", label: "grup (K5)", type: "num", editable: true, width: 80 },
+    { key: "special", label: "haftalık özel (K6)", type: "bool", editable: true, width: 120 },
   ];
   const nRows: TRow[] = notebooks.map((d, i) => ({ id: i + 2, cells: { ...d, group: d.group < 0 ? "" : d.group } }));
 
@@ -40,6 +45,7 @@ export default function R1() {
           <li>{n} personel, {n} defter, {m} ay ({MONTHS[s.startMonth - 1]} {s.year} başlangıçlı)</li>
           <li>K1: aynı defter aynı kişiye sonraki {g} ayda tekrar düşmez</li>
           <li>K2: çift tekrar sınırı {limit}{s.pairOverride === null ? " (otomatik)" : ""}</li>
+          <li>K6: haftalık özel defterler ({spN} adet) aynı kişiye {s.specialGap === 0 ? "serbest" : s.specialGap === 1 ? "peş peşe aylarda düşmez" : `${s.specialGap} ay arayla düşer`}</li>
           <li>K5 grup dengesi: {s.useGroups ? "açık" : "kapalı"} · yasak çift {s.forbidden.length} · sabit atama {s.fixed.length}</li>
           <li>Tohum {s.seed}</li>
         </ul>
@@ -59,6 +65,7 @@ export default function R1() {
           <ul className="list-inside list-disc space-y-0.5">
             <li><b>G</b>: bir defter aynı kişiye sonraki G ayda tekrar denk gelmez (K1). Varsayılan 2.</li>
             <li><b>Çift sınırı</b>: defteri A bıraktıktan sonra B alıyorsa (A→B), bu çift yılda en fazla bu kadar tekrar eder (K2). Otomatik değer teorik alt sınırdır; bulunamazsa motor +1 gevşetir ve raporlar.</li>
+            <li><b>K6 haftalık özel defterler</b>: işaretli defterler (varsayılan 1, 3 ve 6) aynı çalışanda peş peşe aylarda üst üste gelmez; gelirse plan yeniden kurulur. Her kişinin toplam özel defter payı K3 ile zaten eşitlenir.</li>
             <li><b>Tohum</b>: aynı girdi ve tohum aynı planı verir.</li>
             <li><b>Yasak çift</b> bir kişinin hiç alamayacağı defteri, <b>sabit atama</b> belirli ay–kişi–defter eşleşmesini zorlar. İkisi de eşitliği bozabilir.</li>
           </ul>
@@ -86,6 +93,11 @@ export default function R1() {
             </Field>
             <Field label="Tohum"><input className={inputCls} type="number" value={s.seed} onChange={(e) => s.patch({ seed: Number(e.target.value) || 1 })} aria-label="Tohum" /></Field>
             <Field label="Arama süresi (sn)"><input className={inputCls} type="number" min={1} max={60} value={s.timeMs / 1000} onChange={(e) => s.patch({ timeMs: Math.max(1, Math.min(60, Number(e.target.value) || 4)) * 1000 })} aria-label="Süre" /></Field>
+            <Field label="K6: özel defterler arası en az ay" hint="Tabloda 'haftalık özel' işaretli defterler. 1 = aynı kişiye peş peşe aylarda özel defter düşmez; 0 = kural kapalı.">
+              <select className={inputCls} value={s.specialGap} onChange={(e) => s.patch({ specialGap: Number(e.target.value) })} aria-label="Özel defter aralığı">
+                <option value={0}>Kapalı</option><option value={1}>1 — peş peşe yasak</option><option value={2}>2 — en az 2 ay ara</option>
+              </select>
+            </Field>
             <label className="flex cursor-pointer items-center gap-2 text-[12.5px]"><input type="checkbox" checked={s.useGroups} onChange={(e) => s.patch({ useGroups: e.target.checked })} /> K5: defter grubu dengesini kullan (tercih)</label>
           </div>
         </Card>
@@ -93,7 +105,7 @@ export default function R1() {
           <DataTable sheetName="personel" columns={pCols} rows={pRows} height={200}
             onEdit={(id, k, v) => s.setPerson(id - 2, { [k]: String(v) })} />
           <DataTable sheetName="defterler" columns={nCols} rows={nRows} height={200}
-            onEdit={(id, k, v) => s.setNotebook(id - 2, k === "no" ? {} : k === "name" ? { name: String(v) } : k === "weight" ? { weight: Number(v) || 1 } : { group: v === "" ? -1 : Math.max(-1, Math.floor(Number(v)) || 0) })} />
+            onEdit={(id, k, v) => s.setNotebook(id - 2, k === "no" ? {} : k === "special" ? { special: Boolean(v) } : k === "name" ? { name: String(v) } : k === "weight" ? { weight: Number(v) || 1 } : { group: v === "" ? -1 : Math.max(-1, Math.floor(Number(v)) || 0) })} />
         </div>
       </div>
 
@@ -126,10 +138,10 @@ export default function R1() {
         </Card>
       </div>
 
-      <div className="mt-3 space-y-1.5">{x.warnings.filter((w) => w.tone !== "info").map((w) => <InfoCard key={w.text} tone={w.tone}>{w.text}</InfoCard>)}</div>
+      <div className="mt-3 space-y-1.5">{[...x.warnings, ...spW].filter((w) => w.tone !== "info").map((w) => <InfoCard key={w.text} tone={w.tone}>{w.text}</InfoCard>)}</div>
       <div className="mt-3 flex items-center justify-between">
         <Button onClick={() => go(0)}>← Başlangıç</Button>
-        <Button variant="primary" disabled={!x.feasible} onClick={next} data-testid="r1-next">Onayla ve üretime geç <ArrowRight className="h-3.5 w-3.5" /></Button>
+        <Button variant="primary" disabled={!x.feasible || spBlock} onClick={next} data-testid="r1-next">Onayla ve üretime geç <ArrowRight className="h-3.5 w-3.5" /></Button>
       </div>
     </div>
   );

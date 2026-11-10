@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { calcMath } from "./math";
+import { calcMath, specialWarnings } from "./math";
 import { generatePlans, type RotParams } from "./engine";
 import { validatePlan } from "./validator";
 
@@ -59,5 +59,32 @@ describe("motor: N için zorunlu kurallar", () => {
     const r = await generatePlans(P(9, { forbidden: [[0, 0]], fixed: [{ month: 0, person: 1, notebook: 4 }] }), { timeMs: 4000, want: 1 });
     expect(r.candidates[0].plan[0][1]).toBe(4);
     expect(r.candidates[0].plan.every((row) => row[0] !== 0)).toBe(true);
+  }, 15000);
+});
+
+describe("K6: haftalık özel defterler (1, 3, 6)", () => {
+  const SP = { special: [0, 2, 5], specialGap: 1 };
+  it("N=9: özel defterler aynı kişide peş peşe gelmez", async () => {
+    const r = await generatePlans(P(9, SP), { timeMs: 6000, want: 1 });
+    expect(r.candidates.length, r.error).toBe(1);
+    const v = validatePlan(r.candidates[0].plan, { n: 9, m: 12, g: 2, pairLimit: r.usedPairLimit, ...SP });
+    expect(v.k6).toEqual([]);
+    expect(v.ok).toBe(true);
+    expect(v.specialCounts.reduce((a, b) => a + b, 0)).toBe(36);
+  }, 15000);
+  it("doğrulayıcı peş peşe özel defteri yakalar", () => {
+    const plan = [[0, 1], [2, 3]]; // kişi0: defter1 (özel) sonra defter3 (özel)
+    const v = validatePlan(plan, { n: 4, m: 2, g: 0, pairLimit: 9, special: [0, 2], specialGap: 1 });
+    expect(v.k6).toHaveLength(1);
+    expect(v.k6[0].person).toBe(0);
+  });
+  it("özel defter sayısı N/2'yi aşarsa uyarı (imkânsız)", () => {
+    expect(specialWarnings(4, 3, 1)[0].tone).toBe("error");
+    expect(specialWarnings(9, 3, 1)).toEqual([]);
+  });
+  it("N=6, 3 özel defter: bulunur ve K6 sağlanır", async () => {
+    const r = await generatePlans(P(6, SP), { timeMs: 6000, want: 1 });
+    expect(r.candidates.length, r.error).toBe(1);
+    expect(validatePlan(r.candidates[0].plan, { n: 6, m: 12, g: 2, pairLimit: r.usedPairLimit, ...SP }).k6).toEqual([]);
   }, 15000);
 });

@@ -33,6 +33,7 @@ export default function R4() {
         K1: { g: s.g, ihlal: v.k1.map((k) => ({ calisan: people[k.person].id, defter: notebooks[k.notebook].no, aylar: k.months.map((a) => a + 1) })) },
         K2: { sinir: rules.pairLimit, enCokTekrar: v.maxPair, asan: v.pairOver.map((o) => ({ kimden: people[o.from].id, kime: people[o.to].id, adet: o.count })) },
         K3: { alt: x.lo, ust: x.hi, sapma: v.k3.map((k) => ({ calisan: people[k.person].id, defter: notebooks[k.notebook].no, adet: k.count })) },
+        K6: { ozelDefterler: notebooks.filter((d) => d.special).map((d) => d.no), enAzAyAraligi: s.specialGap, pesPeseIhlal: v.k6.map((k) => ({ calisan: people[k.person].id, aylar: k.months.map((a) => a + 1), defterler: k.notebooks.map((d) => notebooks[d].no) })), kisiBasinaOzelDefter: v.specialCounts },
         K5: s.useGroups ? v.k5 : "kapalı", yasakCiftIhlali: v.forbiddenHits.length,
         gevsetilenKurallar: result.relaxed, elleTakaslar: s.swaps, olaylar: s.log,
       }, null, 2);

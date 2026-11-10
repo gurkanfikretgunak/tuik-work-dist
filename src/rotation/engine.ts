@@ -7,6 +7,8 @@ export type RotParams = {
   g: number;
   pairLimit: number;
   groups?: number[];
+  special?: number[]; // haftalık özel defterler (0 tabanlı)
+  specialGap?: number; // iki özel defter arası en az ay farkı (1 = peş peşe yasak)
   forbidden: [number, number][];
   fixed: { month: number; person: number; notebook: number }[];
   seed: number;
@@ -50,6 +52,9 @@ function attempt(P: RotParams, pairLimit: number, seed: number, deadline: number
     for (let d = 0; d < n; d++) {
       needP[p] += LO(p, d); capP[p] += HI(p, d); needD[d] += LO(p, d); capD[d] += HI(p, d);
     }
+  const spSet = new Set(P.special ?? []);
+  const spGap = P.specialGap ?? 1;
+  const lastSp: number[] = Array(n).fill(-999);
   const plan: Plan = [];
   const prevOwner: number[] = Array(n).fill(-1);
   const jit = Array.from({ length: n }, () => Array.from({ length: n }, () => rnd()));
@@ -72,6 +77,7 @@ function attempt(P: RotParams, pairLimit: number, seed: number, deadline: number
   const ok = (t: number, p: number, d: number): boolean => {
     if (fset.has(`${p}|${d}`)) return false;
     if (t - last[p][d] <= g) return false;
+    if (spSet.has(d) && t - lastSp[p] <= spGap) return false;
     if (cnt[p][d] >= HI(p, d)) return false;
     if (t > 0) {
       const a = prevOwner[d];
@@ -114,7 +120,7 @@ function attempt(P: RotParams, pairLimit: number, seed: number, deadline: number
     }
     // sabitler geri alınmayacak şekilde uygula
     const undoLast: Record<string, number> = {};
-    for (let p = 0; p < n; p++) if (row[p] >= 0) { undoLast[`${p}|${row[p]}`] = last[p][row[p]]; apply(t, p, row[p], 1); }
+    for (let p = 0; p < n; p++) if (row[p] >= 0) { undoLast[`${p}|${row[p]}`] = last[p][row[p]]; apply(t, p, row[p], 1); if (spSet.has(row[p])) lastSp[p] = t; }
     let nodes = 0;
     const solve = (): boolean => {
       if (placed === n) return true;
@@ -129,10 +135,13 @@ function attempt(P: RotParams, pairLimit: number, seed: number, deadline: number
       bestC.sort((x, y) => score(t, bestP, x) - score(t, bestP, y));
       for (const d of bestC) {
         const prevLast = last[bestP][d];
+        const prevSp = lastSp[bestP];
         row[bestP] = d; usedD[d] = true; placed++;
         apply(t, bestP, d, 1);
+        if (spSet.has(d)) lastSp[bestP] = t;
         if (solve()) return true;
         apply(t, bestP, d, -1, prevLast);
+        lastSp[bestP] = prevSp;
         row[bestP] = -1; usedD[d] = false; placed--;
         if (nodes > nodeBudget) return false;
       }
@@ -147,7 +156,7 @@ function attempt(P: RotParams, pairLimit: number, seed: number, deadline: number
 }
 
 function scorePlan(plan: Plan, P: RotParams) {
-  const v = validatePlan(plan, { n: P.n, m: P.m, g: P.g, pairLimit: 999, groups: P.groups, forbidden: P.forbidden });
+  const v = validatePlan(plan, { n: P.n, m: P.m, g: P.g, pairLimit: 999, groups: P.groups, forbidden: P.forbidden, special: P.special, specialGap: P.specialGap });
   let sq = 0;
   for (const row of v.pairCounts) for (const c of row) sq += c * c;
   return { maxPair: v.maxPair, score: v.maxPair * 1000 + sq + v.k5.length * 5 };

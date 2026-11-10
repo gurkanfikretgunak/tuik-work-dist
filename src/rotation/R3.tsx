@@ -4,7 +4,8 @@ import { ArrowRight } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useConfirm } from "@/components/confirm";
 import { Badge, Button, Card, Collapsible, InfoCard, ScreenTitle, Stat } from "@/components/ui";
-import { rulesOf } from "./params";
+import { generatePlans } from "./engine";
+import { buildParams, rulesOf } from "./params";
 import { monthLabel, useRot } from "./store";
 import { validatePlan } from "./validator";
 
@@ -16,12 +17,15 @@ export default function R3() {
   const s = useRot();
   const { n, plan, people, notebooks, result, picked } = s;
   const [sel, setSel] = useState<{ t: number; p: number } | null>(null);
+  const [busy, setBusy] = useState(false);
   const rules = rulesOf(s);
-  const v = useMemo(() => (plan ? validatePlan(plan, rules) : null), [plan, rules.n, rules.m, rules.g, rules.pairLimit, rules.groups, rules.forbidden]); // eslint-disable-line react-hooks/exhaustive-deps
+  const v = useMemo(() => (plan ? validatePlan(plan, rules) : null), [plan, rules.n, rules.m, rules.g, rules.pairLimit, rules.groups, rules.forbidden, rules.special, rules.specialGap]); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (!plan || !v || !result) return (<div><ScreenTitle no={3} title="Plan İnceleme ve Doğrulama (R3)" /><InfoCard tone="warn">Önce plan üretin.</InfoCard><Button className="mt-3" onClick={() => s.go(2)}>Plan üretimine git</Button></div>);
 
   const k1set = new Set(v.k1.map((x) => `${x.months[1]}|${x.person}`));
+  const k6set = new Set(v.k6.flatMap((x) => [`${x.months[0]}|${x.person}`, `${x.months[1]}|${x.person}`]));
+  const spSet = new Set(rules.special ?? []);
   const maxCount = Math.max(1, ...v.counts.flat());
   const maxPair = Math.max(1, ...v.pairCounts.flat());
   const name = (i: number) => people[i]?.name ?? `P${i + 1}`;
@@ -35,6 +39,7 @@ export default function R3() {
     const nv = validatePlan(next, rules);
     const issues = [
       !nv.monthlyOk && "Aylık eşleştirme bozuluyor",
+      nv.k6.length > v.k6.length && `K6 peş peşe özel defter: ${v.k6.length} → ${nv.k6.length}`,
       nv.k1.length > v.k1.length && `K1 ihlali: ${v.k1.length} → ${nv.k1.length}`,
       nv.pairOver.length > v.pairOver.length && `K2 sınırı aşan çift: ${v.pairOver.length} → ${nv.pairOver.length}`,
       nv.k3.length > v.k3.length && `K3 sapması: ${v.k3.length} → ${nv.k3.length}`,
@@ -50,6 +55,21 @@ export default function R3() {
     s.setPlan(next);
     s.addLog(`Elle takas: ${t + 1}. ay ${name(a)} ⇄ ${name(b)}${issues.length ? ` (${issues.join("; ")})` : ""}`);
     useRot.setState((x) => ({ swaps: [...x.swaps, { month: t, a, b, ts: new Date().toISOString() }] }));
+  };
+
+  const replan = async () => {
+    const ok = await confirm({
+      title: "Plan yeniden kurulsun mu?",
+      body: <>Peş peşe özel defter (K6) ihlali bulundu ({v.k6.length}). Motor, K6 dahil tüm zorunlu kurallarla yeni bir plan arayacak; mevcut plan ve <b>{s.swaps.length}</b> elle takas silinecek.</>,
+      confirmLabel: "Yeniden planla", tone: "danger",
+    });
+    if (!ok) return;
+    setBusy(true);
+    const st = useRot.getState();
+    const res = await generatePlans({ ...buildParams(st), seed: st.seed + 101 }, { timeMs: st.timeMs, want: 3 });
+    st.setResult(res);
+    st.addLog(res.candidates.length ? `K6 ihlali nedeniyle yeniden planlandı (${res.candidates.length} aday)` : "Yeniden planlama: plan bulunamadı");
+    setBusy(false);
   };
 
   const status = (ok: boolean, label: string, detail: string) => (
@@ -81,8 +101,16 @@ export default function R3() {
         <Stat label="K1 ihlali" value={v.k1.length} tone={v.k1.length ? "red" : "green"} />
         <Stat label="K2 en çok çift" value={`${v.maxPair} / ${rules.pairLimit}`} tone={v.pairOver.length ? "red" : "green"} />
         <Stat label="K3 sapma" value={v.k3.length} tone={v.k3.length ? "red" : "green"} />
-        <Stat label="Elle takas" value={s.swaps.length} />
+        <Stat label="K6 peş peşe özel" value={v.k6.length} tone={v.k6.length ? "red" : "green"} />
       </div>
+      {v.k6.length > 0 && (
+        <div className="mb-3" data-testid="k6-alert">
+          <InfoCard tone="error" title="Özel (haftalık) defterler peş peşe aynı çalışana gelmiş">
+            <div className="mb-1.5">{v.k6.slice(0, 5).map((x) => `${name(x.person)}: ${x.months[0] + 1}. ay ${nb(x.notebooks[0])} → ${x.months[1] + 1}. ay ${nb(x.notebooks[1])}`).join(" · ")}</div>
+            <Button size="sm" variant="danger" disabled={busy} onClick={replan} data-testid="replan">{busy ? "Planlanıyor…" : "Yeniden planla"}</Button>
+          </InfoCard>
+        </div>
+      )}
 
       <Card title="Plan (ay × personel; hücre = defter)" className="mb-3">
         <div className="overflow-auto">
@@ -95,8 +123,8 @@ export default function R3() {
                   {row.map((d, p) => (
                     <td key={p} onClick={() => click(t, p)} data-testid={`cell-${t}-${p}`} title={`${name(p)} · ${nb(d)}`}
                       style={{ background: nbColor(d, n) }}
-                      className={clsx("min-w-9 cursor-pointer border border-white px-2 py-0.5 text-center tabular-nums", k1set.has(`${t}|${p}`) && "outline outline-2 -outline-offset-2 outline-[#C92830]", sel?.t === t && sel.p === p && "ring-2 ring-[#1F2A44]")}>
-                      {d + 1}
+                      className={clsx("min-w-9 cursor-pointer border border-white px-2 py-0.5 text-center tabular-nums", (k1set.has(`${t}|${p}`) || k6set.has(`${t}|${p}`)) && "outline outline-2 -outline-offset-2 outline-[#C92830]", sel?.t === t && sel.p === p && "ring-2 ring-[#1F2A44]")}>
+                      {d + 1}{spSet.has(d) && <span className="text-amber-700">★</span>}
                     </td>
                   ))}
                 </tr>
@@ -111,6 +139,7 @@ export default function R3() {
           <ul className="space-y-1.5">
             {status(v.monthlyOk, "Aylık eşleştirme", v.monthlyOk ? "her ay her kişi 1 defter, her defter 1 kişi" : v.monthlyErrors.slice(0, 3).join("; "))}
             {status(v.k1.length === 0, `K1 tekrar yasağı (G=${s.g})`, v.k1.length ? v.k1.slice(0, 4).map((x) => `${name(x.person)} / ${nb(x.notebook)} (${x.months[0] + 1}. ve ${x.months[1] + 1}. ay)`).join("; ") : "ihlal yok")}
+            {(rules.special?.length ?? 0) > 0 && (rules.specialGap ?? 1) > 0 && status(v.k6.length === 0, `K6 haftalık özel defterler (${(rules.special ?? []).map((i) => notebooks[i]?.no).join(", ")})`, v.k6.length ? `${v.k6.length} peş peşe durum` : `peş peşe yok; kişi başına özel defter: ${v.specialCounts.join(", ")}`)}
             {status(v.pairOver.length === 0, `K2 takip yasağı (sınır ${rules.pairLimit})`, v.pairOver.length ? v.pairOver.slice(0, 4).map((x) => `${name(x.from)}→${name(x.to)} ${x.count}×`).join("; ") : `en çok tekrar ${v.maxPair}`)}
             {status(v.k3.length === 0, "K3 yıllık eşitlik", v.k3.length ? v.k3.slice(0, 4).map((x) => `${name(x.person)}/${nb(x.notebook)}=${x.count}`).join("; ") : "tüm kişi–defter sayıları alt/üst sınırda")}
             {s.useGroups && status(v.k5.length === 0, "K5 grup dengesi (tercih)", v.k5.length ? `${v.k5.length} çeyrekte aynı gruptan tekrar` : "ihlal yok")}

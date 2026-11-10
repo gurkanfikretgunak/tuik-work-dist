@@ -7,6 +7,8 @@ export type RotRules = {
   pairLimit: number;
   groups?: number[]; // defter -> grup (K5)
   forbidden?: [number, number][]; // [kişi, defter]
+  special?: number[]; // K6: haftalık özel defterler
+  specialGap?: number; // en az ay farkı (1 = peş peşe yasak)
 };
 
 export type Validation = {
@@ -20,6 +22,8 @@ export type Validation = {
   k3: { person: number; notebook: number; count: number }[]; // alt/üst sınır dışı
   k5: { person: number; quarter: number; group: number; count: number }[];
   forbiddenHits: { person: number; notebook: number; month: number }[];
+  k6: { person: number; months: [number, number]; notebooks: [number, number] }[]; // peş peşe özel defter
+  specialCounts: number[]; // kişi başına özel defter sayısı
   ok: boolean; // zorunlu kurallar: aylık + K1 + K2 + K3 (+yasak)
 };
 
@@ -32,6 +36,11 @@ export function validatePlan(plan: Plan, rules: RotRules): Validation {
   const last = Array.from({ length: n }, () => Array(n).fill(-999));
   const forbiddenHits: Validation["forbiddenHits"] = [];
   const fset = new Set((rules.forbidden ?? []).map(([p, d]) => `${p}|${d}`));
+  const spSet = new Set(rules.special ?? []);
+  const spGap = rules.specialGap ?? 1;
+  const k6: Validation["k6"] = [];
+  const specialCounts: number[] = Array(n).fill(0);
+  const lastSp: { t: number; d: number }[] = Array.from({ length: n }, () => ({ t: -999, d: -1 }));
 
   if (plan.length !== m) monthlyErrors.push(`Plan ${plan.length} ay içeriyor, ${m} bekleniyordu.`);
   for (let t = 0; t < plan.length; t++) {
@@ -48,6 +57,11 @@ export function validatePlan(plan: Plan, rules: RotRules): Validation {
       counts[p][d]++;
       if (t - last[p][d] <= g) k1.push({ person: p, notebook: d, months: [last[p][d], t] });
       last[p][d] = t;
+      if (spSet.has(d)) {
+        specialCounts[p]++;
+        if (t - lastSp[p].t <= spGap) k6.push({ person: p, months: [lastSp[p].t, t], notebooks: [lastSp[p].d, d] });
+        lastSp[p] = { t, d };
+      }
       if (fset.has(`${p}|${d}`)) forbiddenHits.push({ person: p, notebook: d, month: t });
       if (t > 0) {
         const a = plan[t - 1].findIndex((x) => x === d);
@@ -88,7 +102,7 @@ export function validatePlan(plan: Plan, rules: RotRules): Validation {
 
   return {
     monthlyOk: monthlyErrors.length === 0,
-    monthlyErrors, k1, pairCounts, maxPair, pairOver, counts, k3, k5, forbiddenHits,
-    ok: monthlyErrors.length === 0 && k1.length === 0 && pairOver.length === 0 && k3.length === 0 && forbiddenHits.length === 0,
+    monthlyErrors, k1, k6, specialCounts, pairCounts, maxPair, pairOver, counts, k3, k5, forbiddenHits,
+    ok: monthlyErrors.length === 0 && k1.length === 0 && pairOver.length === 0 && k3.length === 0 && forbiddenHits.length === 0 && k6.length === 0,
   };
 }
