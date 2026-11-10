@@ -1,0 +1,517 @@
+﻿dataset_id,title_en,category_path,structure_http,criteria_count
+"TR,DF_BILISIM_UZMAN,1.0",Proportion of enterprises employing ICT/IT specialists by size group (%),"Science, Technology and Information Society  >  Information Society Statistics  >  Statistics on Information and Communication Technology (ICT) Usage in Enterprises",200,4
+"TR,DF_BILISIM_UZMAN_ALIM,1.0",Proportion of enterprises recruited or tried to recruit ICT/IT specialists and having difficulties to fill vacancies by size group (%),"Science, Technology and Information Society  >  Information Society Statistics  >  Statistics on Information and Communication Technology (ICT) Usage in Enterprises",200,4
+"TR,DF_BUY_GRUP_BULUT_BILISIM,1.0",Proportion of enterprises using cloud computing services by size group (%),"Science, Technology and Information Society  >  Information Society Statistics  >  Statistics on Information and Communication Technology (ICT) Usage in Enterprises",200,5
+"TR,DF_BUY_GRUP_EKO_FAALIYET,1.0",Proportion of enterprises that had web sales or EDI type sales by economic activity and size group,"Science, Technology and Information Society  >  Information Society Statistics  >  Statistics on Information and Communication Technology (ICT) Usage in Enterprises",200,6
+"TR,DF_BUY_GRUP_EKO_FAALIYET_V1,1.0",Proportion of enterprises using social media by economic activity and size group (Nace Rev 2 .1)(%),"Science, Technology and Information Society  >  Information Society Statistics  >  Statistics on Information and Communication Technology (ICT) Usage in Enterprises",200,3
+"TR,DF_BUY_GRUP_EKO_FAAL_MAL_HIZMET_SATIS,1.0",Proportion of enterprises that had web sales or EDI type sales which use computers (%),"Science, Technology and Information Society  >  Information Society Statistics  >  Statistics on Information and Communication Technology (ICT) Usage in Enterprises",200,5
+"TR,DF_BUY_GRUP_EKO_FAAL_MAL_HIZMET_SATIS_V1,1.0",Proportion of enterprises that had web sales or EDI type sales which use computers (Nace Rev 2 .1)(%),"Science, Technology and Information Society  >  Information Society Statistics  >  Statistics on Information and Communication Technology (ICT) Usage in Enterprises",200,3
+"TR,DF_BUY_GRUP_WEB_SATIS,1.0",Proportion of enterprises that had web sales by size group,"Science, Technology and Information Society  >  Information Society Statistics  >  Statistics on Information and Communication Technology (ICT) Usage in Enterprises",200,6
+"TR,DF_ERP_CRM_SCM,1.0","Enterprises using enterprise resource planning (ERP), customer relationship management (CRM), supply chain management (SCM) and business intelligence (BI) software by economic activitiy and size group (%)","Science, Technology and Information Society  >  Information Society Statistics  >  Statistics on Information and Communication Technology (ICT) Usage in Enterprises",200,5
+"TR,DF_ERP_CRM_V1,1.0","Enterprises using enterprise resource planning (ERP), customer relationship management (CRM) and business intelligence (BI) software by economic activitiy and size group (Nace Rev 2 .1)(%)","Science, Technology and Information Society  >  Information Society Statistics  >  Statistics on Information and Communication Technology (ICT) Usage in Enterprises",200,6
+"TR,DF_INTERNET_ERISIM,1.0",The proportion of enterprises which use computer and have ınternet access by economic activity and size group (%),"Science, Technology and Information Society  >  Information Society Statistics  >  Statistics on Information and Communication Technology (ICT) Usage in Enterprises",200,5
+"TR,DF_INTERNET_ERISIM_SAHIP,1.0","Proportion of enterprises with internet access by economic activity, size group and type of broadband connection (%)","Science, Technology and Information Society  >  Information Society Statistics  >  Statistics on Information and Communication Technology (ICT) Usage in Enterprises",200,5
+"TR,DF_INTERNET_ERISIM_SAHIP_V1,1.0","Proportion of enterprises with internet access by economic activity, size group and type of broadband connection (Nace Rev 2 .1)(%)","Science, Technology and Information Society  >  Information Society Statistics  >  Statistics on Information and Communication Technology (ICT) Usage in Enterprises",200,3
+"TR,DF_INTERNET_ERISIM_V1,1.0",The proportion of enterprises which  have ınternet access by economic activity and size group (Nace Rev 2 .1)(%),"Science, Technology and Information Society  >  Information Society Statistics  >  Statistics on Information and Communication Technology (ICT) Usage in Enterprises",200,5
+"TR,DF_KAMU_ILETISIM,1.0",Enterprises using internet for interaction with public authorities by economic activity and size group (%),"Science, Technology and Information Society  >  Information Society Statistics  >  Statistics on Information and Communication Technology (ICT) Usage in Enterprises",200,4
+"TR,DF_WEB_SITE_SAHIP_GIRISIM_ORAN,1.0",Proportion of enterprises having website by economic activity and size group,"Science, Technology and Information Society  >  Information Society Statistics  >  Statistics on Information and Communication Technology (ICT) Usage in Enterprises",200,6
+"TR,DF_WEB_SITE_SAHIP_GIRISIM_ORAN_V1,1.0",Proportion of enterprises having website by economic activity and size group,"Science, Technology and Information Society  >  Information Society Statistics  >  Statistics on Information and Communication Technology (ICT) Usage in Enterprises",200,4
+"TR,DF_BILISIM_TEKNOLOJILERI_KULLANIM_T7,1.0",Proportion of children using ICT products for their own use alone by sex and age group,"Science, Technology and Information Society  >  Information Society Statistics  >  Statistics on Information and Communication Technology (ICT) Usage by Children",200,7
+"TR,DF_COCUKLARAD_BILISIM_TEKNOLOJILERI_T5,1.0",Purposes of phone usage of children who use mobile phone/smartphone regularly by sex and age group,"Science, Technology and Information Society  >  Information Society Statistics  >  Statistics on Information and Communication Technology (ICT) Usage by Children",200,7
+"TR,DF_COCUKLARDA_BILIISIM_TEKNOLOJILERI_T3,1.0",Internet usage purposes of children who use Internet regularly by sex and age group,"Science, Technology and Information Society  >  Information Society Statistics  >  Statistics on Information and Communication Technology (ICT) Usage by Children",200,7
+"TR,DF_COCUKLARDA_BILISIM_TEKNOLOJILERI_T2,1.0","Proportion of regular use of ICT by sex, age group and average daily usage time","Science, Technology and Information Society  >  Information Society Statistics  >  Statistics on Information and Communication Technology (ICT) Usage by Children",200,-1
+"TR,DF_COCUKLARDA_BILISIM_TEKNOLOJILER_T9,1.0",Opinions of the children on the situations caused by the time they spend in front of the screen by sex and age group,"Science, Technology and Information Society  >  Information Society Statistics  >  Statistics on Information and Communication Technology (ICT) Usage by Children",200,6
+"TR,DF_COCUKLARDA_BILISIM_TEKNOLOJI_T5,1.0",Phone usage behaviours of children who use mobile phone/smartphone regularly by sex and age group,"Science, Technology and Information Society  >  Information Society Statistics  >  Statistics on Information and Communication Technology (ICT) Usage by Children",200,6
+"TR,DF_COCUKLARDA_BLISIM_TEKNOLOJILERI_T4,1.0",Proportion of children using social media platforms by sex and age group,"Science, Technology and Information Society  >  Information Society Statistics  >  Statistics on Information and Communication Technology (ICT) Usage by Children",200,7
+"TR,DF_COCUK_BILISIM_TEKNO_KULLANIM_ORAN_CINSIYET_YAS,1.0",Proportion of ICT usage for children by sex and age group,"Science, Technology and Information Society  >  Information Society Statistics  >  Statistics on Information and Communication Technology (ICT) Usage by Children",200,7
+"TR,DF_DIJITAL_OYUN_DUSUNCE_T__8,1.0",Proportion of children using ICT products for their own use alone by sex and age group,"Science, Technology and Information Society  >  Information Society Statistics  >  Statistics on Information and Communication Technology (ICT) Usage by Children",200,7
+"TR,DF_DF_MERKEZI_YONETIM_BUTCESI,1.0",National public funding to transnationally  coordinated R&D,"Science, Technology and Information Society  >  Science, Technology and Innovation Statistics  >  Research and Development Statistics",200,5
+"TR,DF_DOLAYL_ARGE_MERKEZI_YONETIM_BUTCE,1.0",Central government budget appropriations and outlays on  R&D,"Science, Technology and Information Society  >  Science, Technology and Innovation Statistics  >  Research and Development Statistics",200,4
+"TR,DF_DOLAYLI_ARGE_TESVIK_V2,1.0",Government tax relief for R&D,"Science, Technology and Information Society  >  Science, Technology and Innovation Statistics  >  Research and Development Statistics",200,5
+"TR,DF_MERKEZI_YONETIM_BUTCESI,1.0",National public funding to transnationally coordinated R&D,"Science, Technology and Information Society  >  Science, Technology and Innovation Statistics  >  Research and Development Statistics",200,5
+"TR,DF_MERKEZ_YONETM_BUTCE_SOSYO_EKONOMK_HEDEF,1.0",Central government budget appropriations and outlays on R&D by socio-economic objectives (TRY),"Science, Technology and Information Society  >  Science, Technology and Innovation Statistics  >  Research and Development Statistics",200,5
+"TR,DF_BIYOTEKNLOJI_TEKNIK_FAALIYET,1.0",Number of enterprises researching/using biotechnology techniques and activities conducted for biotechnology techniques,"Science, Technology and Information Society  >  Science, Technology and Innovation Statistics  >  Innovation Statistics",200,6
+"TR,DF_BIYOTEKNOLOJI_AR_GE_HARCAMALARI_V2,1.0",Biotechnology R&D expenditures,"Science, Technology and Information Society  >  Science, Technology and Innovation Statistics  >  Innovation Statistics",200,5
+"TR,DF_BIYOTEKNOLOJI_EGITIM_DURUMU,1.0",Indicators on the educational status of individuals engaged in biotechnology activities,"Science, Technology and Information Society  >  Science, Technology and Innovation Statistics  >  Innovation Statistics",200,5
+"TR,DF_BIYOTEKNOLOJI_FAALIYET_ENGEL,1.0",The number of barriers to biotechnological R&D activities,"Science, Technology and Information Society  >  Science, Technology and Innovation Statistics  >  Innovation Statistics",200,4
+"TR,DF_BIYOTEKNOLOJI_IST_URUN_STRATEJI,1.0",The number of biotechnology products and strategies,"Science, Technology and Information Society  >  Science, Technology and Innovation Statistics  >  Innovation Statistics",200,5
+"TR,DF_BIYOTEKNOLOJI_TEKNIK_ARASTIRAN_KULLANAN,1.0",Enterprises researching/using biotechnology techniques,"Science, Technology and Information Society  >  Science, Technology and Innovation Statistics  >  Innovation Statistics",200,3
+"TR,DF_BIYOTEKNOLOJI_TICARI_ENGEL,1.0",The number of barriers to the commercialization of biotechnology products,"Science, Technology and Information Society  >  Science, Technology and Innovation Statistics  >  Innovation Statistics",200,4
+"TR,DF_BIYOTEK_FAALIYET,1.0",Number of enterprises active in biotechnology,"Science, Technology and Information Society  >  Science, Technology and Innovation Statistics  >  Innovation Statistics",200,5
+"TR,DF_BIYOTEK_PATENT,1.0",Number of biotechnology patent applications and approved biotechnology patents of enterprises active in biotechnology by size group,"Science, Technology and Information Society  >  Science, Technology and Innovation Statistics  >  Innovation Statistics",200,6
+"TR,DF_BIYOTEK_UYGULAMA,1.0",Number of enterprises using biotechnology applications,"Science, Technology and Information Society  >  Science, Technology and Innovation Statistics  >  Innovation Statistics",200,5
+"TR,DF_BIYOTEK_UYGULAMA_FAALIYET,1.0",Number of enterprises using biotechnology applications and biotechnology activitiesc conducted for biotechnology applications,"Science, Technology and Information Society  >  Science, Technology and Innovation Statistics  >  Innovation Statistics",200,5
+"TR,DF_ATIK_BELEDIYE_ARITMA_CAMURU_V1,1.0",Municipal Sewage Sludge Statistics,Environment  >  Waste Statistics,200,4
+"TR,DF_ATIK_BELEDIYE_ATIKYONETIMI_V1,1.0",Municipal Waste Management Statistics (by Provinces),Environment  >  Waste Statistics,200,5
+"TR,DF_ATIK_BELEDIYE_HIZMET_V1,1.0",Municipal Waste Services Statistics (by Provinces),Environment  >  Waste Statistics,200,4
+"TR,DF_ATIK_BELEDIYE_HIZMET_YONETIM_GOSTERGE_V1,1.0",Municipal Waste Services and Management Indicators,Environment  >  Waste Statistics,200,5
+"TR,DF_ATIK_BERTARAF_GERI_KAZANIM_TESIS_V1,1.0",Waste Disposal and Recovery Facilities Statistics,Environment  >  Waste Statistics,200,6
+"TR,DF_ATIK_IMALAT_SANAYI_ALT_SEKTORLER_V1,1.0",Waste Statistics of Manufacturing Industry Sub-Sectors,Environment  >  Waste Statistics,200,4
+"TR,DF_ATIK_IMALAT_SANAYI_GOSTERGELER_V1,1.0",Manufacturing Industry Waste Indicators,Environment  >  Waste Statistics,200,6
+"TR,DF_ATIK_IMALAT_SANAYI_YONETIM_V1,1.0",Manufacturing Industry Waste Management Statistics,Environment  >  Waste Statistics,200,6
+"TR,DF_ATIK_MADEN_ISLETMELERI_V1,1.0",Mining Establishments Waste Statistics,Environment  >  Waste Statistics,200,7
+"TR,DF_ATIK_ORGANIZE_SANAYI_BOLGELERI_V1,1.0",Organized Industrial Zones Waste Statistics,Environment  >  Waste Statistics,200,6
+"TR,DF_ATIK_TERMIK_SANTRALLER_V1,1.0",Thermal Power Plants Waste Statistics,Environment  >  Waste Statistics,200,7
+"TR,DF_SU_ATIKSU_ALICI_ORTAM_BELEDIYE_SEBEKE_V1,1.0",Amount of Wastewater Discharged from Municipal Sewerage by Receiving Bodies,Environment  >  Water and Wastewater Statistics,200,6
+"TR,DF_SU_ATIKSU_ALICI_ORTAM_TUR_DESARJ_V1,1.0",Amount of Wastewater Discharged by Receiving Bodies,Environment  >  Water and Wastewater Statistics,200,5
+"TR,DF_SU_ATIKSU_ARITMA_TESIS_V1,1.0",Wastewater Treatment Plant Statistics,Environment  >  Water and Wastewater Statistics,200,6
+"TR,DF_SU_ATIKSU_BELEDIYE_ARITMA_TESIS_V1,1.0",Municipalities Wastewater Treatment Plants (by Provinces),Environment  >  Water and Wastewater Statistics,200,5
+"TR,DF_SU_ATIKSU_BELEDIYE_CEKILEN_DAGITILAN_V1,1.0",The Amount of Abstracted Distributed Water and Discharged Wastewater by Municipalities (by Provinces),Environment  >  Water and Wastewater Statistics,200,7
+"TR,DF_SU_ATIKSU_BELEDIYE_GOSTERGELER_V1,1.0",Municipal Wastewater Indicators,Environment  >  Water and Wastewater Statistics,200,6
+"TR,DF_SU_ATIKSU_BELEDIYE_GOSTERGE_V1,1.0",Municipal Water Indicators,Environment  >  Water and Wastewater Statistics,200,6
+"TR,DF_SU_ATIKSU_BELEDIYE_ICMESUYU_SEBEKE_V1,1.0",Water Abstraction for Municipal Water Supply Network,Environment  >  Water and Wastewater Statistics,200,5
+"TR,DF_SU_ATIKSU_BELEDIYE_ICME_KULLANMA_TESIS_V1,1.0",Municipalities Drinking Water Treatment Plants (by Provinces),Environment  >  Water and Wastewater Statistics,200,5
+"TR,DF_SU_ATIKSU_DOGAL_KAYNAK_CEKILEN_MIKTAR_V1,1.0",Amount of Water Abstracted from Natural Resources,Environment  >  Water and Wastewater Statistics,200,6
+"TR,DF_SU_ATIKSU_DOGAL_KAYNAK_SEBEKE_SUYU_MIKTAR_V1,1.0",Amount of Water Supplied from Natural Resources and Water Supply Networks,Environment  >  Water and Wastewater Statistics,200,5
+"TR,DF_SU_ATIKSU_DOGRUDAN_ALICI_ORTAM_DESARJ_V1,1.0",Amount of wastewater Discharged to Receiving Bodies,Environment  >  Water and Wastewater Statistics,200,4
+"TR,DF_SU_ATIKSU_ENDUSTRIYEL_SEKTOR_KOY_MIKTAR_V1,1.0",Wastewater Generated by Industrial Sectors and Villages,Environment  >  Water and Wastewater Statistics,200,5
+"TR,DF_SU_ATIKSU_IMALAT_GOSTERGE_V1,1.0",Manufacturing Industry Water Indicators,Environment  >  Water and Wastewater Statistics,200,6
+"TR,DF_SU_ATIKSU_IMALAT_SANAYI_ALT_SEKTOR_V1,1.0",Water and Wastewater Statistics of Manufacturing Industry Sub-Sectors,Environment  >  Water and Wastewater Statistics,200,5
+"TR,DF_SU_ATIKSU_IMALAT_SANAYI_V1,1.0",Manufacturing Industry Wastewater Indicators,Environment  >  Water and Wastewater Statistics,200,7
+"TR,DF_SU_ATIKSU_SEBEKE_TESIS_BELEDIYE_NITELIK_V1,1.0",Number and Population of Municipalities Served by Network and Treatment Plants (by Provinces),Environment  >  Water and Wastewater Statistics,200,4
+"TR,DF_CEVRESEL_VERGI,1.0",Environmental Taxes,Environment  >  Environmental Economic Accounts,200,5
+"TR,DF_CEVRE_KORUMA_HARCAMA_SEKTORLERI,1.0",Environmental Protection Expenditure by Institutional,Environment  >  Environmental Economic Accounts,200,6
+"TR,DF_DF_CEVRESEL_MAL_HIZMET_SEKTOR,1.0",Environmental Goods and Services Sector Output by Environmental Activity,Environment  >  Environmental Economic Accounts,200,5
+"TR,DF_DF_CEVRE_KORUMA_V2,1.0",Environmental Protection Expenditure by Domains,Environment  >  Environmental Economic Accounts,200,5
+"TR,DF_HAVA_EMISYON_HESAP,1.0",Air Emission Accounts by Economic Activity,Environment  >  Environmental Economic Accounts,200,6
+"TR,DF_MADDE_AKIS_HESAPLARI,1.0",Material Flow Accounts,Environment  >  Environmental Economic Accounts,200,6
+"TR,DF_EMISYON_DEGISIM_ORAN,1.1",Emissions Rate of Change,Environment  >  Greenhouse Gas Emission Statistics,200,7
+"TR,DF_KISI_BASI_SERA_GAZ_EMISYON,1.1",Per Capita GHG Emissions,Environment  >  Greenhouse Gas Emission Statistics,200,6
+"TR,DF_SERA_GAZI_EMISYONLARI,1.0",Greenhouse Gas Emisssions,Environment  >  Greenhouse Gas Emission Statistics,200,6
+"TR,DF_EGITIM_HARCAMA_EGITIM_DUZEY_OGRENCI_BASI,1.0",Education expenditure per student by level of education,Education  >  Education Expenditure Statistics,200,6
+"TR,DF_EGITIM_HARCAMA_FINANS_KAYNAK,1.0",Education expenditure by level of education and financial source,Education  >  Education Expenditure Statistics,200,6
+"TR,DF_EGITIM_HARCAMA_HIZMET_SUNUCU,1.0",Education expenditures by service providers and level of education,Education  >  Education Expenditure Statistics,200,6
+"TR,DF_MUHTEMEL_EGIITIM_SURE_CINSIYET_EGITIM_SURE,1.0",School life expectancy by sex and level of education,Education  >  School Life Expectancy,200,7
+"TR,DF_MUHTEMEL_EGITIM_SURE_CINSIYET_ESITSIZLIK_ENDEKS,1.0","Gender parity index by school life expectancy, province and level of education",Education  >  School Life Expectancy,200,6
+"TR,DF_MUHTEMEL_EGITIM_SURE_ISCED1_3,1.0","School life expectancy by sex and provinces, ISCED 1-3",Education  >  School Life Expectancy,200,7
+"TR,DF_MUHTEMEL_EGITIM_SURE_ISCED_0,1.0","School life expectancy by sex and provinces, ISCED 0 (pre-primary education)",Education  >  School Life Expectancy,200,7
+"TR,DF_MUHTEMEL_EGITIM_SURE_ISCED_1_8,1.0","School life expectancy by sex and provinces, ISCED 1-8 (primary to tertiary)",Education  >  School Life Expectancy,200,7
+"TR,DF_BED_NUFUS_DAGILIM,1.0",Distribution of population by the level of education completed,Education  >  National Education Statistics,200,7
+"TR,DF_E_YOYAS,1.0",Distribution of tertiary education graduates according to sex and age group (25+ aged),Education  >  National Education Statistics,200,8
+"TR,DF_GENC_NUFUS_OKURYAZARLIK_ORAN,1.0",Youth literacy rate of persons by sex,Education  >  National Education Statistics,200,6
+"TR,DF_MEZUN_NUFUS_ORAN,1.0",Educational attainment of the population by sex (25+ aged),Education  >  National Education Statistics,200,7
+"TR,DF_OKURYAZAR_CINSIYET_NUFUS,1.0",Population by literacy and sex,Education  >  National Education Statistics,200,7
+"TR,DF_ORTALAMA_EGITIM_SURE,1.0",Mean years of schooling,Education  >  National Education Statistics,200,7
+"TR,DF_TAMAMLAMA_ORAN,1.0",Completion rate by education level and sex,Education  >  National Education Statistics,200,7
+"TR,DF_ULUSAL_EGITIM_ISTATISTIK_BED_NUFUS,1.0",Population by attained education level and sex,Education  >  National Education Statistics,200,8
+"TR,DF_YUKSEKOGRETIM_MEZUN_ORAN,1.0",Educational attainment (tertiary) of the population aged 25-34 by sex,Education  >  National Education Statistics,200,5
+"TR,DF_EGITIM_OGRETIM_ALAN,1.0",Brain drain rate of higher education graduates by fields of education and training and sex,Education  >  Higher Education Brain Drain Statistics,200,5
+"TR,DF_GOC_ULKE_DAGILIM,1.0",Distribution of higher education graduates by country of emigration,Education  >  Higher Education Brain Drain Statistics,200,5
+"TR,DF_TAMAMLANAN_BOLUM_BGO,1.0",Brain drain rate of higher education graduates by programme,Education  >  Higher Education Brain Drain Statistics,200,5
+"TR,DF_UNIVERSITE_TUR_BURS_DURUM,1.0",Brain drain rate by university type and scholarship status,Education  >  Higher Education Brain Drain Statistics,200,5
+"TR,DF_YO_MEZUN_BEYIN_GOCU_ORAN,1.0",Brain drain rate of higher education graduates by provinces and sex,Education  >  Higher Education Brain Drain Statistics,200,6
+"TR,DF_YO_OGRENIM_DIL,1.0",Brain drain rate by language of higher education instruction,Education  >  Higher Education Brain Drain Statistics,200,5
+"TR,DF_LM_B_IIB_SURE,1.0",Duration for finding the first job of bachelor's degree graduates by programmes,Education  >  Higher Education Employment Indicators,200,5
+"TR,DF_LM_EOA_IIB_SURE,1.0",Duration for finding the first job of bachelor's degree graduates by fields of education and training,Education  >  Higher Education Employment Indicators,200,6
+"TR,DF_LM_KIO,1.0",Registered employment rate of bachelor's degree graduates by fields of education and training,Education  >  Higher Education Employment Indicators,200,6
+"TR,DF_LM_KIO_BOLUM,1.0",Registered employment rate of bachelor's degree by programmes,Education  >  Higher Education Employment Indicators,200,5
+"TR,DF_LSNS_MEZ_BOL_AOK,1.0",Monthly average earning groups of bachelor's degree graduates by programmes,Education  >  Higher Education Employment Indicators,200,5
+"TR,DF_LSNS_MEZ_EOA_UBCO,1.0",Rate of bachelor's degree graduates employed in an occupation group aligned with the fields of education and training,Education  >  Higher Education Employment Indicators,200,6
+"TR,DF_ONLISANS_MEZ_EOA_KIO,1.0",Registered employment rate of associate degree graduates by fields of education and training,Education  >  Higher Education Employment Indicators,200,6
+"TR,DF_ONLSNS_MEZ_AOK,1.0",Monthly average earning groups of associate degree graduates by programmes,Education  >  Higher Education Employment Indicators,200,5
+"TR,DF_ONLSNS_MEZ_BOL_IIB_SURE,1.0",Duration for finding the first job of associate degree graduates by programmes,Education  >  Higher Education Employment Indicators,200,5
+"TR,DF_ONLSNS_MEZ_EOA_IIB_SURE,1.0",Duration for finding the first job of associate degree graduates by fields of education and training,Education  >  Higher Education Employment Indicators,200,6
+"TR,DF_ONLSNS_MEZ_EOA_UBMGCO,1.0",It includes data about rate of associate degree graduates employed in an occupation group aligned with the fields of education and training,Education  >  Higher Education Employment Indicators,200,6
+"TR,DF_ONL_MZN_BOL_KIO,1.0",Registered employment rate of associate degree graduates by programmes,Education  >  Higher Education Employment Indicators,200,5
+"TR,DF_SANAYI_ENERJI_YILLIK_NIHAI_TUKETIM_ORJ_V1,1.0",The total annual final energy consumption amounts of energy sources used in the industrial sector (original units),Energy  >  Energy Consumption Statistics  >  Final Energy Consumption in Industry,200,9
+"TR,DF_SANAYI_ENERJI_YILLIK_NIHAI_TUKETIM_TJ,1.0",The total annual final energy consumption amounts of energy sources used in the industrial sector (TJ),Energy  >  Energy Consumption Statistics  >  Final Energy Consumption in Industry,200,9
+"TR,DF_HUFE_EDO_V1,1.0",Services producer price index and rate of change [2017=100],Price Statistics  >  Services Producer Price Index,200,7
+"TR,DF_SGP_GORE_GSYH_BIREYSEL_TUKETIM_ENDEKSLERI_V3,1.0",Gross domestic product per capita and actual individual consumption indices based on purchasing power parity by countries,Price Statistics  >  Purchasing Power Parity (PPP)  >  PPP,200,5
+"TR,DF_TURKIYE_OECD_KARSILASTIRMALI_SGP_GOSTERGE_V3,1.0",Purchasing Power Parity Indicators in Türkiye within the Framework of the Comparisons for OECD Countries,Price Statistics  >  Purchasing Power Parity (PPP)  >  PPP,200,5
+"TR,DF_ULKELER_FIILI_BIREYSEL_TUKETIM_ENDEKS_V2,1.0",Price level indices for actual individual consumption by countries,Price Statistics  >  Purchasing Power Parity (PPP)  >  PPP,200,5
+"TR,DF_ULKELER_FIYAT_DUZEYI_ENDEKSLERI,1.0",Price Level Indices by Countries,Price Statistics  >  Purchasing Power Parity (PPP)  >  PPP,200,5
+"TR,DF_ULKELER_KISI_BASINA_HACIM_ENDEKSLERI,1.0",Per Capita Volume Indices by Countries,Price Statistics  >  Purchasing Power Parity (PPP)  >  PPP,200,5
+"TR,DF_ULKELER_KISI_BASINA_REEL_GSYH_SGP,1.0",Per Capita Real GDP by Countries,Price Statistics  >  Purchasing Power Parity (PPP)  >  PPP,200,5
+"TR,DF_ULKELER_SGP_DEGERLERI,1.0",Purchasing Power Parity by Countries,Price Statistics  >  Purchasing Power Parity (PPP)  >  PPP,200,5
+"TR,DF_BOLGESEL_FIYAT_DUZEYI_GENEL_V1,1.0",Regional Price Level Indices for Consumption Expenditures,Price Statistics  >  Purchasing Power Parity (PPP)  >  Regional PPP,200,6
+"TR,DF_BOLGESEL_FIYAT_DUZEYI_TUKETIM_ANA_GRUPLAR_V1,1.0",Regional Price Level Indices for the Main Groups of Consumption Expenditures,Price Statistics  >  Purchasing Power Parity (PPP)  >  Regional PPP,200,7
+"TR,DF_BOLGESEL_SGP_TUKETIM_ANA_GRUPLAR_V1,1.0",Regional Purchasing Power Parities for the Main Groups of Consumption Expenditures,Price Statistics  >  Purchasing Power Parity (PPP)  >  Regional PPP,200,7
+"TR,DF_TARIM_URUNLERI_GRUP_MADDE_ENDEKS_TAORBA_V2,1.0",Agriculture-PPI [2020=100] Group and Item Indices (TAORBA-2008_2),Price Statistics  >  Agricultural Products Producer Price Index (Agriculture PPI),200,7
+"TR,DF_TARIM_URUNLERI_UFE_DEGISIM_V1,1.0",Producer Price Index of Agricultural Products and Rates of Change [2020=100],Price Statistics  >  Agricultural Products Producer Price Index (Agriculture PPI),200,7
+"TR,DF_TARIM_URUNLERI_UFE_MADDE_FIYAT_V2,1.0",Producer Price Index of Agricultural Products [2020=100] Item Prices (TL),Price Statistics  >  Agricultural Products Producer Price Index (Agriculture PPI),200,7
+"TR,DF_TARIMSAL_GIRDI_FIYAT_ENDEKSI_DEGISIM_V2,1.0",Agricultural Input Price Index Numbers and Rate of Changes [2020=100],Price Statistics  >  Agricultural Input Price Index (AIPI),200,4
+"TR,DF_TUFE_SDMX_2003,1.0",Index numbers and rate of changes in the consumer price index,Price Statistics  >  Consumer Price Index (CPI),200,8
+"TR,DF_TUFE_SDMX_TT01,1.0",Consumer price index (CPI) and rates of change by main expenditure groups,Price Statistics  >  Consumer Price Index (CPI),200,7
+"TR,DF_TUFE_SDMX_TT02,1.0",Consumer price index (CPI) monthly and annual rates of change according to the Classification of Individual Consumption by Purpose (COICOP 2018) by subclasses,Price Statistics  >  Consumer Price Index (CPI),200,8
+"TR,DF_TUFE_SDMX_TT03,1.0",Consumer Price Index (CPI) annual and monthly rates of change by main expenditure groups and their contribution to the overall index change,Price Statistics  >  Consumer Price Index (CPI),200,8
+"TR,DF_TUFE_SDMX_TT04,1.0",Basket of goods and services and weights of consumer price index (CPI),Price Statistics  >  Consumer Price Index (CPI),200,7
+"TR,DF_TUFE_SDMX_TT05,1.0",Seasonal adjusted CPI indicators,Price Statistics  >  Consumer Price Index (CPI),200,7
+"TR,DF_TUFE_SDMX_TT06,1.0",Indicators for the CPIs having specified coverages,Price Statistics  >  Consumer Price Index (CPI),200,7
+"TR,DF_TUFE_SDMX_TT07,1.0",Consumer price index average prices of selected items,Price Statistics  >  Consumer Price Index (CPI),200,7
+"TR,DF_TUFE_SDMX_TT08,1.0",Weights by main expenditure groups,Price Statistics  >  Consumer Price Index (CPI),200,8
+"TR,DF_TUFE_SDMX_TT09,1.0",Consumer price index by expenditure groups,Price Statistics  >  Consumer Price Index (CPI),200,8
+"TR,DF_TUFE_SDMX_TT10,1.0",Index numbers and rate of changes in the consumer price index,Price Statistics  >  Consumer Price Index (CPI),200,8
+"TR,DF_YDUFE_EDO_V1,1.0",Non-Domestic Producer Price Index and Rate of Change [2010=100],Price Statistics  >  Non-Domestic Producer Price Index (ND-PPI),200,7
+"TR,DF_UFE_V6,1.0",Domestic Producer Price Index - Weights of the components and their impact on index changes,Price Statistics  >  Domestic Producer Price Index (D-PPI),200,7
+"TR,DF_YIUFE_EDO_V1,1.0",Domestic Producer Price Index and Rate of Change [2003=100],Price Statistics  >  Domestic Producer Price Index (D-PPI),200,7
+"TR,DF_UFE_INSAAT_V1,1.0",Construction Cost Index and Rate of Change [2015=100],Price Statistics  >  Construction Cost Index,200,7
+"TR,DF_UFE_SANAYI_V2,1.0",Total Producer Price Index (DPPI + FPPI) and Change Rates [2010=100],Price Statistics  >  Producer Price Index for Industry,200,8
+"TR,DF_ISGUCU_AYLIK_FIIL_CALISMA_SURE_C,1.0",Actual Working Hours of Employed,"Employment, Unemployment and Wages  >  Labour Force Statistics  >  Monthly Labour Force Statistics",200,8
+"TR,DF_ISGUCU_AYLIK_FIIL_CALISMA_SURE_O,1.0",Actual Working Hours of Employed-Revision History,"Employment, Unemployment and Wages  >  Labour Force Statistics  >  Monthly Labour Force Statistics",200,9
+"TR,DF_ISGUCU_AYLIK_TAMAMLAYICI_GOSTERGE_C,1.0",Supplementary Indicators for Labour Force,"Employment, Unemployment and Wages  >  Labour Force Statistics  >  Monthly Labour Force Statistics",200,8
+"TR,DF_ISGUCU_AYLIK_TAMAMLAYICI_GOSTERGE_O,1.0",Supplementary Indicators for Labour Force-Revision History,"Employment, Unemployment and Wages  >  Labour Force Statistics  >  Monthly Labour Force Statistics",200,9
+"TR,DF_ISGUCU_AYLIK_TEMEL_ISGUCU_C,1.0",Main Labour Force Indicators,"Employment, Unemployment and Wages  >  Labour Force Statistics  >  Monthly Labour Force Statistics",200,8
+"TR,DF_ISGUCU_AYLIK_TEMEL_ISGUCU_O,1.0",Main Labour Force Indicators-Revision History,"Employment, Unemployment and Wages  >  Labour Force Statistics  >  Monthly Labour Force Statistics",200,9
+"TR,DF_ISGUCU_CEYREK_ARANILAN_MESLEK_ISSIZ_C,1.0",Unemployment By Occupational Group,"Employment, Unemployment and Wages  >  Labour Force Statistics  >  Quarterly Labour Force Statistics",200,8
+"TR,DF_ISGUCU_CEYREK_EGITIM_DURUM_C,1.0",Main Labour Force Indicators By Educutional Level,"Employment, Unemployment and Wages  >  Labour Force Statistics  >  Quarterly Labour Force Statistics",200,7
+"TR,DF_ISGUCU_CEYREK_FIIL_CALISMA_SURE_C,1.0",Actual Working Hours Of Employed,"Employment, Unemployment and Wages  >  Labour Force Statistics  >  Quarterly Labour Force Statistics",200,4
+"TR,DF_ISGUCU_CEYREK_FIIL_CALISMA_SURE_O,1.0",Actual Working Hours of Employed-Revision History,"Employment, Unemployment and Wages  >  Labour Force Statistics  >  Quarterly Labour Force Statistics",200,5
+"TR,DF_ISGUCU_CEYREK_IDO_NEDEN_C,1.0",Reasons Of Not Being In Labour Force,"Employment, Unemployment and Wages  >  Labour Force Statistics  >  Quarterly Labour Force Statistics",200,8
+"TR,DF_ISGUCU_CEYREK_IKFA18_ISTIHDAM_C,1.0",Employment By Economic Activities (Nace Rev. 2),"Employment, Unemployment and Wages  >  Labour Force Statistics  >  Quarterly Labour Force Statistics",200,5
+"TR,DF_ISGUCU_CEYREK_ISARAMA_KANAL_ISSIZ_C,1.0",Unemployment By Job Search Methods,"Employment, Unemployment and Wages  >  Labour Force Statistics  >  Quarterly Labour Force Statistics",200,8
+"TR,DF_ISGUCU_CEYREK_ISARAMA_SURE_ISSIZ_C,1.0",Unemployed By Duration Of Unemployment,"Employment, Unemployment and Wages  >  Labour Force Statistics  >  Quarterly Labour Force Statistics",200,9
+"TR,DF_ISGUCU_CEYREK_ISTEKI_DURUM_ISTIHDAM_C,1.0",Employed By Status In Employment,"Employment, Unemployment and Wages  >  Labour Force Statistics  >  Quarterly Labour Force Statistics",200,5
+"TR,DF_ISGUCU_CEYREK_MESLEK_ISTIHDAM_C,1.0",Employment By Occupation,"Employment, Unemployment and Wages  >  Labour Force Statistics  >  Quarterly Labour Force Statistics",200,5
+"TR,DF_ISGUCU_CEYREK_NACE_2_1_ISTIHDAM_C,1.0",Employment By Economic Activities (Nace Rev. 2.1),"Employment, Unemployment and Wages  >  Labour Force Statistics  >  Quarterly Labour Force Statistics",200,8
+"TR,DF_ISGUCU_CEYREK_NEET_EGITIM_C,1.0",Educational Level Of Young People Neither İn Employment Nor İn Education Or Training,"Employment, Unemployment and Wages  >  Labour Force Statistics  >  Quarterly Labour Force Statistics",200,10
+"TR,DF_ISGUCU_CEYREK_NEET_YAS_GRUP_C,1.0",Young People Neither İn Employment Nor İn Education Or Training By Age Groups,"Employment, Unemployment and Wages  >  Labour Force Statistics  >  Quarterly Labour Force Statistics",200,10
+"TR,DF_ISGUCU_CEYREK_ONCEKI_SEKTOR_ISSIZ_C,1.0",Unemployment By Sector Of Previously Employed,"Employment, Unemployment and Wages  >  Labour Force Statistics  >  Quarterly Labour Force Statistics",200,10
+"TR,DF_ISGUCU_CEYREK_SEKTOR_ISTIHDAM_C,1.0",Employment By Sector,"Employment, Unemployment and Wages  >  Labour Force Statistics  >  Quarterly Labour Force Statistics",200,3
+"TR,DF_ISGUCU_CEYREK_SEKTOR_ISTIHDAM_O,1.0",Employment By Sector-Revision History,"Employment, Unemployment and Wages  >  Labour Force Statistics  >  Quarterly Labour Force Statistics",200,4
+"TR,DF_ISGUCU_CEYREK_SGK_KAYIT_C,1.0",Persons Who Are Not Registered To Social Security Institution Due To Main Job,"Employment, Unemployment and Wages  >  Labour Force Statistics  >  Quarterly Labour Force Statistics",200,3
+"TR,DF_ISGUCU_CEYREK_TAMAMLAYICI_GOSTERGE_C,1.0",Supplementary Indicators for Labour Force,"Employment, Unemployment and Wages  >  Labour Force Statistics  >  Quarterly Labour Force Statistics",200,9
+"TR,DF_ISGUCU_CEYREK_TAMAMLAYICI_GOSTERGE_O,1.0",Supplementary Indicators for Labour Force-Revision History,"Employment, Unemployment and Wages  >  Labour Force Statistics  >  Quarterly Labour Force Statistics",200,10
+"TR,DF_ISGUCU_CEYREK_TEMEL_ISGUCU_C,1.0",Main Labour Force Indicators,"Employment, Unemployment and Wages  >  Labour Force Statistics  >  Quarterly Labour Force Statistics",200,6
+"TR,DF_ISGUCU_CEYREK_TEMEL_ISGUCU_O,1.0",Main Labour Force Indicators-Revision History,"Employment, Unemployment and Wages  >  Labour Force Statistics  >  Quarterly Labour Force Statistics",200,5
+"TR,DF_ISGUCU_GIRDI,1.0",Labour input indices,"Employment, Unemployment and Wages  >  Labour Input, Labour Cost and Earnings Statistics  >  Labor Input Indices",200,8
+"TR,DF_ISGUCU_MALIYET,1.0",Labour cost indices,"Employment, Unemployment and Wages  >  Labour Input, Labour Cost and Earnings Statistics  >  Labor Input Indices",200,8
+"TR,DF_KBS,1.0",Average Monthly Gross Earnings (TRY),"Employment, Unemployment and Wages  >  Labour Input, Labour Cost and Earnings Statistics  >  Structure of Earnings Statistics",200,5
+"TR,DF_UCRETLI_CALISAN_ISTATISTIKLERI_C,1.0",Paid Employee Statistics,"Employment, Unemployment and Wages  >  Labour Input, Labour Cost and Earnings Statistics  >  Paid Employee Statistics",200,7
+"TR,DF_UCRETLI_CALISAN_ISTATISTIKLERI_O,1.0",Paid Employee Statistics-Revision History,"Employment, Unemployment and Wages  >  Labour Input, Labour Cost and Earnings Statistics  >  Paid Employee Statistics",200,8
+"TR,DF_CINSIYETE_GORE_SATISLAR_V3,1.0",Share of Annual Sales by Gender (%),Short-Term Economic Indicators  >  House and Commercial Property Sales Statistics,200,7
+"TR,DF_MEVSIM_TAKVIM_V3,1.0",Seasonally and Calendar Adjusted Sales,Short-Term Economic Indicators  >  House and Commercial Property Sales Statistics,200,6
+"TR,DF_SATIS_SEKLI_DURUMU_ILILCE_V3,1.0",Sales by State and Type (by provinces),Short-Term Economic Indicators  >  House and Commercial Property Sales Statistics,200,6
+"TR,DF_SATIS_SEKLI_SATIS_DURUMU_V3,1.0",Sales by State and Type (Türkiye),Short-Term Economic Indicators  >  House and Commercial Property Sales Statistics,200,7
+"TR,DF_UYRUKLARA_GORE_ILILCE_V3,1.0",Sales to Foreigners by Nationalities (by provinces and districts),Short-Term Economic Indicators  >  House and Commercial Property Sales Statistics,200,7
+"TR,DF_UYRUKLARA_GORE_SATISLAR_V3,1.0",Sales to Foreigners by Nationalities (Türkiye),Short-Term Economic Indicators  >  House and Commercial Property Sales Statistics,200,6
+"TR,DF_YABANCILARA_SATILAR_ILILCE_V3,1.0",Sales to Foreigners (by provinces and districts),Short-Term Economic Indicators  >  House and Commercial Property Sales Statistics,200,6
+"TR,DF_YABANCILARA_SATIS_V3,1.0",Sales to Foreigners (Türkiye),Short-Term Economic Indicators  >  House and Commercial Property Sales Statistics,200,6
+"TR,DF_EKONOMIK_GUVEN_SDMX_C,1.0",Economic Confidence Index and Change Rates,Short-Term Economic Indicators  >  Confidence Indices,200,7
+"TR,DF_GUVEN_ENDEKS_FAALIYET_ARTTIRMA_SDMX,1.0",Possible rates on the enterprises' status of activities to increase in the case of increased demand without any change in their current resources by sectors (%),Short-Term Economic Indicators  >  Confidence Indices,200,6
+"TR,DF_GUVEN_ENDEKS_FAALIYET_KISITLAMA_SDMX,1.0",Main factors limiting activities by sectors (%),Short-Term Economic Indicators  >  Confidence Indices,200,6
+"TR,DF_GUVEN_ENDEKS_SEKTOREL_EGILIM_SDMX,1.0","Indices Concerning the Tendency and Monthly Changes by Services, Retail Trade and Construction Sectors",Short-Term Economic Indicators  >  Confidence Indices,200,8
+"TR,DF_TUKETICI_EGILIM_SDMX,1.0",Indices concerning the consumer tendency and monthly changes,Short-Term Economic Indicators  >  Confidence Indices,200,6
+"TR,DF_CIRO_ENDEKS_DEGISIM_C,1.0",Turnover Indices and Percentage Change [2021=100],"Short-Term Economic Indicators  >  Turnover Indices (Industry, Construction, Trade, Services)",200,10
+"TR,DF_CIRO_ENDEKS_DEGISIM_O,1.0",Turnover Indices and Percentage Change [2021=100]-Revision History,"Short-Term Economic Indicators  >  Turnover Indices (Industry, Construction, Trade, Services)",200,11
+"TR,DF_FINANSAL_YATIRIM_ARAC_REEL_GETIRI,1.0",The rates of profits created by means of financial invesment (%),Short-Term Economic Indicators  >  Rates of Return on Financial Investment Instruments,200,6
+"TR,DF_TICARET_SATIS_HACIM_ENDEKS_C,1.0",Trade Sales Volume Index [2021=100],Short-Term Economic Indicators  >  Trade Sales Volume Index,200,9
+"TR,DF_TICARET_SATIS_HACIM_ENDEKS_O,1.0",Trade Sales Volume Index [2021=100]-Revision History,Short-Term Economic Indicators  >  Trade Sales Volume Index,200,10
+"TR,DF_HIZMET_URETIM_ENDEKS_C,1.0",Services Production Index and Percentage Change [2021=100],Short-Term Economic Indicators  >  Production Indices,200,9
+"TR,DF_HIZMET_URETIM_ENDEKS_O,1.0",Services Production Index and Percentage Change [2021=100]-Revision History,Short-Term Economic Indicators  >  Production Indices,200,10
+"TR,DF_INSAAT_URETIM_ENDEKS_C,1.0",Index and Change Rates of Production in Construction [2021=100],Short-Term Economic Indicators  >  Production Indices,200,9
+"TR,DF_INSAAT_URETIM_ENDEKS_V1_O,1.0",Construction Production Index [2021=100]-Revision History,Short-Term Economic Indicators  >  Production Indices,200,10
+"TR,DF_SANAYI_URETIM_ENDEKS_ALT_C,1.0",Industrial Production Index [2021=100] (Sub Indices),Short-Term Economic Indicators  >  Production Indices,200,9
+"TR,DF_SANAYI_URETIM_ENDEKS_ANA_C,1.0",Industrial Production Index [2021=100] (Main Indices),Short-Term Economic Indicators  >  Production Indices,200,9
+"TR,DF_SANAYI_URETIM_ENDEKS_ANA_O,1.0",Industrial Production Index [2021=100]-Revision History ( Main Indices),Short-Term Economic Indicators  >  Production Indices,200,10
+"TR,DF_SANAYI_URETIM_ENDEKS_ETKI_C,1.0",Industrial Production Index Impact [2021=100],Short-Term Economic Indicators  >  Production Indices,200,10
+"TR,DF_SANAYI_URETIM_ENDEKS_ETKI_O,1.0",l Production Index Impact [2021=100]-Revision History,Short-Term Economic Indicators  >  Production Indices,200,11
+"TR,DF_SANAYI_URETIM_ENDEKS_GRUP_O,1.0",Industrial Production Index [2021=100]-Revision History (Group -  3 digit level Indices ),Short-Term Economic Indicators  >  Production Indices,200,10
+"TR,DF_SANAYI_URETIM_ENDEKS_SINIF_O,1.0",Industrial Production Index [2021=100]-Revision History (Class - 4 digit level Indices),Short-Term Economic Indicators  >  Production Indices,200,10
+"TR,DF_AY_TUR_RESM_ILAN_ADET,1.0",Official announcement and advertisement fees by month and type,Culture and Sports  >  Culture Statistics  >  Periodical Publication Statistics,200,6
+"TR,DF_AY_YAYM_ILAN_ADET,1.0",Number of official announcements published by month,Culture and Sports  >  Culture Statistics  >  Periodical Publication Statistics,200,5
+"TR,DF_DERGI_YAYIN_SIKLIK,1.0",Number of magazines publishing official advertisements by frequency of publication,Culture and Sports  >  Culture Statistics  >  Periodical Publication Statistics,200,5
+"TR,DF_RESMI_ILAN_KONTENJAN,1.0",Distribution of periodical publishing official announcements and advertisements by publication and quotas,Culture and Sports  >  Culture Statistics  >  Periodical Publication Statistics,200,5
+"TR,DF_RES_ILAN_GAZ_INT_EGITIM_CINSYET,1.0",Number of employees in newspapers and internet news websites publishing official announcements by their educational level and gender,Culture and Sports  >  Culture Statistics  >  Periodical Publication Statistics,200,5
+"TR,DF_RES_ILAN_GAZ_INT_HAB_KADRO_CINSIYET,1.0",Number of employees of newspapers and internet news websites publishing official announcements by the title of the staff and gender,Culture and Sports  >  Culture Statistics  >  Periodical Publication Statistics,200,3
+"TR,DF_RES_ILAN_REKLAM_BEDEL_TUR,1.0",Distribution of official announcement and advertising fees by type,Culture and Sports  >  Culture Statistics  >  Periodical Publication Statistics,200,5
+"TR,DF_SURELI_YAY_IC_TUR,1.0",Number of periodical publications by type of content,Culture and Sports  >  Culture Statistics  >  Periodical Publication Statistics,200,6
+"TR,DF_TEKIL_ZIY_SAY_SAYFA_GOR_SAY,1.0",Internet news websites publishing official announcements and the number of unique visitors and page views,Culture and Sports  >  Culture Statistics  >  Periodical Publication Statistics,200,4
+"TR,DF_YAYIN_TUR_TIRAJ,1.0",Number and annual domestic circulation of newspapers publishing official advertisements by type of publication,Culture and Sports  >  Culture Statistics  >  Periodical Publication Statistics,200,4
+"TR,DF_YIL_SURELI_YAYINN_SAYI,1.0",Numbers of periodicals receiving official announcements and advertisements by years,Culture and Sports  >  Culture Statistics  >  Periodical Publication Statistics,200,4
+"TR,DF_YURT_ICI_TIRAJ,1.0",Number of newspapers publishing official announcements by frequency of publication and annual domestic circulation,Culture and Sports  >  Culture Statistics  >  Periodical Publication Statistics,200,4
+"TR,DF_DNG_NUFUS_ORAN,1.0","Total Population, Child, Youth, Elderly Population and Proportion by Selected Countries",Population and Demography  >  Address Based Population Registration System  >  World Population Day,200,5
+"TR,DF_DNG_TDH,1.0",Total Fertility Rate by Selected Countries (Number of Children),Population and Demography  >  Address Based Population Registration System  >  World Population Day,200,5
+"TR,DF_DNG_YS,1.0",Life Expectancy at Birth of Selected Countries by Sex (Year),Population and Demography  >  Address Based Population Registration System  >  World Population Day,200,6
+"TR,DF_ADNKS_T01,1.1",Foreign-born population by age group and sex,Population and Demography  >  Address Based Population Registration System  >  Results of Address Based Population Registration System,200,7
+"TR,DF_ADNKS_T02,1.1",Foreign-born population by place of birth and sex,Population and Demography  >  Address Based Population Registration System  >  Results of Address Based Population Registration System,200,6
+"TR,DF_ADNKS_T03,1.1",Population by place of birth and sex,Population and Demography  >  Address Based Population Registration System  >  Results of Address Based Population Registration System,200,7
+"TR,DF_ADNKS_T05,1.1",Population by province of residence and place of birth,Population and Demography  >  Address Based Population Registration System  >  Results of Address Based Population Registration System,200,7
+"TR,DF_ADNKS_T06,1.1",Number of households by type and provinces,Population and Demography  >  Address Based Population Registration System  >  Results of Address Based Population Registration System,200,7
+"TR,DF_ADNKS_T07,1.1",Number of households by size and type,Population and Demography  >  Address Based Population Registration System  >  Results of Address Based Population Registration System,200,7
+"TR,DF_ADNKS_T08,1.1",Number of one-family households by type and provinces,Population and Demography  >  Address Based Population Registration System  >  Results of Address Based Population Registration System,200,6
+"TR,DF_ADNKS_T09,1.1",Province of civil registration by province of residence,Population and Demography  >  Address Based Population Registration System  >  Results of Address Based Population Registration System,200,7
+"TR,DF_ADNKS_T10,1.1","Population by province, marital status and sex",Population and Demography  >  Address Based Population Registration System  >  Results of Address Based Population Registration System,200,7
+"TR,DF_ADNKS_T12,1.1",Foreign population by provinces and sex,Population and Demography  >  Address Based Population Registration System  >  Results of Address Based Population Registration System,200,7
+"TR,DF_ADNKS_T13,1.1",Foreign population by country of citizenship,Population and Demography  >  Address Based Population Registration System  >  Results of Address Based Population Registration System,200,7
+"TR,DF_ADNKS_T14,1.1",Population of province/district centers and towns/villages by province and sex by province,Population and Demography  >  Address Based Population Registration System  >  Results of Address Based Population Registration System,200,7
+"TR,DF_ADNKS_T15,1.1",Population of province/district centers and towns/villages by age group and sex,Population and Demography  >  Address Based Population Registration System  >  Results of Address Based Population Registration System,200,7
+"TR,DF_ADNKS_T16,1.0","Population by province, age group and sex",Population and Demography  >  Address Based Population Registration System  >  Results of Address Based Population Registration System,200,5
+"TR,DF_ADNKS_T17,1.1","Population, annual growth rate of population, number of provinces, districts, towns, villages, and population density",Population and Demography  >  Address Based Population Registration System  >  Results of Address Based Population Registration System,200,5
+"TR,DF_ADNKS_T18,1.1",Number and population of municipalities,Population and Demography  >  Address Based Population Registration System  >  Results of Address Based Population Registration System,200,5
+"TR,DF_ADNKS_T19,1.1",Age dependency ratio,Population and Demography  >  Address Based Population Registration System  >  Results of Address Based Population Registration System,200,5
+"TR,DF_ADNKS_T20,1.1",Population density by provinces,Population and Demography  >  Address Based Population Registration System  >  Results of Address Based Population Registration System,200,5
+"TR,DF_ADNKS_T21,1.1",Population by marital status and sex,Population and Demography  >  Address Based Population Registration System  >  Results of Address Based Population Registration System,200,7
+"TR,DF_ADNKS_T22,1.1","Population of province/district centers, towns/villages by provinces and districts",Population and Demography  >  Address Based Population Registration System  >  Results of Address Based Population Registration System,200,6
+"TR,DF_ADNKS_T23,1.1",Median age by provinces and sex,Population and Demography  >  Address Based Population Registration System  >  Results of Address Based Population Registration System,200,7
+"TR,DF_ADNKS_T24,1.1",Age dependency ratio by provinces,Population and Demography  >  Address Based Population Registration System  >  Results of Address Based Population Registration System,200,7
+"TR,DF_ADNKS_T25,1.1",Average size of households by provinces,Population and Demography  >  Address Based Population Registration System  >  Results of Address Based Population Registration System,200,6
+"TR,DF_ADNKS_T26,1.1","Population of province/district centers and towns/villages by years and sex, Population Censuses - ABPRS",Population and Demography  >  Address Based Population Registration System  >  Results of Address Based Population Registration System,200,21
+"TR,DF_ADNKS_T27,1.1","Population by years, age group and sex, Population Censuses - ABPRS",Population and Demography  >  Address Based Population Registration System  >  Results of Address Based Population Registration System,200,7
+"TR,DF_ADNKS_T28,1.1","Median age by years and sex, Population Censuses - ABPRS",Population and Demography  >  Address Based Population Registration System  >  Results of Address Based Population Registration System,200,6
+"TR,DF_ADNKS_T29,1.1",Annual growth rate of population and population density of provinces by years,Population and Demography  >  Address Based Population Registration System  >  Results of Address Based Population Registration System,200,5
+"TR,DF_ADNKS_T30,1.1",Population of provinces by years,Population and Demography  >  Address Based Population Registration System  >  Results of Address Based Population Registration System,200,5
+"TR,DF_ADNKS_T31,1.1",Sex ratio by age group,Population and Demography  >  Address Based Population Registration System  >  Results of Address Based Population Registration System,200,6
+"TR,DF_ADNKS_T32,1.1",The most used male names by the year of birth and order in the first hundred names,Population and Demography  >  Address Based Population Registration System  >  Results of Address Based Population Registration System,200,5
+"TR,DF_ADNKS_T33,1.1",The most used female names by the year of birth and order in the first hundred names,Population and Demography  >  Address Based Population Registration System  >  Results of Address Based Population Registration System,200,6
+"TR,DF_ADNKS_T34,1.1",Periodic population size and proportion by age group and sex,Population and Demography  >  Address Based Population Registration System  >  Results of Address Based Population Registration System,200,7
+"TR,DF_ADNKS_T35,1.1",Population of provinces by broad age groups,Population and Demography  >  Address Based Population Registration System  >  Results of Address Based Population Registration System,200,6
+"TR,DF_ADNKS_T36,1.1","Population by urban-rural classification, age group and sex",Population and Demography  >  Address Based Population Registration System  >  Results of Address Based Population Registration System,200,7
+"TR,DF_ADNKS_T37,1.1","Population by urban-rural classification, sex and provinces",Population and Demography  >  Address Based Population Registration System  >  Results of Address Based Population Registration System,200,7
+"TR,DF_ADNKS_T38,1.1",Annual growth rate of population by provinces and districts,Population and Demography  >  Address Based Population Registration System  >  Results of Address Based Population Registration System,200,6
+"TR,DF_ADNKS_T4,1.2",Population by province of residence and place of birth status,Population and Demography  >  Address Based Population Registration System  >  Results of Address Based Population Registration System,200,6
+"TR,DF_COCUKLARDA_BILIISIM_TEKNOLOJILERI_T3,1.1",Internet usage purposes of children who use Internet regularly by sex and age group,Population and Demography  >  Child Statistics,200,4
+"TR,DF_COCUK_BILISIM_TEKNO_KULLANIM_ORAN_CINSIYET_YAS,1.1",Proportion of ICT usage for children by sex and age group,Population and Demography  >  Child Statistics,200,4
+"TR,DF_ICGOC_T01,1.0",Size of population migrated across provinces by reason and attained education level,Population and Demography  >  Migration Statistics  >  Internal Migration Statistics,200,21
+"TR,DF_UGOC_T1,1.0",Immigrants and emigrants by citizenship and provinces,Population and Demography  >  Migration Statistics  >  International Migration Statistics,200,21
+"TR,DF_UGOC_T2,1.0",Immigrants and emigrants by country of citizenship,Population and Demography  >  Migration Statistics  >  International Migration Statistics,200,21
+"TR,DF_UGOC_T3,1.0",Immigrants and emigrants by age group and sex,Population and Demography  >  Migration Statistics  >  International Migration Statistics,200,21
+"TR,DF_UGOC_T4,1.0","Foreign population by sex, age group and the first year of residence in Türkiye",Population and Demography  >  Migration Statistics  >  International Migration Statistics,200,21
+"TR,DF_UGOC_T5,1.0","Foreign population by sex, country of citizenship and the first year of residence in Türkiye",Population and Demography  >  Migration Statistics  >  International Migration Statistics,200,21
+"TR,DF_UGOC_T6,1.0",Immigrants and emigrants by sex and provinces,Population and Demography  >  Migration Statistics  >  International Migration Statistics,200,21
+"TR,DF_UGOC_T8,1.0","Immigration by provinces, 2000",Population and Demography  >  Migration Statistics  >  International Migration Statistics,200,21
+"TR,DF_EVLENME_1617_ORAN,1.0",Proportion of 16-17 Age Group Marriage by Provinces,Population and Demography  >  Vital Statistics  >  Marriage Statistics,200,4
+"TR,DF_EVLENME_AKRABA_EVLILIK,1.0","Number of Marriages, Number of Marriages Between First Cousins and Proportion of Them by Provinces",Population and Demography  >  Vital Statistics  >  Marriage Statistics,200,3
+"TR,DF_EVLENME_DOGUMULKE,1.0",Marriages by Country of Birth of Male and Female,Population and Demography  >  Vital Statistics  >  Marriage Statistics,200,3
+"TR,DF_EVLENME_EGT_YAS_GR,1.0",Marriages by Age Group and Educational Attainment,Population and Demography  >  Vital Statistics  >  Marriage Statistics,200,4
+"TR,DF_EVLENME_ERKKAD_UYRUK,1.0",Marriages by Citizenship of Male and Female,Population and Demography  >  Vital Statistics  >  Marriage Statistics,200,4
+"TR,DF_EVLENME_ERKKAD_YASFARK,1.0",Marriages by Province and Age Difference of Spouses,Population and Demography  >  Vital Statistics  >  Marriage Statistics,200,3
+"TR,DF_EVLENME_ERKKAD_YASGR,1.0",Spouses by Age Group,Population and Demography  >  Vital Statistics  >  Marriage Statistics,200,3
+"TR,DF_EVLENME_ERK_KAD_EGT,1.0",Marriages by Educational Attainment of Male and Female,Population and Demography  >  Vital Statistics  >  Marriage Statistics,200,3
+"TR,DF_EVLENME_ILK_YASGR,1.0",First Marriages by Province and Age Group,Population and Demography  >  Vital Statistics  >  Marriage Statistics,200,4
+"TR,DF_EVLENME_ILK_YAS_GR_EGT,1.0",First Marriages by Age Group and Educational Attainment,Population and Demography  >  Vital Statistics  >  Marriage Statistics,200,3
+"TR,DF_EVLENME_IL_AY,1.0",Marriages by Province and Month,Population and Demography  >  Vital Statistics  >  Marriage Statistics,200,5
+"TR,DF_EVLENME_IL_ILCE,1.0",Number of Marriages by Province and District,Population and Demography  >  Vital Statistics  >  Marriage Statistics,200,5
+"TR,DF_EVLENME_KARSILIKLI_YASGR_IL,1.0","Spouses by Age Group, by Provinces",Population and Demography  >  Vital Statistics  >  Marriage Statistics,200,3
+"TR,DF_EVLENME_ORT_EVL_YAS,1.0",Mean Age at Marriage by Provinces,Population and Demography  >  Vital Statistics  >  Marriage Statistics,200,5
+"TR,DF_EVLENME_ORT_ILK_EVL_YAS,1.0",Mean Age at First Marriage by Provinces,Population and Demography  >  Vital Statistics  >  Marriage Statistics,200,6
+"TR,DF_EVLENME_YASGR_ESMEDENI_IL,1.0","Spouses by Province, Age Group and Previous Marital Status of Spouse",Population and Demography  >  Vital Statistics  >  Marriage Statistics,200,7
+"TR,DF_EVLENME_YAS_GR_CINS,1.0","Marriages by Province, Age Group and Sex",Population and Demography  >  Vital Statistics  >  Marriage Statistics,200,5
+"TR,DF_EVLENME_YAS_GR_ESMEDENI,1.0",Spouses by Age Group and Previous Marital Status of Spouse,Population and Demography  >  Vital Statistics  >  Marriage Statistics,200,3
+"TR,DF_KABA_EVLENME_HIZI,1.0",Crude Marriage Rate by Provinces,Population and Demography  >  Vital Statistics  >  Marriage Statistics,200,3
+"TR,DF_BOSANMA_ANNEBABA_VEL_VER,1.0",Divorces by Number of Children Given to Parent's Guardianship,Population and Demography  >  Vital Statistics  >  Divorce Statistics,200,5
+"TR,DF_BOSANMA_CINS_YASGR,1.0","Divorces by Province, Sex and Age Group",Population and Demography  >  Vital Statistics  >  Divorce Statistics,200,5
+"TR,DF_BOSANMA_DAVA_SURE,1.0",Divorces by Provinces and Duration of Divorce Case,Population and Demography  >  Vital Statistics  >  Divorce Statistics,200,3
+"TR,DF_BOSANMA_DOGUMULKE,1.0",Divorces by Country of Birth of Male and Female,Population and Demography  >  Vital Statistics  >  Divorce Statistics,200,3
+"TR,DF_BOSANMA_ERKKAD_UYRUK,1.0",Divorces by Citizenship of Male and Female,Population and Demography  >  Vital Statistics  >  Divorce Statistics,200,4
+"TR,DF_BOSANMA_ES_YASFARK,1.0",Divorces by Province and Age Difference of Spouses,Population and Demography  >  Vital Statistics  >  Divorce Statistics,200,3
+"TR,DF_BOSANMA_EVLSURE,1.0",Divorces by Provinces and Duration of Marriage,Population and Demography  >  Vital Statistics  >  Divorce Statistics,200,3
+"TR,DF_BOSANMA_EVLSURE_YASGR_IL,1.0","Divorces by Provinces, Duration of Marriage and Age Group",Population and Demography  >  Vital Statistics  >  Divorce Statistics,200,4
+"TR,DF_BOSANMA_EVL_SURE_YASGR,1.0",Divorces by Duration of Marriage and Age Group,Population and Demography  >  Vital Statistics  >  Divorce Statistics,200,4
+"TR,DF_BOSANMA_IL_ILCE,1.0",Number of Divorces by Province and District,Population and Demography  >  Vital Statistics  >  Divorce Statistics,200,3
+"TR,DF_BOSANMA_KARSILIKLI_EGT,1.0",Divorces by Educational Attainment of Male and Female,Population and Demography  >  Vital Statistics  >  Divorce Statistics,200,3
+"TR,DF_BOSANMA_KARSILIKLI_YASGR,1.0",Divorces by Province and Mutual Age Group of Spouses,Population and Demography  >  Vital Statistics  >  Divorce Statistics,200,3
+"TR,DF_BOSANMA_VEL_AL,1.0",Number of Divorced Persons by The Number of Children Whose Guardianship Were Taken by Parents,Population and Demography  >  Vital Statistics  >  Divorce Statistics,200,3
+"TR,DF_BOSANMA_VEL_VER_ORAN,1.0",Number of Children Given to Guardianship and Proportion of Children Given to Parent's Guardianship,Population and Demography  >  Vital Statistics  >  Divorce Statistics,200,6
+"TR,DF_BOSANMA_YASGR_EGT,1.0",Divorces by Age Group and Educational Attainment,Population and Demography  >  Vital Statistics  >  Divorce Statistics,200,4
+"TR,DF_KABA_BOSANMA_HIZI,1.0",Crude Divorce Rate by Provinces (‰),Population and Demography  >  Vital Statistics  >  Divorce Statistics,200,3
+"TR,DF_ANNEYASGR_EGT_C,1.0",Births by mother's Age Group and Mother's Educational Level,Population and Demography  >  Vital Statistics  >  Birth Statistics,200,3
+"TR,DF_DOGUM_ANNEEGT_TDH_C,1.0",Total Fertility Rate by Provinces and Mother's Educational Level,Population and Demography  >  Vital Statistics  >  Birth Statistics,200,3
+"TR,DF_DOGUM_ANNEMEDENI_C,1.0",Births by Province and Legal Marital Status of Mother,Population and Demography  >  Vital Statistics  >  Birth Statistics,200,3
+"TR,DF_DOGUM_ANNEYASGR_C,1.0",Births by Age Group of Mother,Population and Demography  >  Vital Statistics  >  Birth Statistics,200,3
+"TR,DF_DOGUM_ANNEYASGR_IL_C,1.0",Births by Provinces and Age Group of Mother and Regions,Population and Demography  >  Vital Statistics  >  Birth Statistics,200,3
+"TR,DF_DOGUM_ANNEYAS_ULKE_C,1.0",Births by Mother's Age Group and Country of Birth,Population and Demography  >  Vital Statistics  >  Birth Statistics,200,3
+"TR,DF_DOGUM_ANNE_ORTYAS_C,1.0",Mean Age of Mother by Provinces,Population and Demography  >  Vital Statistics  >  Birth Statistics,200,3
+"TR,DF_DOGUM_ANNE_UYRUK_C,1.0",Births by Citizenship of Mother,Population and Demography  >  Vital Statistics  >  Birth Statistics,200,3
+"TR,DF_DOGUM_ANNE_YAS_DOGUM_SIRA_C,1.0",Births by Mother's Age Group and Birth Order,Population and Demography  >  Vital Statistics  >  Birth Statistics,200,3
+"TR,DF_DOGUM_ARALIK_AY_ANNEYASGR_C,1.0",The Duration Between the Mother's Last Two Births by Age Group of Mother,Population and Demography  >  Vital Statistics  >  Birth Statistics,200,3
+"TR,DF_DOGUM_ARALIK_AY_C,1.0",The Birth Interval Between the Mother's Last Two Births (Month),Population and Demography  >  Vital Statistics  >  Birth Statistics,200,3
+"TR,DF_DOGUM_BABAYASGR_C,1.0",Births by Province and Age Group of Father,Population and Demography  >  Vital Statistics  >  Birth Statistics,200,3
+"TR,DF_DOGUM_BABA_UYRUK_C,1.0",Births by Citizenship of Father,Population and Demography  >  Vital Statistics  >  Birth Statistics,200,3
+"TR,DF_DOGUM_COGUL_C,1.0",Multiple Births,Population and Demography  >  Vital Statistics  >  Birth Statistics,200,3
+"TR,DF_DOGUM_DOGARA_ORTSURE_ANNEYASGR_C,1.0",The Average Duration Between the Mother's Last Two Births by Age Group of Mother (Year),Population and Demography  >  Vital Statistics  >  Birth Statistics,200,3
+"TR,DF_DOGUM_DOGARA_ORTSURE_C,1.0",The Average Duration Between the Mother's Last Two Births by Provinces (Year),Population and Demography  >  Vital Statistics  >  Birth Statistics,200,3
+"TR,DF_DOGUM_EVLSURE_C,1.0",Births by Provinces and Mother's Duration of Marriage,Population and Demography  >  Vital Statistics  >  Birth Statistics,200,3
+"TR,DF_DOGUM_GDH_C,1.0",General Fertility Rate by Provinces,Population and Demography  >  Vital Statistics  >  Birth Statistics,200,3
+"TR,DF_DOGUM_IL_AY_C,1.0",Births by Province and Months,Population and Demography  >  Vital Statistics  >  Birth Statistics,200,3
+"TR,DF_DOGUM_IL_ILCE_C,1.0",Births by Province and District,Population and Demography  >  Vital Statistics  >  Birth Statistics,200,3
+"TR,DF_DOGUM_IL_TDH_C,1.0",Total Fertility Rate by Provinces (Number of Children),Population and Demography  >  Vital Statistics  >  Birth Statistics,200,3
+"TR,DF_DOGUM_IL_YASA_OZEL_DOGHIZ_C,1.0",Age Specific Fertility Rate by Provinces,Population and Demography  >  Vital Statistics  >  Birth Statistics,200,3
+"TR,DF_DOGUM_KDH_C,1.0",Crude Birth Rate by Provinces (‰),Population and Demography  >  Vital Statistics  >  Birth Statistics,200,3
+"TR,DF_DOGUM_KENTKIR_TDH_C,1.0",Total Fertility Rate by Province and Urban-Rural Classification,Population and Demography  >  Vital Statistics  >  Birth Statistics,200,3
+"TR,DF_DOGUM_ORTYAS_ILKDOG_C,1.0",Mean Age of Mother at Birth of First Child by Provinces,Population and Demography  >  Vital Statistics  >  Birth Statistics,200,4
+"TR,DF_DOGUM_SIRA_C,1.0",Proportion of Births by Birth Order,Population and Demography  >  Vital Statistics  >  Birth Statistics,200,4
+"TR,DF_DOGUM_TEMEL_DOG_GOST_C,1.0",Basic Fertility Indicators,Population and Demography  >  Vital Statistics  >  Birth Statistics,200,3
+"TR,DF_DOGUM_YASA_OZEL_DOGHIZ_C,1.0",Age Specific Fertility Rates,Population and Demography  >  Vital Statistics  >  Birth Statistics,200,3
+"TR,DF_INTIHAR_EGITIM_CINS_C,1.0",Suicides by Educational Level and Sex,Population and Demography  >  Vital Statistics  >  Suicide Statistics,200,5
+"TR,DF_INTIHAR_IL_CINS_C,1.0",Suicides by Province and Sex,Population and Demography  >  Vital Statistics  >  Suicide Statistics,200,6
+"TR,DF_INTIHAR_IL_IKAMET_CINS_C,1.0",Suicides by Province of Residence and Sex,Population and Demography  >  Vital Statistics  >  Suicide Statistics,200,5
+"TR,DF_INTIHAR_IL_NEDEN_C,1.0",Suicides by Province and Cause,Population and Demography  >  Vital Statistics  >  Suicide Statistics,200,6
+"TR,DF_INTIHAR_IL_SEKIL_C,1.0",Suicides by Province and Method,Population and Demography  >  Vital Statistics  >  Suicide Statistics,200,5
+"TR,DF_INTIHAR_IL_YASGR_C,1.0",Suicides by Province and Age Group,Population and Demography  >  Vital Statistics  >  Suicide Statistics,200,6
+"TR,DF_INTIHAR_IS_KIH_C,1.0",Number of Suicides and Crude Suicide Rate,Population and Demography  >  Vital Statistics  >  Suicide Statistics,200,4
+"TR,DF_INTIHAR_KIH_IL_C,1.0",Crude Suicide Rate by Provinces,Population and Demography  >  Vital Statistics  >  Suicide Statistics,200,4
+"TR,DF_INTIHAR_MEDENI_CINS_C,1.0",Suicides by Legal Marital Status and Sex,Population and Demography  >  Vital Statistics  >  Suicide Statistics,200,5
+"TR,DF_INTIHAR_NEDEN_CINS_C,1.0",Suicides by Cause and Sex,Population and Demography  >  Vital Statistics  >  Suicide Statistics,200,5
+"TR,DF_INTIHAR_SEKIL_CINS_C,1.0",Suicides by Method and Sex,Population and Demography  >  Vital Statistics  >  Suicide Statistics,200,5
+"TR,DF_INTIHAR_YASGR_CINS_C,1.0",Suicides by Age Group and Sex,Population and Demography  >  Vital Statistics  >  Suicide Statistics,200,5
+"TR,DF_INTIHAR_YOIH_CINS_C,1.0",Age Specific Suicide Rate by Sex,Population and Demography  >  Vital Statistics  >  Suicide Statistics,200,6
+"TR,DF_E_OLUM_IL_CINS_AY_C,1.0","Deaths by Province, Sex and Month, 2001-2008",Population and Demography  >  Vital Statistics  >  Death and Causes of Death Statistics,200,6
+"TR,DF_E_OLUM_IL_CINS_YASGR_C,1.0","Deaths by Province, Sex and Age Group, 2001-2008",Population and Demography  >  Vital Statistics  >  Death and Causes of Death Statistics,200,7
+"TR,DF_E_OLUM_IL_GUNLUK_C,1.0","Daily Infant Deaths by Province and Sex, 2001-2008",Population and Demography  >  Vital Statistics  >  Death and Causes of Death Statistics,200,6
+"TR,DF_E_OLUM_YASGR_CINS_MEDENI_C,1.0","Deaths by Age Group, Sex and Legal Marital Status, 2001-2008",Population and Demography  >  Vital Statistics  >  Death and Causes of Death Statistics,200,6
+"TR,DF_E_OLUM_YAS_CINS_C,1.0","Deaths by Age and Sex, 2001-2008",Population and Demography  >  Vital Statistics  >  Death and Causes of Death Statistics,200,6
+"TR,DF_OLUM_90_NEDEN_CINS_C,1.0",Deaths by Causes of Death and Sex,Population and Demography  >  Vital Statistics  >  Death and Causes of Death Statistics,200,4
+"TR,DF_OLUM_BEBEK_ANNEBABA_EGT_C,1.0",Infant Deaths by Educational Level of Mother and Father,Population and Demography  >  Vital Statistics  >  Death and Causes of Death Statistics,200,4
+"TR,DF_OLUM_BOH_IBBS1_C,1.0",Infant Mortality Rate by Statistical Regions Level 1 and Sex,Population and Demography  >  Vital Statistics  >  Death and Causes of Death Statistics,200,4
+"TR,DF_OLUM_IL_BOH_C,1.0",Infant Mortality Rate by Provinces,Population and Demography  >  Vital Statistics  >  Death and Causes of Death Statistics,200,4
+"TR,DF_OLUM_IL_BYAOH_C,1.0",Under Five Mortality Rate by Provinces,Population and Demography  >  Vital Statistics  >  Death and Causes of Death Statistics,200,4
+"TR,DF_OLUM_IL_CINS_AY_C,1.0","Deaths by Province, Sex and Month",Population and Demography  >  Vital Statistics  >  Death and Causes of Death Statistics,200,6
+"TR,DF_OLUM_IL_CINS_BOS_C,1.0",Infant Deaths by Province and Sex,Population and Demography  >  Vital Statistics  >  Death and Causes of Death Statistics,200,5
+"TR,DF_OLUM_IL_CINS_YASGR_C,1.0","Deaths by Province, Sex and Age Group",Population and Demography  >  Vital Statistics  >  Death and Causes of Death Statistics,200,6
+"TR,DF_OLUM_IL_GUNLUK_C,1.0",Daily Infant Deaths by Province and Sex,Population and Demography  >  Vital Statistics  >  Death and Causes of Death Statistics,200,6
+"TR,DF_OLUM_IL_ILCE_CINS_C,1.0","Deaths by Province, District and Sex",Population and Demography  >  Vital Statistics  >  Death and Causes of Death Statistics,200,4
+"TR,DF_OLUM_IL_KOH_C,1.0",Crude Death Rate by Provinces,Population and Demography  >  Vital Statistics  >  Death and Causes of Death Statistics,200,4
+"TR,DF_OLUM_IL_NEDEN_C,1.0",Deaths by Province and Selected Causes of Death,Population and Demography  >  Vital Statistics  >  Death and Causes of Death Statistics,200,5
+"TR,DF_OLUM_NEDEN_CINS_YASGR_C,1.0","Deaths by Selected Causes of Death, Sex and Age Group",Population and Demography  >  Vital Statistics  >  Death and Causes of Death Statistics,200,5
+"TR,DF_OLUM_UYRUK_C,1.0",Deaths by Citizenship,Population and Demography  >  Vital Statistics  >  Death and Causes of Death Statistics,200,4
+"TR,DF_OLUM_YASGR_CINS_MEDENI_C,1.0","Deaths by Age Group, Sex and Legal Marital Status",Population and Demography  >  Vital Statistics  >  Death and Causes of Death Statistics,200,5
+"TR,DF_OLUM_YASGR_DOGYER_CINS_C,1.0","Deaths by Age Group, Country of Birth and Sex",Population and Demography  >  Vital Statistics  >  Death and Causes of Death Statistics,200,6
+"TR,DF_OLUM_YASGR_EGT_C,1.0","Deaths by Age Group, Sex and Educational Level",Population and Demography  >  Vital Statistics  >  Death and Causes of Death Statistics,200,5
+"TR,DF_OLUM_YAS_CINS_C,1.0",Deaths by Age and Sex,Population and Demography  >  Vital Statistics  >  Death and Causes of Death Statistics,200,7
+"TR,DF_OLUM_YOOH_C,1.0",Age Specific Death Rate by Sex,Population and Demography  >  Vital Statistics  >  Death and Causes of Death Statistics,200,6
+"TR,DF_TEMEL_DOGUM_OLUM_C,1.0",Basic Fertility and Mortality Indicators,Population and Demography  >  Vital Statistics  >  Death and Causes of Death Statistics,200,4
+"TR,DF_TEMEL_OLUMLULUK_C,1.0",Basic Mortality Indicators,Population and Demography  >  Vital Statistics  >  Death and Causes of Death Statistics,200,5
+"TR,DF_KUMES_HAYVANCILIK_KULUCKAHANE,1.0",Total Installed Capacity of Incubators,Agriculture  >  Animal Production Statistics,200,6
+"TR,DF_KUMES_HAYVANCILIK_URUN_V1,1.0",Poultry products,Agriculture  >  Animal Production Statistics,200,5
+"TR,DF_ORGANIK_SUT,1.0",Organic Milk and Dairy Products- Annual,Agriculture  >  Animal Production Statistics,200,6
+"TR,DF_SUT_URUNLERI_AYLIK_V2,1.0",Milk and Dairy Products - Basic Products - Monthly,Agriculture  >  Animal Production Statistics,200,6
+"TR,DF_SUT_URUNLERI_YILLIK_V2,1.0",Milk and Dairy Products - Product Details - Annual,Agriculture  >  Animal Production Statistics,200,5
+"TR,DF_SUT_URUNLER_YILLK_V2_2023,1.0",Milk and Dairy Products - Product Details (2023 and earlier) - Annual,Agriculture  >  Animal Production Statistics,200,6
+"TR,DF_TARIM_BICERDOVER_YAS_GRUP,1.0",Number of Combine Harvesters (By Age Group),Agriculture  >  Agricultural Equipment and Machinery Statistics,200,4
+"TR,DF_TARIM_MAK_TRAKTOR,1.0",Number of Tractors (By Horsepower),Agriculture  >  Agricultural Equipment and Machinery Statistics,200,5
+"TR,DF_TARMSAL_ALET,1.1",Number of Agricultural Tools and Machinery,Agriculture  >  Agricultural Equipment and Machinery Statistics,200,5
+"TR,DF_TARIMSAL_ISLETME_ISGUCU_FAALIYETE_GORE_V2,1.0",Average daily wages of seasonal agricultural workers by selected activities,Agriculture  >  Agricultural Holding Structure Statistics  >  Agricultural Holdings Labour Wage Structure,200,6
+"TR,DF_TARIMSAL_ISLETME_ISGUCU_ILLERE_GORE_V2,1.0",Average wages paid to workers by provinces,Agriculture  >  Agricultural Holding Structure Statistics  >  Agricultural Holdings Labour Wage Structure,200,6
+"TR,DF_TARIMSAL_ISLETME_ISGUCU_ORTALAMA_UCRET_V2,1.0",Average daily and monthly wages of agricultural workers,Agriculture  >  Agricultural Holding Structure Statistics  >  Agricultural Holdings Labour Wage Structure,200,6
+"TR,DF_MOTORLU_KARA_TASIT_DEVRI_YAPILAN_IL_V3,1.0",The Number of Road Motor Vehicles Handed Over by Province,Transport and Communication  >  Transport Statistics  >  Road Motor Vehicles,200,6
+"TR,DF_MOTORLU_KARA_TASIT_DEVRI_YAPILAN_V3,1.0",The Number of Road Motor Vehicles Handed Over by Months,Transport and Communication  >  Transport Statistics  >  Road Motor Vehicles,200,6
+"TR,DF_MOTORLU_KARA_TASIT_IBBS_YIL_V2,1.0",Vehicle Types and Number of Road Motor Vehicles by SR Level 1,Transport and Communication  >  Transport Statistics  >  Road Motor Vehicles,200,5
+"TR,DF_MOTORLU_KARA_TASIT_ILLER_V3,1.0",The Number of Road Motor Vehicles by Province,Transport and Communication  >  Transport Statistics  >  Road Motor Vehicles,200,6
+"TR,DF_MOTORLU_KARA_TASIT_KAYDI_SILINEN_IBBS_V1,1.0",Number of Road Motor Vehicles Withdrawn During the Year by SR Level 1,Transport and Communication  >  Transport Statistics  >  Road Motor Vehicles,200,5
+"TR,DF_MOTORLU_KARA_TASIT_KAYDI_V1,1.0",The Number of Road Motor Vehicles Registered and Withdrawn by Month and Year,Transport and Communication  >  Transport Statistics  >  Road Motor Vehicles,200,6
+"TR,DF_MOTORLU_KARA_TASIT_KAYDI_YAPILAN_IBBS_V2,1.0",Number of Road Motor Vehicles Registered to the Traffic During the Year by SR Level 1,Transport and Communication  >  Transport Statistics  >  Road Motor Vehicles,200,5
+"TR,DF_MOTORLU_KARA_TASIT_KAYDI_YAPILAN_IL_V2,1.0",Distribution of Road Motor Vehicles Registered to the Traffic by Provinces,Transport and Communication  >  Transport Statistics  >  Road Motor Vehicles,200,5
+"TR,DF_MOTORLU_KARA_TASIT_KULLANIM_AMAC_V2,1.0",Number of Road Motor Vehicles by Aim of Use,Transport and Communication  >  Transport Statistics  >  Road Motor Vehicles,200,5
+"TR,DF_MOTORLU_KARA_TASIT_MARKA_V2,1.0",Distribution of Cars Registered to the Traffic by Trademarks,Transport and Communication  >  Transport Statistics  >  Road Motor Vehicles,200,7
+"TR,DF_MOTORLU_KARA_TASIT_MODEL_YIL_V2,1.0",Number of Road Motor Vehicles by Model Years,Transport and Communication  >  Transport Statistics  >  Road Motor Vehicles,200,5
+"TR,DF_MOTORLU_KARA_TASIT_MOTOR_SILINDIR_HACIM_V2,1.0",Distribution of Cars Registered to the Traffic by Engine Size,Transport and Communication  >  Transport Statistics  >  Road Motor Vehicles,200,5
+"TR,DF_MOTORLU_KARA_TASIT_OTOMOBIL_RENK_V2,1.0",Distribution of Cars Registered to the Traffic by Colours,Transport and Communication  >  Transport Statistics  >  Road Motor Vehicles,200,6
+"TR,DF_MOTORLU_KARA_TASIT_YAKIT_CINSI_V4,1.0",Distribution of Cars Registered to the Traffic According to Fuel Type,Transport and Communication  >  Transport Statistics  >  Road Motor Vehicles,200,6
+"TR,DF_MOTORLU_KARA_TASIT_YAKIT_TURU_V3,1.0",Number of Road Motor Vehicles by Kind of Fuel Used,Transport and Communication  >  Transport Statistics  >  Road Motor Vehicles,200,5
+"TR,DF_MOTORLU_KARA_TASIT_YIL_ICINDE_DEVRI_YAPILAN_V2,1.0",Number of Road Motor Vehicles Handed over the Traffic During the Year by SR Level 1,Transport and Communication  >  Transport Statistics  >  Road Motor Vehicles,200,5
+"TR,DF_MOTORLU_KARA_TASIT_YIL_V3,1.0",The Number of Road Motor Vehicles by Years,Transport and Communication  >  Transport Statistics  >  Road Motor Vehicles,200,5
+"TR,DF_TRAFIK_KAZA_GUN_ISIGI_OLU_YARALI_V1,1.0","Number of Accidents Involving Death or Injury, Persons Killed and Injured by Daylight Condition",Transport and Communication  >  Transport Statistics  >  Road Traffic Accident Statistics,200,6
+"TR,DF_TRAFIK_KAZA_HAFTANIN_GUNLERI_OLU_YARALI_V1,1.0","Number of Road Traffic Accidents Involving Death or Injury, Persons Killed and Injured by Days of the Week",Transport and Communication  >  Transport Statistics  >  Road Traffic Accident Statistics,200,6
+"TR,DF_TRAFIK_KAZA_INCINEBILIR_YOL_KULLANICI_PAY_V1,1.0","Number of Vulnerable Road Users (1) Killed, Injured and Share in Total Killed and Injured Persons",Transport and Communication  >  Transport Statistics  >  Road Traffic Accident Statistics,200,5
+"TR,DF_TRAFIK_KAZA_KAYITLI_ARAC_OLU_YARALI_V1,1.0","Number of Vehicles Registered, Accident, Persons Killed and Injured",Transport and Communication  >  Transport Statistics  >  Road Traffic Accident Statistics,200,5
+"TR,DF_TRAFIK_KAZA_NUFUS_TASIT_BASINA_OLU_YARALI_V1,1.0","Number of Persons Killed and Injured in Road Traffic Accidents per Population, Vehicle and Billion Vehicle-km",Transport and Communication  >  Transport Statistics  >  Road Traffic Accident Statistics,200,5
+"TR,DF_TRAFIK_KAZA_OLUMLU_YARALANMALI_KAZAZEDE_V1,1.0",Number of Victims of Traffic Accidents Involving Death or Injury,Transport and Communication  >  Transport Statistics  >  Road Traffic Accident Statistics,200,5
+"TR,DF_TRAFIK_KAZA_OLUMLU_YARALANMALI_KAZA_KUSUR_V1,1.0",Faults Causing Road Traffic Accidents Involving Death or Injury,Transport and Communication  >  Transport Statistics  >  Road Traffic Accident Statistics,200,5
+"TR,DF_TRAFIK_KAZA_OLUMLU_YARALANMALI_KAZA_SURUCU_V2,1.0","Number of Vehicles Involved in Accidents with Death or Injury, Drivers Killed and Injured by Vehicle Type",Transport and Communication  >  Transport Statistics  >  Road Traffic Accident Statistics,200,5
+"TR,DF_TRAFIK_KAZA_OLUMLU_YARALANMALI_KUSUR_V1,1.0",Number of Faults Causing Traffic Accidents Involving Death or Injury,Transport and Communication  >  Transport Statistics  >  Road Traffic Accident Statistics,200,5
+"TR,DF_TRAFIK_KAZA_OLUM_YARALANMA_KAZA_OLU_YARALI_V1,1.0","Number of Road Traffic Accidents Involving Death or Injury, Persons Killed and Injured by Months",Transport and Communication  >  Transport Statistics  >  Road Traffic Accident Statistics,200,5
+"TR,DF_TRAFIK_KAZA_OLUSUM_SONUC_V1,1.0",Number of Traffic Accidents Involving Death or Injury and Results by Formation of the Accidents,Transport and Communication  >  Transport Statistics  >  Road Traffic Accident Statistics,200,5
+"TR,DF_TRAFIK_KAZA_OLU_YARALI_V2,1.0","Number of Traffic Accidents, Persons Killed and Injured by Province",Transport and Communication  >  Transport Statistics  >  Road Traffic Accident Statistics,200,5
+"TR,DF_TRAFIK_KAZA_TASIT_SAYI_TRAFIK_KAZA_V1,1.0",Number of Road Traffic Accidents Involving Death or Injury and Results by Number of Vehicle Involved,Transport and Communication  >  Transport Statistics  >  Road Traffic Accident Statistics,200,6
+"TR,DF_TRAFIK_KAZA_YAS_GRUBU_OLEN_YARALANAN_V1,1.0",Persons Killed and Injured in Road Traffic Accidents by Age Groups and Gender,Transport and Communication  >  Transport Statistics  >  Road Traffic Accident Statistics,200,5
+"TR,DF_TRAFIK_KAZA_YERLESIM_YER_OLUMLU_YARALANMALI_V1,1.0","Number of Traffic Accidents Involving Death or Injury, Persons Killed and Injured According to Settlement",Transport and Communication  >  Transport Statistics  >  Road Traffic Accident Statistics,200,5
+"TR,DF_TASIT_KILOMETRE_OTOMOBIL_YAKIT_TUR_V1,1.0",Distribution of Distance Travelled by Passenger Cars,Transport and Communication  >  Transport Statistics  >  Vehicle-kilometer Statistics,200,6
+"TR,DF_TASIT_KILOMETRE_TASIT_CINS_V2,1.0",Vehicle-kilometer Statistics by Vehicle Type,Transport and Communication  >  Transport Statistics  >  Vehicle-kilometer Statistics,200,6
+"TR,DF_TASIT_KILOMETRE_TOPLAM_YAKIT_TURU_V2,1.0",Distribution of Total Vehicle-Kilometer by Fuel Type,Transport and Communication  >  Transport Statistics  >  Vehicle-kilometer Statistics,200,6
+"TR,DF_TASIT_KILOMETRE_YAS_GRUP_V2,1.0",Vehicle-kilometer by Vehicle Type and Age Group,Transport and Communication  >  Transport Statistics  >  Vehicle-kilometer Statistics,200,6
+"TR,DF_TASIT_KILOMETRE_YIL_V2,1.0",Vehicle-kilometer Statistics by Years,Transport and Communication  >  Transport Statistics  >  Vehicle-kilometer Statistics,200,6
+"TR,DF_GENEL_DEVLET_ACIK_FAZLA_BORC_V2,1.0",Deficit/Surplus and Debt Levels of General Government,National Accounts  >  Government Accounts,200,4
+"TR,DF_GENEL_DEVLET_ANA_BILESEN_V3,1.0",Main Aggregates of General Government,National Accounts  >  Government Accounts,200,3
+"TR,DF_GENEL_DEVLET_VERGI_SOSYAL_KATKI_V2,1.0",Tax and Social Contribution Receipts of General Government,National Accounts  >  Government Accounts,200,3
+"TR,DF_UH_BH_KATKI,1.0",Contribution of regions to the GDP percentage change of Türkiye (with chain linked volume index) (%),National Accounts  >  Regional Accounts,200,6
+"TR,DF_UH_BH_KB_ENDEKS,1.0",Regional gross domestic product per capita index (at current prices) [TR=100],National Accounts  >  Regional Accounts,200,5
+"TR,DF_UH_BH_KISI_BASI,1.0",Regional gross domestic product per capita,National Accounts  >  Regional Accounts,200,5
+"TR,DF_UH_BH_PAY_BOLGESEL,1.0",Share of the regions by sectors (%),National Accounts  >  Regional Accounts,200,7
+"TR,DF_UH_BH_PAY_SEKTOREL,1.0",Sectoral share of gross domestic product (%),National Accounts  >  Regional Accounts,200,7
+"TR,UH_BH_GSYH_CARI,1.0",Regional gross domestic product (at current prices),National Accounts  >  Regional Accounts,200,7
+"TR,UH_BH_GSYH_HACIM,1.0",Regional gross domestic product (with chain linked volume index),National Accounts  >  Regional Accounts,200,8
+"TR,DF_KURUMSAL_SEKTOR_HESAPLARI_CARI_FIYATLARLA_V2,1.0","Institutional Sector Accounts, Current Prices",National Accounts  >  Institutional Sector Accounts,200,6
+"TR,DF_UHTI_COGRAFI_C,1.0",International Trade in Services by Geographical Breakdowns,International Trade  >  International Trade in Services Statistics  >  International Trade in Services Statistics,200,8
+"TR,DF_UHTI_EKONOMIK_C,1.0",International Trade in Services by Economic Groups,International Trade  >  International Trade in Services Statistics  >  International Trade in Services Statistics,200,8
+"TR,DF_UHTI_HIZMET_COGRAFI_C,1.0",International Trade in Services by Type of Services and Geographical Breakdowns,International Trade  >  International Trade in Services Statistics  >  International Trade in Services Statistics,200,8
+"TR,DF_UHTI_HIZMET_EKONOMIK_C,1.0",International Trade in Services by Type of Services and Economic Groups,International Trade  >  International Trade in Services Statistics  >  International Trade in Services Statistics,200,8
+"TR,DF_UHTI_HIZMET_TURU_C,1.0",International Trade in Services by Type of Services,International Trade  >  International Trade in Services Statistics  >  International Trade in Services Statistics,200,8
+"TR,DF_ALTINSIZ_DTH,1.0",Terms of Trade Excluding Gold,International Trade  >  International Trade in Goods Statistics  >  Foreign Trade Indices,200,10
+"TR,DF_ALTINSIZ_ENERJISIZ_DTH,1.0",Terms of Trade Excluding Gold and Energy,International Trade  >  International Trade in Goods Statistics  >  Foreign Trade Indices,200,10
+"TR,DF_ALTINSIZ_ENERJISIZ_IHRACAT_BDE,1.0",Export Unit Value Index Excluding Gold and Energy,International Trade  >  International Trade in Goods Statistics  >  Foreign Trade Indices,200,11
+"TR,DF_ALTINSIZ_ENERJISIZ_IME,1.0",Export Volume Index Excluding Gold and Energy,International Trade  >  International Trade in Goods Statistics  >  Foreign Trade Indices,200,11
+"TR,DF_ALTINSIZ_ENERJISIZ_ITHALAT_BDE,1.0",Import Unit Value Index Excluding Gold and Energy,International Trade  >  International Trade in Goods Statistics  >  Foreign Trade Indices,200,11
+"TR,DF_ALTINSIZ_IHRACAT_BDE,1.0",Export Unit Value Index Excluding Gold,International Trade  >  International Trade in Goods Statistics  >  Foreign Trade Indices,200,11
+"TR,DF_ALTINSIZ_IME,1.0",Export Volume Index Excluding Gold,International Trade  >  International Trade in Goods Statistics  >  Foreign Trade Indices,200,11
+"TR,DF_ALTINSIZ_ITHALAT_BDE,1.0",Import Unit Value Index Excluding Gold,International Trade  >  International Trade in Goods Statistics  >  Foreign Trade Indices,200,11
+"TR,DF_ALTINSIZ_ITHALAT_ENERJISIZ_ME,1.0",Import Volume Index Excluding Gold and Energy,International Trade  >  International Trade in Goods Statistics  >  Foreign Trade Indices,200,11
+"TR,DF_ALTINSIZ_ITHALAT_ME,1.0",Import Volume Index Excluding Gold,International Trade  >  International Trade in Goods Statistics  >  Foreign Trade Indices,200,11
+"TR,DF_DIS_TICARET_HADLERI_V1,1.0",Terms of Trade,International Trade  >  International Trade in Goods Statistics  >  Foreign Trade Indices,200,10
+"TR,DF_ENERJISIZ_DTH,1.0",Terms of Trade Excluding Energy,International Trade  >  International Trade in Goods Statistics  >  Foreign Trade Indices,200,11
+"TR,DF_ENERJISIZ_IHRACAT_BDE,1.0",Export Unit Value Index Excluding Energy,International Trade  >  International Trade in Goods Statistics  >  Foreign Trade Indices,200,11
+"TR,DF_ENERJISIZ_IME,1.0",Export Volume Index Excluding Energy,International Trade  >  International Trade in Goods Statistics  >  Foreign Trade Indices,200,11
+"TR,DF_ENERJISIZ_ITHALAT_BDE,1.0",Import Unit Value Index Excluding Energy,International Trade  >  International Trade in Goods Statistics  >  Foreign Trade Indices,200,11
+"TR,DF_ENERJISIZ_ITHALAT_ME,1.0",Import Volume Index Excluding Energy,International Trade  >  International Trade in Goods Statistics  >  Foreign Trade Indices,200,10
+"TR,DF_IHRACAT_BIRIM_DEGER_V1,1.0",Export unit value index,International Trade  >  International Trade in Goods Statistics  >  Foreign Trade Indices,200,11
+"TR,DF_IHRACAT_MIKTAR_ENDEKS_V1,1.0",Export volume index,International Trade  >  International Trade in Goods Statistics  >  Foreign Trade Indices,200,11
+"TR,DF_ITHALAT_BIRIM_DEGER_ENDEKSI_V1,1.0",Import unit value index,International Trade  >  International Trade in Goods Statistics  >  Foreign Trade Indices,200,11
+"TR,DF_ITHALAT_MIKTAR_ENDEKS_V1,1.0",Import volume index,International Trade  >  International Trade in Goods Statistics  >  Foreign Trade Indices,200,11
+"TR,DF_TAKVIM_ETKISINDEN_ARINDIRILMIS_IHRACAT_V2,1.0",Export volume index (Seasonally and calendar adjusted),International Trade  >  International Trade in Goods Statistics  >  Foreign Trade Indices,200,11
+"TR,DF_TAKVIM_ETKISINDEN_ARINDIRILMIS_ITHALAT_V2,1.0",Import volume index (Seasonally and calendar adjusted),International Trade  >  International Trade in Goods Statistics  >  Foreign Trade Indices,200,11
+"TR,DF_BD_DOGUM_OLUM,1.1",Birth and Death Indicators,Structural Business Statistics and Business Demography  >  Entrepreneurship and Business Demography,200,5
+"TR,DF_BD_DOGUM_TEKNO_DUZEY,1.1",Distribution of enterprises born in manufacturing by technology level,Structural Business Statistics and Business Demography  >  Entrepreneurship and Business Demography,200,6
+"TR,DF_BD_HAYATTA_KALMA,1.2",Survival indicators of enterprises,Structural Business Statistics and Business Demography  >  Entrepreneurship and Business Demography,200,7
+"TR,DF_BD_HIZLI_BUYUYEN,1.1",High growth and gazelle enterprises indicators,Structural Business Statistics and Business Demography  >  Entrepreneurship and Business Demography,200,5
+"TR,DF_BD_HUKUKI_DOGUM_OLUM,1.2",Birth and Death Indicators by Legal Form,Structural Business Statistics and Business Demography  >  Entrepreneurship and Business Demography,200,6
+"TR,DF_BD_HUKUK_DURUM_ALL,1.1",Economic Indicators of Enterprises by Legal Status,Structural Business Statistics and Business Demography  >  Entrepreneurship and Business Demography,200,6
+"TR,DF_BD_KURULUS_YIL,1.1",Economic indicators of enterprises by date of foundation,Structural Business Statistics and Business Demography  >  Entrepreneurship and Business Demography,200,6
+"TR,DF_BD_SEKTOREL_ALL_V1,1.0",Economic Indicators of Enterprises by Sectors,Structural Business Statistics and Business Demography  >  Entrepreneurship and Business Demography,200,6
+"TR,DF_BD_SEKTOREL_DOGUM_OLUM,1.1",Birth and Death Indicators by Sectors,Structural Business Statistics and Business Demography  >  Entrepreneurship and Business Demography,200,6
+"TR,DF_BD_SEKTOREL_HIZLI_BUYUYEN,1.1",Distribution of high growth enterprises by sectors,Structural Business Statistics and Business Demography  >  Entrepreneurship and Business Demography,200,6
+"TR,DF_BANKA_ISTIHDAM_GOSTERGE,1.0",Employment and basic indicators in banks,Structural Business Statistics and Business Demography  >  Financial Intermediary Institution Statistics,200,7
+"TR,DF_BILANCO_BANKA_ISTIHDAM_GOSTERGE,1.0",Employment and basic indicators in banks by size of balance sheet's group,Structural Business Statistics and Business Demography  >  Financial Intermediary Institution Statistics,200,8
+"TR,DF_BILANCO_FAKTORING_ISTIHDAM_GOSTERGE,1.0","Employment and basic indicators in factoring companies, asset management companies, securities investment associations, real estate investment associations and venture capital trusts by size of balance sheet's group",Structural Business Statistics and Business Demography  >  Financial Intermediary Institution Statistics,200,8
+"TR,DF_BILANCO_FINANS_BANKA_ISTIHDAM_GOSTERGE,1.0",Employment and basic indicators in special finance houses / participation banks by size of balance sheet's group,Structural Business Statistics and Business Demography  >  Financial Intermediary Institution Statistics,200,8
+"TR,DF_BILANCO_FINANS_ISTIHDAM_GOSTERGE,1.0",Employment and basic indicators in financial leasing companies by size of balance sheet's group,Structural Business Statistics and Business Demography  >  Financial Intermediary Institution Statistics,200,8
+"TR,DF_BILANCO_KREDI_ISTIHDAM_GOSTERGE,1.0",Employment and Basic Indicators In Credit Institutions by Size of Balance Sheet's Group,Structural Business Statistics and Business Demography  >  Financial Intermediary Institution Statistics,200,8
+"TR,DF_BILANCO_MENKUL_ISTIHDAM_GOSTERGE,1.0","Employment and basic indicators in mutual funds, futures brokerage firms and foreign exchange offices by size of balance sheet's group",Structural Business Statistics and Business Demography  >  Financial Intermediary Institution Statistics,200,8
+"TR,DF_EKONOMIK_FAALIYET_SERMAYE_SATIS,1.0",Fixed Capital Investments and Sales By Economic Activity,Structural Business Statistics and Business Demography  >  Financial Intermediary Institution Statistics,200,6
+"TR,DF_EKONOMIK_FAALIYET_TEMEL_GOSTERGE,1.0",Employment and basic indicators by economic activity,Structural Business Statistics and Business Demography  >  Financial Intermediary Institution Statistics,200,13
+"TR,DF_FINANSAL_ISTIHDAM_ODEME,1.0",Employment and Payments in Financial Services Activities (Excluding İnsurance and Pension Funds),Structural Business Statistics and Business Demography  >  Financial Intermediary Institution Statistics,200,6
+"TR,DF_GIRISIM_BANKA_ISTIHDAM_GOSTERGE,1.0",Employment and basic indicators in banks by size of enterprise's groups,Structural Business Statistics and Business Demography  >  Financial Intermediary Institution Statistics,200,8
+"TR,DF_GIRISIM_FAKTORING_ISTIHDAM_GOSTERGE,1.0","Employment and basic indicators in factoring companies, asset management companies, securities investment associations, real estate investment associations and venture capital trusts by size of enterprise's group",Structural Business Statistics and Business Demography  >  Financial Intermediary Institution Statistics,200,8
+"TR,DF_GIRISIM_FINANS_BANKA_ISTIHDAM_GOSTERGE,1.0",Employment and basic indicators in special finance houses / participation banks by size of enterprise's groups,Structural Business Statistics and Business Demography  >  Financial Intermediary Institution Statistics,200,7
+"TR,DF_GIRISIM_FINANS_ISTIHDAM_GOSTERGE,1.0",Employment and basic indicators in financial leasing companies by size of enterprise's group,Structural Business Statistics and Business Demography  >  Financial Intermediary Institution Statistics,200,7
+"TR,DF_GIRISIM_KREDI_ISTIHDAM_GOSTERGE,1.0",Employment and basic indicators in credit institutions by size of enterprise's groups,Structural Business Statistics and Business Demography  >  Financial Intermediary Institution Statistics,200,8
+"TR,DF_GIRISIM_MENKUL_ISTIHDAM_GOSTERGE,1.0","Employment and basic indicators in mutual funds, futures brokerage firms and foreign exchange offices by size of enterprise's group",Structural Business Statistics and Business Demography  >  Financial Intermediary Institution Statistics,200,8
+"TR,DF_GIRISIM_SIGORTA_ISTIHDAM_GOSTERGE,1.0",Employment and Basic Indicators in Insurance Companies by Enterprise Size Group,Structural Business Statistics and Business Demography  >  Financial Intermediary Institution Statistics,200,8
+"TR,DF_KREDI_ISTIHDAM_ODEME,1.0",Employment and Payments in Credit Institutions,Structural Business Statistics and Business Demography  >  Financial Intermediary Institution Statistics,200,6
+"TR,DF_KREDI_SERMAYE_SATIS,1.0",Fixed Capital Investments and Sales In Credit Institutions,Structural Business Statistics and Business Demography  >  Financial Intermediary Institution Statistics,200,7
+"TR,DF_MALI_ISTIHDAM_GOSTERGE,1.0",Employment and Basic Indicators in Financial Sectors,Structural Business Statistics and Business Demography  >  Financial Intermediary Institution Statistics,200,7
+"TR,DF_PRIM_BUYUKLUK_ISTIHDAM_GOSTERGE,1.0",Employment and Payments in Financial Services Activities (Excluding İnsurance and Pension Funds),Structural Business Statistics and Business Demography  >  Financial Intermediary Institution Statistics,200,8
+"TR,DF_SIGORTA_ISTIHDAM_ODEME,1.0",Employment and Payments in Insurance and Reinsurance Companies,Structural Business Statistics and Business Demography  >  Financial Intermediary Institution Statistics,200,6
+"TR,DF_TARKRE_BIL_BUY,1.0","Employment and basic indicators in consumer financing and saving financing companies, lenders and agricultural credit cooperatives by size of balance sheet's group",Structural Business Statistics and Business Demography  >  Financial Intermediary Institution Statistics,200,7
+"TR,DF_TARKRE_GIR_BUY,1.0","Employment and basic indicators in consumer financing and saving financing companies, lenders and agricultural credit cooperatives by size of enterprise's group",Structural Business Statistics and Business Demography  >  Financial Intermediary Institution Statistics,200,13
+"TR,DF_BILANCO_HESAPLAR_NACEREV2,1.0",Balance Sheet of Companies by Economic Activity and Year (NACE Rev.2) (2009-2022),Structural Business Statistics and Business Demography  >  Sector Balance Sheets,200,6
+"TR,DF_BILANCO_HESAPLAR_NACEREV21,1.0",Balance Sheet of Companies by Economic Activity and Year (NACE Rev.2.1),Structural Business Statistics and Business Demography  >  Sector Balance Sheets,200,6
+"TR,DF_GELIR_TABLOSU_NACEREV2,1.0",Income Statement of Companies by Economic Activity and Year (NACE Rev.2) (2009-2022),Structural Business Statistics and Business Demography  >  Sector Balance Sheets,200,6
+"TR,DF_GELIR_TABLOSU_NACEREV21,1.0",Income Statement of Companies by Economic Activity and Year (NACE Rev.2.1),Structural Business Statistics and Business Demography  >  Sector Balance Sheets,200,6
+"TR,DF_SEKTOR_BILANCO_KOBI_NACEREV2,1.0",Basic Indicators by Economic Activity and Year (Including SME Size) (NACE Rev.2) (2009-2022),Structural Business Statistics and Business Demography  >  Sector Balance Sheets,200,6
+"TR,DF_SEKTOR_BILANCO_KOBI_NACEREV21,1.0",Basic Indicators by Economic Activity and Year (NACE Rev.2.1),Structural Business Statistics and Business Demography  >  Sector Balance Sheets,200,9
+"TR,DF_SEKTOR_BILANCO_TEMEL_NACEREV21,1.0",Basic Indicators By Economic Activity (NACE Rev.2.1),Structural Business Statistics and Business Demography  >  Sector Balance Sheets,200,7
+"TR,DF_YAPISAL_EFGTG,1.0",Basic Indicators by Economic Activity,Structural Business Statistics and Business Demography  >  Annual Industry and Services Statistics,200,6
+"TR,DF_YAPISAL_EFGTG_BUYUKLUK,1.0",Basic Indicators by Size Class and Economic Activity,Structural Business Statistics and Business Demography  >  Annual Industry and Services Statistics,200,7
+"TR,DF_YAPISAL_EFGTG_BUYUKLUK_NACEREV21,1.0",Basic Indicators by Size Class and Economic Activity (NACE Rev.2.1),Structural Business Statistics and Business Demography  >  Annual Industry and Services Statistics,200,8
+"TR,DF_YAPISAL_EFGTG_IMALAT_TEKNO,1.0",Basic Indicators in Manufacturing Industry by Technology Level,Structural Business Statistics and Business Demography  >  Annual Industry and Services Statistics,200,7
+"TR,DF_YAPISAL_EFGTG_IMALAT_TEKNO_NACEREV21,1.0",Basic Indicators in Manufacturing Industry by Technology Level (NACE Rev.2.1),Structural Business Statistics and Business Demography  >  Annual Industry and Services Statistics,200,7
+"TR,DF_YAPISAL_EFGTG_NACEREV21,1.0",Basic Indicators by Economic Activity (NACE Rev.2.1),Structural Business Statistics and Business Demography  >  Annual Industry and Services Statistics,200,7
+"TR,DF_YAPISAL_MMIGSYH,1.0",Types of Gross Investment Expenditures on Tangible Assets by Years,Structural Business Statistics and Business Demography  >  Annual Industry and Services Statistics,200,6
+"TR,DF_BR_BUYUKLUK_GIRISIM_V1,1.0",Number of Enterprises by Size Group,Structural Business Statistics and Business Demography  >  Business Registers,200,9
+"TR,DF_BR_FAALIYET_BUYUKLUK_GIRISIM_IBBS3_09_13_V1,1.0","Number of Enterprises by Economic Activity and Size Group (NUTS 3 Level, 2009-2013)",Structural Business Statistics and Business Demography  >  Business Registers,200,9
+"TR,DF_BR_FAALIYET_BUYUKLUK_GIRISIM_IBBS3_14_18_V1,1.0","Number of Enterprises by Economic Activity and Size Group (NUTS 3 Level, 2014-2018)",Structural Business Statistics and Business Demography  >  Business Registers,200,9
+"TR,DF_BR_FAALIYET_BUYUKLUK_GIRISIM_IBBS3_19_23,1.0","Number of Enterprises by Economic Activity and Size Group (NUTS 3 Level, 2019-2023)",Structural Business Statistics and Business Demography  >  Business Registers,200,9
+"TR,DF_BR_FAALIYET_BUYUKLUK_GIRISIM_IBBS3_24_28,1.0","Number of Enterprises by Economic Activity and Size Group (At IBSS 3 level, 2024 and Beyond)",Structural Business Statistics and Business Demography  >  Business Registers,200,9
+"TR,DF_BR_FAALIYET_BUYUKLUK_GIRISIM_TR_IBBS1_2_V1,1.0",Number of Enterprises by Economic Activity and Size Group (At TR–NUTS Level 1 and NUTS Level 2),Structural Business Statistics and Business Demography  >  Business Registers,200,9
+"TR,DF_BR_FAALIYET_GIRISIM_ONCE_V1,1.0",Number of Enterprises by Economic Activity(Before 2020),Structural Business Statistics and Business Demography  >  Business Registers,200,8
+"TR,DF_BR_FAALIYET_GIRISIM_V1,1.0",Number of Enterprises by Economic Activity(2020 and onwards),Structural Business Statistics and Business Demography  >  Business Registers,200,8
+"TR,DF_BESERI_KALKINMA_ENDEKS,1.0","Human development index, sub-indices, and change ratios by provinces",Multi-Domain Statistics  >  Human Indexes  >  Human Development Index,200,6
