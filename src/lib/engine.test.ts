@@ -94,3 +94,21 @@ describe("csv doğrulama", () => {
     expect(parseJobs("is_id,il\nA,B").fatal).toMatch(/eksik/);
   });
 });
+
+import { employeeShareCsv, employeeZipFiles, SHARE_COLS } from "./share";
+describe("paylaşım (KVKK)", () => {
+  it("çalışan dosyasında başka çalışanın işi ve önceki ay ID'si yok", async () => {
+    const jobs = Array.from({ length: 10 }, (_, i) => job(i, { onceki_ay_gorusen_calisan_id: "Y" }));
+    const emps = [emp("X", 10), emp("Y", 10)];
+    const a = await runDistribution(emps, jobs, rs());
+    const files = employeeZipFiles(emps, jobs, a);
+    const x = employeeShareCsv("X", jobs, a);
+    const idsX = new Set(a.filter((q) => q.empId === "X").map((q) => q.jobId));
+    const lines = x.replace("﻿", "").trim().split("\n");
+    expect(lines[0].split(",")).toEqual([...SHARE_COLS]);
+    for (const l of lines.slice(1)) expect(idsX.has(l.split(",")[0])).toBe(true);
+    expect(x).not.toMatch(/onceki_ay/);
+    expect(Object.keys(files).sort()).toEqual(["X_is_listesi.csv", "Y_is_listesi.csv"]);
+    expect(lines.length - 1).toBe(idsX.size);
+  });
+});
