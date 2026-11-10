@@ -94,6 +94,7 @@ function attempt(P: RotParams, pairLimit: number, seed: number, deadline: number
   const score = (t: number, p: number, d: number) => {
     let s = cnt[p][d] * 10 + jit[p][d] * 4;
     if (cnt[p][d] < LO(p, d)) s -= 8;
+    if (spSet.has(d)) { let c = 0; for (const q of spSet) c += cnt[p][q]; s += c * 6; } // özel defterleri kişiler arasında dengele
     if (t > 0) {
       const a = prevOwner[d];
       if (a >= 0 && a !== p) s += pair[a][p] * 7;

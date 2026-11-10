@@ -88,3 +88,17 @@ describe("K6: haftalık özel defterler (1, 3, 6)", () => {
     expect(validatePlan(r.candidates[0].plan, { n: 6, m: 12, g: 2, pairLimit: r.usedPairLimit, ...SP }).k6).toEqual([]);
   }, 15000);
 });
+
+describe("özel defter dengesi", () => {
+  it("N=9: kişi başına özel defter sayısı birbirine yakın", async () => {
+    const SP = { special: [0, 2, 5], specialGap: 1 };
+    let best = 99;
+    for (const seed of [1, 2, 3]) {
+      const r = await generatePlans(P(9, { ...SP, seed }), { timeMs: 4000, want: 3 });
+      const v = validatePlan(r.candidates[0].plan, { n: 9, m: 12, g: 2, pairLimit: r.usedPairLimit, ...SP });
+      expect(v.ok).toBe(true);
+      best = Math.min(best, Math.max(...v.specialCounts) - Math.min(...v.specialCounts));
+    }
+    expect(best).toBeLessThanOrEqual(2);
+  }, 30000);
+});
