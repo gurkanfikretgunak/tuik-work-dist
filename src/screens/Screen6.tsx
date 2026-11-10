@@ -5,6 +5,7 @@ import { useConfirm } from "@/components/confirm";
 import { Badge, Button, Card, Collapsible, InfoCard, ScreenTitle, Stat } from "@/components/ui";
 import { EMP_COLS, toCsv, yesNo } from "@/lib/csv";
 import { round1, sumEffCap } from "@/lib/engine";
+import { ruleJson } from "@/lib/outputs";
 import { JOB_ALL_COLS, RESULT_COLS_EXTRA, download, resultRows, unassignedRows } from "@/lib/share";
 import { activeEmployees, activeJobs, useStore } from "@/lib/store";
 import { RULE_META } from "@/lib/types";
@@ -51,23 +52,6 @@ export default function Screen6() {
     log("onay", `Dağıtım onaylandı (${okN} atanan, ${un} atanamayan, ${manual} manuel değişiklik)`, { atanan: okN, atanamayan: un, manuel: manual });
   };
 
-  const ruleJson = () =>
-    JSON.stringify(
-      {
-        olusturma: new Date().toISOString(),
-        kurallar: rules.rules.map((r, i) => ({ oncelik: i + 1, kural: RULE_META[r.id].label, id: r.id, acik: r.enabled, tip: r.mandatory ? "zorunlu" : "tercih" })),
-        parametreler: {
-          kapasiteBirimi: rules.kapasiteBirimi, kapasiteModu: rules.kapasiteModu, kirCarpan: rules.kirCarpan,
-          sapma: rules.sapma, gecenAyYon: rules.gecenAyYon, kapasiteAsimi: rules.kapasiteAsimi, iyilestirme: rules.iyilestirme,
-        },
-        kapasiteAyarlari: employees.map((r) => ({ ...r.data, kullanildi: r.included && r.errors.length === 0 })),
-        // Başka kullanıcının aynı ayarlarla dağıtım yapabilmesi için
-        ayarSeti: { rules },
-      },
-      null,
-      2,
-    );
-
   const downloadAll = async () => {
     const files: string[] = [];
     if (pick.sonuc) files.push("atama_sonucu.csv");
@@ -91,7 +75,7 @@ export default function Screen6() {
     if (!ok) return;
     if (pick.sonuc) download("atama_sonucu.csv", toCsv(resultRows(js, A, emps), [...JOB_ALL_COLS, ...RESULT_COLS_EXTRA]), "text/csv;charset=utf-8");
     if (pick.atanamayan && un > 0) download("atanamayan_isler.csv", toCsv(unassignedRows(js, A), [...JOB_ALL_COLS, "sebep"]), "text/csv;charset=utf-8");
-    if (pick.kural) download("kural_ozeti.json", ruleJson(), "application/json");
+    if (pick.kural) download("kural_ozeti.json", ruleJson(employees, rules), "application/json");
     if (pick.calisan)
       download("calisanlar.csv", toCsv(employees.filter((r) => r.included).map((r) => ({ ...r.data, kir_gorevi_yapabilir: yesNo(r.data.kir_gorevi_yapabilir), aktif: yesNo(r.data.aktif) })), EMP_COLS), "text/csv;charset=utf-8");
     log("indirme", `Çıktı dosyaları indirildi: ${files.join(", ")}`, { dosyalar: files });
