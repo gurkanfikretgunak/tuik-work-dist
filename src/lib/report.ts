@@ -1,3 +1,4 @@
+import { collate } from "@/i18n";
 import { computeCompliance, computeLoads, effCap, round1, sumEffCap, weightOf } from "./engine";
 import { activeEmployees, activeJobs, type DistResult } from "./store";
 import type { EmpRow, EventLog, JobRow, RuleSet, RuleId } from "./types";
@@ -39,7 +40,7 @@ export function buildReport(args: {
   const avg = fills.length ? fills.reduce((a, b) => a + b, 0) / fills.length : 0;
   const sd = fills.length ? Math.sqrt(fills.reduce((s, f) => s + (f - avg) ** 2, 0) / fills.length) : 0;
 
-  const iller = [...new Set([...jobs.map((j) => j.il), ...emps.map((e) => e.il)])].sort((a, b) => a.localeCompare(b, "tr"));
+  const iller = [...new Set([...jobs.map((j) => j.il), ...emps.map((e) => e.il)])].sort((a, b) => collate(a, b));
   const perIl: IlStat[] = iller.map((il) => {
     const ej = perEmp.filter((p) => p.il === il);
     const cap = ej.reduce((s, p) => s + p.kapasite, 0);

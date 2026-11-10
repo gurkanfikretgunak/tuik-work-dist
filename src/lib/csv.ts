@@ -1,6 +1,7 @@
 import Papa from "papaparse";
 import { z } from "zod";
-import type { CellError, Employee, Job, Row } from "./types";
+import { tx } from "@/i18n";
+import { mkErr, type CellError, type Employee, type Job, type Row } from "./types";
 
 export const EMP_COLS = [
   "calisan_id",
@@ -61,22 +62,22 @@ export function normOncelik(v: string | undefined): Job["oncelik"] | null {
   return null;
 }
 
-const req = z.string().trim().min(1, "boş olamaz");
+const req = z.string().trim().min(1, "v1ui.err.empty");
 const numStr = (min: number, max: number, def?: number) =>
   z
     .string()
     .trim()
     .transform((s) => (s === "" && def !== undefined ? String(def) : s))
-    .pipe(z.string().min(1, "boş olamaz"))
+    .pipe(z.string().min(1, "v1ui.err.empty"))
     .transform((s) => Number(s.replace(",", ".")))
     .pipe(
       z
-        .number({ error: "sayı olmalı" })
-        .refine((n) => Number.isFinite(n), "sayı olmalı")
-        .refine((n) => n >= min && n <= max, `${min}–${max} arasında olmalı`),
+        .number({ error: "v1ui.err.number" })
+        .refine((n) => Number.isFinite(n), "v1ui.err.number")
+        .refine((n) => n >= min && n <= max, `v1ui.err.range:${min}:${max}`),
     );
 const boolStr = (def: boolean) =>
-  z.string().refine((s) => parseBool(s, def) !== null, "Evet/Hayır olmalı");
+  z.string().refine((s) => parseBool(s, def) !== null, "v1ui.err.yesno");
 
 const empSchema = z.object({
   calisan_id: req,
@@ -96,16 +97,20 @@ const jobSchema = z.object({
   il: req,
   ilce: z.string(),
   mahalle: req,
-  yerlesim_tipi: z.string().refine((s) => normYerlesim(s) !== null, "Kent veya Kır olmalı"),
+  yerlesim_tipi: z.string().refine((s) => normYerlesim(s) !== null, "v1ui.err.settlement"),
   birim_no: z.string(),
   gorusme_sayisi: numStr(1, 1000),
   onceki_ay_gorusen_calisan_id: z.string(),
-  oncelik: z.string().refine((s) => normOncelik(s) !== null, "Yüksek/Normal/Düşük olmalı"),
+  oncelik: z.string().refine((s) => normOncelik(s) !== null, "v1ui.err.priority"),
   anket_turu: z.string(),
 });
 
 function issues(err: z.ZodError): CellError[] {
-  return err.issues.map((i) => ({ col: String(i.path[0] ?? ""), msg: i.message }));
+  return err.issues.map((i) => {
+    // zod mesajı "anahtar[:min:max]" biçimindedir
+    const [key, min, max] = i.message.split(":");
+    return mkErr(String(i.path[0] ?? ""), key, min !== undefined ? { min, max } : undefined);
+  });
 }
 
 export function toEmployee(raw: Record<string, string>): Employee {
@@ -165,7 +170,7 @@ function parseGeneric<T>(
   const fields = res.meta.fields ?? [];
   const missingColumns = required.filter((c) => !fields.includes(c));
   if (missingColumns.length) {
-    return { rows: [], missingColumns, delimiter: res.meta.delimiter, fatal: `Zorunlu sütun(lar) eksik: ${missingColumns.join(", ")}` };
+    return { rows: [], missingColumns, delimiter: res.meta.delimiter, fatal: tx("v1ui.fatal.missing", { cols: missingColumns.join(", ") }) };
   }
   const seen = new Map<string, number>();
   const rows: Row<T>[] = res.data.map((rawIn, i) => {
@@ -175,7 +180,7 @@ function parseGeneric<T>(
     const errors = parsed.success ? [] : issues(parsed.error);
     const id = (raw[idCol] ?? "").trim();
     if (id) {
-      if (seen.has(id)) errors.push({ col: idCol, msg: `yinelenen kimlik (satır ${seen.get(id)})` });
+      if (seen.has(id)) errors.push(mkErr(idCol, "v1ui.err.dupId", { row: seen.get(id) ?? 0 }));
       else seen.set(id, i + 2);
     }
     return { rowNo: i + 2, data: conv(raw), errors, included: errors.length === 0 };

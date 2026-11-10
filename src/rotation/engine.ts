@@ -1,3 +1,4 @@
+import { tx } from "@/i18n";
 import { calcTargets, type Strategy } from "./math";
 import type { Plan } from "./validator";
 import { validatePlan } from "./validator";
@@ -213,7 +214,7 @@ export async function generatePlans(
   let seed = P.seed;
   const T = calcTargets(P.n, P.m, P.absent, P.strategy ?? "ek", P.maxPer ?? 2);
   if (T.badMonths.length)
-    return { candidates: [], usedPairLimit: P.pairLimit, relaxed, attempts: 0, error: `Ay ${T.badMonths.map((x) => x + 1).join(", ")}: müsait kişi sayısı, ek atamada kişi başı en fazla ${P.maxPer ?? 2} defterle tüm defterleri karşılamaya yetmiyor. İzinleri azaltın veya "boş bırak" stratejisini seçin.` };
+    return { candidates: [], usedPairLimit: P.pairLimit, relaxed, attempts: 0, error: tx("v2ui.eng.badMonths", { months: T.badMonths.map((x) => x + 1).join(", "), max: P.maxPer ?? 2 }) };
   const levels = [0, 1, 2];
   for (const extra of levels) {
     const pl = P.pairLimit + extra;
@@ -234,12 +235,12 @@ export async function generatePlans(
       }
     }
     if (found.length) {
-      if (extra > 0) relaxed.push(`Çift tekrar sınırı ${P.pairLimit} → ${pl} gevşetildi`);
+      if (extra > 0) relaxed.push(tx("v2ui.eng.relaxPair", { a: P.pairLimit, b: pl }));
       found.sort((a, b) => a.score - b.score);
       opts.onProgress?.(1, found.length);
       return { candidates: found, usedPairLimit: pl, relaxed, attempts };
     }
   }
   opts.onProgress?.(1, 0);
-  return { candidates: [], usedPairLimit: P.pairLimit, relaxed, attempts, error: "Süre içinde zorunlu kuralları sağlayan plan bulunamadı. Süreyi artırın, G değerini düşürün veya kısıtları gevşetin." };
+  return { candidates: [], usedPairLimit: P.pairLimit, relaxed, attempts, error: tx("v2ui.eng.timeout") };
 }

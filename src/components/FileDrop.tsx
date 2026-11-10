@@ -1,8 +1,10 @@
 "use client";
 import { Upload } from "lucide-react";
 import { useRef, useState } from "react";
+import { useT } from "@/i18n";
 
-export function FileDrop({ onText, label = "CSV dosyasını sürükleyin veya seçin" }: { onText: (text: string, name: string) => void; label?: string }) {
+export function FileDrop({ onText, label }: { onText: (text: string, name: string) => void; label?: string }) {
+  const { t } = useT();
   const ref = useRef<HTMLInputElement>(null);
   const [over, setOver] = useState(false);
 
@@ -30,13 +32,13 @@ export function FileDrop({ onText, label = "CSV dosyasını sürükleyin veya se
       className={`flex flex-col items-center justify-center gap-1 rounded-md border-2 border-dashed px-4 py-6 text-center text-[13px] ${over ? "border-[#1F2A44] bg-slate-50" : "border-slate-300 bg-white"}`}
     >
       <Upload className="h-5 w-5 text-slate-500" />
-      <div className="text-slate-700">{label}</div>
+      <div className="text-slate-700">{label ?? t("v1ui.drop.default")}</div>
       <button
         type="button"
         onClick={() => ref.current?.click()}
         className="rounded border border-slate-300 bg-white px-3 py-1 text-xs font-medium hover:bg-slate-50"
       >
-        Dosya seç
+        {t("v1ui.drop.choose")}
       </button>
       <input
         ref={ref}

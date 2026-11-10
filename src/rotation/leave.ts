@@ -1,7 +1,9 @@
 import Papa from "papaparse";
+import { tx } from "@/i18n";
+import { mkErr, type CellError } from "@/lib/types";
 
 export type Leave = { id: number; personId: string; start: string; end: string; note: string; included: boolean };
-export type LeaveError = { col: string; msg: string };
+export type LeaveError = CellError;
 
 /** YYYY-MM-DD, DD.MM.YYYY veya DD/MM/YYYY → UTC gün sayısı (epoch gün) */
 export function parseDay(s: string): number | null {
@@ -21,13 +23,13 @@ export const daysInMonth = (year: number, month1: number) => new Date(Date.UTC(y
 
 export function validateLeave(l: Leave, personIds: string[], planStartDay: number, planEndDay: number): LeaveError[] {
   const e: LeaveError[] = [];
-  if (!personIds.includes(l.personId)) e.push({ col: "personId", msg: "bilinmeyen personel" });
+  if (!personIds.includes(l.personId)) e.push(mkErr("personId", "v2core.leave.unknownPerson"));
   const a = parseDay(l.start), b = parseDay(l.end);
-  if (a === null) e.push({ col: "start", msg: "geçersiz tarih (YYYY-AA-GG)" });
-  if (b === null) e.push({ col: "end", msg: "geçersiz tarih (YYYY-AA-GG)" });
+  if (a === null) e.push(mkErr("start", "v2core.leave.badDate"));
+  if (b === null) e.push(mkErr("end", "v2core.leave.badDate"));
   if (a !== null && b !== null) {
-    if (b < a) e.push({ col: "end", msg: "bitiş başlangıçtan önce" });
-    else if (b < planStartDay || a > planEndDay) e.push({ col: "start", msg: "plan dönemi dışında" });
+    if (b < a) e.push(mkErr("end", "v2core.leave.endBefore"));
+    else if (b < planStartDay || a > planEndDay) e.push(mkErr("start", "v2core.leave.outOfPlan"));
   }
   return e;
 }
@@ -77,6 +79,6 @@ export function parseLeaveCsv(text: string): { rows: Omit<Leave, "id">[]; fatal?
   const r = Papa.parse<Record<string, string>>(text.replace(/^﻿/, ""), { header: true, skipEmptyLines: "greedy", transformHeader: (h) => h.trim() });
   const f = r.meta.fields ?? [];
   const miss = ["calisan_id", "baslangic", "bitis"].filter((c) => !f.includes(c));
-  if (miss.length) return { rows: [], fatal: `Zorunlu sütun(lar) eksik: ${miss.join(", ")}` };
+  if (miss.length) return { rows: [], fatal: tx("v2core.leave.missingCols", { cols: miss.join(", ") }) };
   return { rows: r.data.map((x) => ({ personId: (x.calisan_id ?? "").trim(), start: (x.baslangic ?? "").trim(), end: (x.bitis ?? "").trim(), note: (x.not ?? "").trim(), included: true })) };
 }

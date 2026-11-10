@@ -2,6 +2,7 @@
 import { ArrowRight, FileUp } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useConfirm } from "@/components/confirm";
+import { useT } from "@/i18n";
 import { DataTable, type Col, type TRow } from "@/components/DataTable";
 import { FileDrop } from "@/components/FileDrop";
 import { Badge, Button, Card, Collapsible, InfoCard, ScreenTitle, Stat } from "@/components/ui";
@@ -11,22 +12,23 @@ import { activeEmployees, activeJobs, useStore } from "@/lib/store";
 
 export default function Screen3() {
   const confirm = useConfirm();
+  const { t, rt, locale } = useT();
   const { jobs, jobFile, jobsConfirmed, employees, rules, setJobs, patchJobs, setJobsConfirmed, go, log } = useStore();
-  const [fatal, setFatal] = useState("");
+  const [miss, setMiss] = useState<string[]>([]);
 
   const onText = async (text: string, name: string) => {
     const r = parseJobs(text);
-    if (r.fatal) return setFatal(r.fatal);
-    setFatal("");
+    if (r.fatal) return setMiss(r.missingColumns);
+    setMiss([]);
     if (jobs.length) {
-      const ok = await confirm({ title: "Mevcut iş listesi değiştirilsin mi?", body: "Yüklü işler ve varsa dağıtım sonucu silinecek.", confirmLabel: "Değiştir", tone: "danger" });
+      const ok = await confirm({ title: t("v1ui.s3.replace.title"), body: t("v1ui.s3.replace.body"), confirmLabel: t("v1ui.replace"), tone: "danger" });
       if (!ok) return;
     }
     const bad = r.rows.filter((x) => x.errors.length).length;
     setJobs(r.rows, { name, total: r.rows.length, errorRows: bad, at: new Date().toISOString() });
-    log("is_yuklendi", `İş dosyası yüklendi: ${name} (${r.rows.length} satır, ${bad} hatalı)`, { dosya: name, satir: r.rows.length, hatali: bad });
+    log("is_yuklendi", t("v1ui.s3.log.loaded", { name, rows: r.rows.length, bad }), { dosya: name, satir: r.rows.length, hatali: bad });
   };
-  const loadSample = async () => onText(await (await fetch("/ornek/isler.csv")).text(), "isler.csv (örnek)");
+  const loadSample = async () => onText(await (await fetch("/ornek/isler.csv")).text(), `isler.csv (${t("v1ui.exampleWord")})`);
 
   const toggle = (id: number) => patchJobs((rs) => rs.map((r) => (r.rowNo === id ? (r.errors.length && !r.included ? r : { ...r, included: !r.included }) : r)));
   const toggleAll = (c: boolean, ids: number[]) => {
@@ -40,7 +42,7 @@ export default function Screen3() {
   const stats = useMemo(() => {
     const cap = sumEffCap(emps);
     const load = act.reduce((s, j) => s + weightOf(j, rules), 0);
-    const iller = [...new Set(act.map((j) => j.il))].sort((a, b) => a.localeCompare(b, "tr"));
+    const iller = [...new Set(act.map((j) => j.il))].sort((a, b) => a.localeCompare(b, locale));
     const perIl = iller.map((il) => {
       const c = emps.filter((e) => e.aktif && e.il === il).reduce((s, e) => s + effCap(e), 0);
       const l = act.filter((j) => j.il === il).reduce((s, j) => s + weightOf(j, rules), 0);
@@ -50,9 +52,9 @@ export default function Screen3() {
     const empIds = new Set(employees.map((r) => r.data.calisan_id));
     const badPrev = act.filter((j) => j.onceki_ay_gorusen_calisan_id && !empIds.has(j.onceki_ay_gorusen_calisan_id));
     return { cap, load, perIl, kir, badPrev, gorusme: act.reduce((s, j) => s + j.gorusme_sayisi, 0) };
-  }, [act, emps, rules, employees]);
+  }, [act, emps, rules, employees, locale]);
 
-  const unitLbl = rules.kapasiteBirimi === "puan" ? "puan" : "iş";
+  const unitLbl = rules.kapasiteBirimi === "puan" ? t("v1ui.unit.puan") : t("v1ui.unit.is");
   const gap = stats.load - stats.cap;
   const noStaffIl = stats.perIl.filter((x) => x.noStaff);
   const ilGaps = stats.perIl.filter((x) => x.gap > 0 && !x.noStaff);
@@ -74,101 +76,97 @@ export default function Screen3() {
   const badRows = jobs.filter((r) => r.errors.length);
   const next = async () => {
     const ok = await confirm({
-      title: "İş listesi onaylansın ve dağıtıma geçilsin mi?",
+      title: t("v1ui.s3.next.title"),
       body: (
         <>
-          <p>
-            <b>{act.length}</b> iş kullanılacak ({jobs.length - act.length} satır dışarıda bırakıldı). Toplam yük <b>{round1(stats.load)} {unitLbl}</b>, efektif kapasite <b>{round1(stats.cap)}</b>.
-          </p>
-          {gap > 0 && <p className="mt-1 font-medium text-[#C92830]">Dikkat: kapasite açığı {round1(gap)} {unitLbl}. Bazı işler atanamayabilir.</p>}
+          <p>{rt("v1ui.s3.next.body", { n: act.length, skip: jobs.length - act.length, load: round1(stats.load), unit: unitLbl, cap: round1(stats.cap) })}</p>
+          {gap > 0 && <p className="mt-1 font-medium text-[#C92830]">{t("v1ui.s3.next.gap", { gap: round1(gap), unit: unitLbl })}</p>}
         </>
       ),
-      confirmLabel: "Onayla ve devam et",
+      confirmLabel: t("v1ui.confirmContinue"),
     });
     if (!ok) return;
     setJobsConfirmed(true);
-    log("is_onaylandi", `İş listesi onaylandı: ${act.length} iş kullanılacak, ${jobs.length - act.length} satır atlandı`, { kullanilan: act.length, atlanan: jobs.length - act.length });
+    log("is_onaylandi", t("v1ui.s3.next.log", { n: act.length, skip: jobs.length - act.length }), { kullanilan: act.length, atlanan: jobs.length - act.length });
     go(4);
   };
 
   return (
     <div>
-      <ScreenTitle no={3} title="İş Yükleme ve Doğrulama">
+      <ScreenTitle no={3} title={t("v1ui.s3.title")}>
         <Button onClick={loadSample} data-testid="load-sample-job">
-          <FileUp className="h-3.5 w-3.5" /> Örnek veri yükle
+          <FileUp className="h-3.5 w-3.5" /> {t("v1ui.sample")}
         </Button>
       </ScreenTitle>
       <div className="mb-3">
-        <Collapsible title="Doğrulama ve kontroller nasıl çalışır?">
+        <Collapsible title={t("v1ui.s3.help.title")}>
           <ul className="list-inside list-disc space-y-0.5">
-            <li>
-              <b>isler.csv</b> okunur ve her satır doğrulanır; hatalı hücreler kırmızı, satır numarası ve sebebi aşağıdaki rapordadır.
-            </li>
-            <li>Satır başındaki kutuyla işin dağıtıma dahil edilip edilmeyeceğine siz karar verirsiniz. Hatalı satırlar otomatik atlanır; düzeltip yeniden yükleyebilirsiniz.</li>
-            <li>Çapraz kontroller: toplam yük ≤ efektif kapasite mi, il bazında açık var mı, çalışanı olmayan ilde iş var mı, önceki ay ID&apos;leri personelde var mı.</li>
+            <li>{rt("v1ui.s3.help.1")}</li>
+            <li>{t("v1ui.s3.help.2")}</li>
+            <li>{t("v1ui.s3.help.3")}</li>
           </ul>
         </Collapsible>
       </div>
 
-      {fatal && (
+      {miss.length > 0 && (
         <div className="mb-3">
-          <InfoCard tone="error" title="Dosya okunamadı">
-            {fatal}
+          <InfoCard tone="error" title={t("v1ui.fileErr")}>
+            {t("v1ui.fatal.missing", { cols: miss.join(", ") })}
           </InfoCard>
         </div>
       )}
 
       {jobs.length === 0 ? (
-        <FileDrop onText={onText} label="isler.csv dosyasını sürükleyin veya seçin" />
+        <FileDrop onText={onText} label={t("v1ui.s3.drop")} />
       ) : (
         <>
           <div className="mb-3 grid grid-cols-2 gap-2 md:grid-cols-6">
-            <Stat label="Kullanılacak iş" value={act.length} sub={`toplam ${jobs.length} satır`} />
-            <Stat label="Toplam görüşme" value={stats.gorusme} />
-            <Stat label="İl sayısı" value={stats.perIl.length} />
-            <Stat label="Kır / kent" value={`${stats.kir} / ${act.length - stats.kir}`} sub={act.length ? `%${Math.round((stats.kir / act.length) * 100)} kır` : ""} />
-            <Stat label={`Yük / kapasite (${unitLbl})`} value={`${round1(stats.load)} / ${round1(stats.cap)}`} tone={gap > 0 ? "red" : "green"} />
-            <Stat label="Doluluk tahmini" value={stats.cap > 0 ? `%${Math.round((stats.load / stats.cap) * 100)}` : "—"} tone={gap > 0 ? "red" : undefined} />
+            <Stat label={t("v1ui.s3.stat.jobs")} value={act.length} sub={t("v1ui.s3.stat.rowsTotal", { n: jobs.length })} />
+            <Stat label={t("v1ui.s3.stat.interviews")} value={stats.gorusme} />
+            <Stat label={t("v1ui.stat.ilCount")} value={stats.perIl.length} />
+            <Stat label={t("v1ui.s3.stat.ruralUrban")} value={`${stats.kir} / ${act.length - stats.kir}`} sub={act.length ? t("v1ui.s3.stat.ruralPct", { p: Math.round((stats.kir / act.length) * 100) }) : ""} />
+            <Stat label={t("v1ui.s3.stat.loadCap", { unit: unitLbl })} value={`${round1(stats.load)} / ${round1(stats.cap)}`} tone={gap > 0 ? "red" : "green"} />
+            <Stat label={t("v1ui.s3.stat.fill")} value={stats.cap > 0 ? `%${Math.round((stats.load / stats.cap) * 100)}` : "—"} tone={gap > 0 ? "red" : undefined} />
           </div>
 
           <div className="mb-3 grid gap-3 lg:grid-cols-2">
-            <Card title="Çapraz kontroller (personele karşı)">
+            <Card title={t("v1ui.s3.cross.title")}>
               <div className="space-y-1.5">
                 {gap > 0 ? (
                   <InfoCard tone="error">
-                    Toplam iş yükü kapasiteyi aşıyor: <b>{round1(gap)} {unitLbl}</b> açık var.
+                    {rt("v1ui.s3.cross.over", { gap: round1(gap), unit: unitLbl })}
                   </InfoCard>
                 ) : (
-                  <InfoCard tone="ok">Toplam iş yükü efektif kapasiteye sığıyor.</InfoCard>
+                  <InfoCard tone="ok">{t("v1ui.s3.cross.fits")}</InfoCard>
                 )}
                 {ilGaps.length > 0 && (
-                  <InfoCard tone="warn" title="İl bazında kapasite açığı">
+                  <InfoCard tone="warn" title={t("v1ui.s3.cross.ilGap")}>
                     {ilGaps.map((x) => `${x.il}: ${round1(x.gap)}`).join(" · ")}
                   </InfoCard>
                 )}
                 {noStaffIl.length > 0 && (
-                  <InfoCard tone="error" title="Çalışanı olmayan ilde iş var">
-                    {noStaffIl.map((x) => x.il).join(", ")} — bu işler (il kuralı zorunluysa) atanamayacak.
+                  <InfoCard tone="error" title={t("v1ui.s3.cross.noStaff")}>
+                    {t("v1ui.s3.cross.noStaffBody", { ils: noStaffIl.map((x) => x.il).join(", ") })}
                   </InfoCard>
                 )}
                 {stats.badPrev.length > 0 && (
-                  <InfoCard tone="warn" title="Önceki ay çalışan ID'si personelde yok">
-                    {stats.badPrev.length} iş: {[...new Set(stats.badPrev.map((j) => j.onceki_ay_gorusen_calisan_id))].join(", ")}
+                  <InfoCard tone="warn" title={t("v1ui.s3.cross.badPrev")}>
+                    {t("v1ui.s3.cross.badPrevBody", { n: stats.badPrev.length, ids: [...new Set(stats.badPrev.map((j) => j.onceki_ay_gorusen_calisan_id))].join(", ") })}
                   </InfoCard>
                 )}
               </div>
             </Card>
-            <Card title={`Hata raporu (${badRows.length} satır)`}>
+            <Card title={t("v1ui.s3.err.title", { n: badRows.length })}>
               {badRows.length === 0 ? (
-                <Badge tone="green">Hatalı satır yok</Badge>
+                <Badge tone="green">{t("v1ui.s3.err.none")}</Badge>
               ) : (
                 <div className="max-h-40 overflow-auto">
                   <table className="w-full text-[12px]">
                     <thead>
                       <tr className="text-left text-slate-500">
-                        <th className="pr-2">Satır</th>
-                        <th className="pr-2">Sütun</th>
-                        <th>Sebep</th>
+                        <th className="pr-2">{t("v1ui.s3.err.row")}</th>
+                        <th className="pr-2">{t("v1ui.s3.err.col")}</th>
+                        <th>{t("v1ui.s3.err.reason")}</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -187,10 +185,10 @@ export default function Screen3() {
               )}
               <div className="mt-2 flex gap-2">
                 <Button size="sm" onClick={() => patchJobs((rs) => rs.map((r) => (r.errors.length ? { ...r, included: false } : r)))}>
-                  Hatalı satırları atla
+                  {t("v1ui.s3.err.skip")}
                 </Button>
                 <Button size="sm" onClick={() => setJobs([], { name: "", total: 0, errorRows: 0, at: "" })}>
-                  Dosyayı kaldır ve yeniden yükle
+                  {t("v1ui.s3.err.remove")}
                 </Button>
               </div>
             </Card>
@@ -201,11 +199,11 @@ export default function Screen3() {
       )}
 
       <div className="mt-3 flex items-center justify-between">
-        <Button onClick={() => go(2)}>← Kurallar</Button>
+        <Button onClick={() => go(2)}>{t("v1ui.s3.toRules")}</Button>
         <div className="flex items-center gap-2">
-          {jobsConfirmed && <Badge tone="green">Onaylandı</Badge>}
+          {jobsConfirmed && <Badge tone="green">{t("v1ui.confirmed")}</Badge>}
           <Button variant="primary" disabled={act.length === 0} onClick={next} data-testid="jobs-next">
-            Onayla ve dağıtıma geç <ArrowRight className="h-3.5 w-3.5" />
+            {t("v1ui.s3.nextBtn")} <ArrowRight className="h-3.5 w-3.5" />
           </Button>
         </div>
       </div>

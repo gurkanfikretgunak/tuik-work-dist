@@ -1,5 +1,6 @@
 "use client";
 import { create } from "zustand";
+import { monthName } from "@/i18n";
 import type { Candidate, GenResult } from "./engine";
 import type { Plan } from "./validator";
 import type { Leave } from "./leave";
@@ -81,9 +82,8 @@ export const useRot = create<S>((set, get) => ({
   reset: () => set({ ...init() }),
 }));
 
-export const MONTHS = ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"];
 export const monthLabel = (startMonth: number, t: number, year: number) => {
   const idx = startMonth - 1 + t;
-  return { ay: MONTHS[idx % 12], yil: year + Math.floor(idx / 12), no: (idx % 12) + 1 };
+  return { ay: monthName(idx % 12), yil: year + Math.floor(idx / 12), no: (idx % 12) + 1 };
 };
 export type { Candidate };

@@ -24,7 +24,8 @@ export type Job = {
   anket_turu: string;
 };
 
-export type CellError = { col: string; msg: string };
+/** msg erişim anında geçerli dile çevrilir (getter); hatalar dizilerde referansla taşınmalı, {...err} yayılımı getter'ı dondurur. */
+export type CellError = { col: string; key: string; params?: Record<string, string | number>; readonly msg: string };
 
 export type Row<T> = {
   rowNo: number; // CSV'deki satır numarası (başlık = 1)
@@ -89,6 +90,17 @@ export type EventLog = {
 };
 
 import { tx } from "@/i18n";
+
+export function mkErr(col: string, key: string, params?: Record<string, string | number>): CellError {
+  return {
+    col,
+    key,
+    params,
+    get msg() {
+      return tx(key, params);
+    },
+  };
+}
 
 /** Kural etiketleri geçerli dile göre erişim anında çevrilir. */
 export const RULE_META = Object.fromEntries(

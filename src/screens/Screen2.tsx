@@ -2,15 +2,16 @@
 import clsx from "clsx";
 import { ArrowDown, ArrowRight, ArrowUp } from "lucide-react";
 import { useConfirm } from "@/components/confirm";
+import { useT } from "@/i18n";
 import { Badge, Button, Card, Collapsible, Field, InfoCard, ScreenTitle, inputCls } from "@/components/ui";
 import { useStore } from "@/lib/store";
 import { DEFAULT_RULESET, RULE_META, type RuleSet } from "@/lib/types";
 
-const TEMPLATES: { name: string; desc: string; make: () => RuleSet }[] = [
-  { name: "Dengeli (önerilen)", desc: "İl ve kır zorunlu; mahalle ve doluluk dengesi tercih.", make: () => structuredClone(DEFAULT_RULESET) },
+const TEMPLATES: { nameKey: string; descKey: string; make: () => RuleSet }[] = [
+  { nameKey: "v1ui.s2.tpl.balanced.name", descKey: "v1ui.s2.tpl.balanced.desc", make: () => structuredClone(DEFAULT_RULESET) },
   {
-    name: "Süreklilik odaklı",
-    desc: "Geçen ay görüşen kişi aynı kalmaya çalışır (tercih).",
+    nameKey: "v1ui.s2.tpl.cont.name",
+    descKey: "v1ui.s2.tpl.cont.desc",
     make: () => ({
       ...structuredClone(DEFAULT_RULESET),
       gecenAyYon: "sureklilik",
@@ -24,8 +25,8 @@ const TEMPLATES: { name: string; desc: string; make: () => RuleSet }[] = [
     }),
   },
   {
-    name: "Rotasyon (zorunlu)",
-    desc: "Geçen ay görüşen kişiye aynı iş verilmez.",
+    nameKey: "v1ui.s2.tpl.rot.name",
+    descKey: "v1ui.s2.tpl.rot.desc",
     make: () => ({
       ...structuredClone(DEFAULT_RULESET),
       gecenAyYon: "rotasyon",
@@ -39,14 +40,15 @@ const TEMPLATES: { name: string; desc: string; make: () => RuleSet }[] = [
     }),
   },
   {
-    name: "Boş liste",
-    desc: "Tüm kurallar kapalı; kendiniz seçersiniz.",
+    nameKey: "v1ui.s2.tpl.empty.name",
+    descKey: "v1ui.s2.tpl.empty.desc",
     make: () => ({ ...structuredClone(DEFAULT_RULESET), rules: DEFAULT_RULESET.rules.map((r) => ({ ...r, enabled: false, mandatory: false })) }),
   },
 ];
 
 export default function Screen2() {
   const confirm = useConfirm();
+  const { t, rt } = useT();
   const { rules, setRules, rulesConfirmed, setRulesConfirmed, go, log } = useStore();
   const upd = (p: Partial<RuleSet>) => setRules({ ...rules, ...p });
 
@@ -61,36 +63,40 @@ export default function Screen2() {
 
   const errors: string[] = [];
   const warns: string[] = [];
-  if (!rules.rules.some((r) => r.enabled)) errors.push("En az bir kural açık olmalı.");
+  if (!rules.rules.some((r) => r.enabled)) errors.push(t("v1ui.s2.err.none"));
   if (rules.kapasiteModu === "sert" && rules.kapasiteAsimi === "uyari")
-    errors.push("Çelişki: 'Sert limit' modunda kapasite aşımı izni verilemez. Aşımı 'atanamadı listesine düşsün' yapın veya orantılı moda geçin.");
+    errors.push(t("v1ui.s2.err.conflict"));
   const on = (id: string) => rules.rules.find((r) => r.id === id)?.enabled;
-  if (rules.kapasiteModu === "orantili" && !on("denge")) warns.push("Orantılı hedef modu, 'Kapasiteye orantılı denge' kuralı kapalıyken etkisizdir.");
-  if (on("kir") && rules.kirCarpan < 1) warns.push("Kır çarpanı 1'den küçük; kır işleri kentten hafif sayılır.");
+  if (rules.kapasiteModu === "orantili" && !on("denge")) warns.push(t("v1ui.s2.warn.prop"));
+  if (on("kir") && rules.kirCarpan < 1) warns.push(t("v1ui.s2.warn.kir"));
 
+  const mp = (m: boolean) => (m ? t("v1ui.s2.mandatory") : t("v1ui.s2.preferred"));
   const save = async () => {
     const ok = await confirm({
-      title: "Kural seti kaydedilsin mi?",
+      title: t("v1ui.s2.save.title"),
       body: (
         <>
-          <p>Açık kurallar (öncelik sırasıyla):</p>
+          <p>{t("v1ui.s2.save.open")}</p>
           <ol className="my-1 list-inside list-decimal">
             {rules.rules.filter((r) => r.enabled).map((r) => (
               <li key={r.id}>
-                {RULE_META[r.id].label} — <b>{r.mandatory ? "zorunlu" : "tercih"}</b>
+                {RULE_META[r.id].label} — <b>{mp(r.mandatory)}</b>
               </li>
             ))}
           </ol>
           <p>
-            Kapasite modu: <b>{rules.kapasiteModu === "sert" ? "sert limit" : "orantılı hedef"}</b>, birim: <b>{rules.kapasiteBirimi === "puan" ? "görüşme puanı" : "iş sayısı"}</b>.
+            {rt("v1ui.s2.save.mode", {
+              mode: rules.kapasiteModu === "sert" ? t("v1ui.s2.mode.hard") : t("v1ui.s2.mode.prop"),
+              unit: rules.kapasiteBirimi === "puan" ? t("v1ui.s2.unit.puan") : t("v1ui.s2.unit.is"),
+            })}
           </p>
         </>
       ),
-      confirmLabel: "Kaydet ve devam et",
+      confirmLabel: t("v1ui.s2.save.confirm"),
     });
     if (!ok) return;
     setRulesConfirmed(true);
-    log("kurallar_secildi", `Kurallar seçildi: ${rules.rules.filter((r) => r.enabled).map((r) => `${RULE_META[r.id].label} (${r.mandatory ? "zorunlu" : "tercih"})`).join(", ")}`, {
+    log("kurallar_secildi", t("v1ui.s2.save.log", { list: rules.rules.filter((r) => r.enabled).map((r) => `${RULE_META[r.id].label} (${mp(r.mandatory)})`).join(", ") }), {
       kurallar: rules.rules.filter((r) => r.enabled),
       kirCarpan: rules.kirCarpan,
       mod: rules.kapasiteModu,
@@ -102,42 +108,38 @@ export default function Screen2() {
     go(3);
   };
 
-  const applyTemplate = async (t: (typeof TEMPLATES)[number]) => {
-    const ok = await confirm({ title: `"${t.name}" şablonu uygulansın mı?`, body: "Mevcut kural seçimleriniz ve parametreler bu şablonla değiştirilecek.", confirmLabel: "Uygula" });
-    if (ok) setRules(t.make());
+  const applyTemplate = async (tpl: (typeof TEMPLATES)[number]) => {
+    const ok = await confirm({ title: t("v1ui.s2.tpl.title", { name: t(tpl.nameKey) }), body: t("v1ui.s2.tpl.body"), confirmLabel: t("v1ui.apply") });
+    if (ok) setRules(tpl.make());
   };
 
   return (
     <div>
-      <ScreenTitle no={2} title="Kural Seçimi" />
+      <ScreenTitle no={2} title={t("v1ui.s2.title")} />
       <div className="mb-3 space-y-2">
-        <Collapsible title="Kurallar nasıl çalışır?">
+        <Collapsible title={t("v1ui.s2.help.title")}>
           <ul className="list-inside list-disc space-y-0.5">
-            <li>
-              <b>Zorunlu</b> kural bir filtredir: kurala uymayan çalışan o işe hiç aday olmaz. Aday kalmazsa iş &quot;atanamadı&quot; listesine sebebiyle düşer.
-            </li>
-            <li>
-              <b>Tercih</b> kural puanlamada kullanılır: kurala uyan adaya ek puan verilir, öncelik sırası yukarıda olan kuralın ağırlığı daha yüksektir.
-            </li>
-            <li>Mahalle gruplama ve doluluk dengesi doğası gereği tercih kurallarıdır.</li>
-            <li>Ok düğmeleriyle öncelik sırasını değiştirin (en üst = en yüksek öncelik).</li>
+            <li>{rt("v1ui.s2.help.1")}</li>
+            <li>{rt("v1ui.s2.help.2")}</li>
+            <li>{t("v1ui.s2.help.3")}</li>
+            <li>{t("v1ui.s2.help.4")}</li>
           </ul>
         </Collapsible>
       </div>
 
-      <Card title="Hazır şablonlar" className="mb-3">
+      <Card title={t("v1ui.s2.tplCard")} className="mb-3">
         <div className="grid gap-2 md:grid-cols-4">
-          {TEMPLATES.map((t) => (
-            <button key={t.name} onClick={() => applyTemplate(t)} className="rounded border border-slate-200 p-2 text-left hover:border-[#1F2A44] hover:bg-slate-50">
-              <div className="text-[12.5px] font-semibold text-[#1F2A44]">{t.name}</div>
-              <div className="text-[11.5px] text-slate-600">{t.desc}</div>
+          {TEMPLATES.map((tpl) => (
+            <button key={tpl.nameKey} onClick={() => applyTemplate(tpl)} className="rounded border border-slate-200 p-2 text-left hover:border-[#1F2A44] hover:bg-slate-50">
+              <div className="text-[12.5px] font-semibold text-[#1F2A44]">{t(tpl.nameKey)}</div>
+              <div className="text-[11.5px] text-slate-600">{t(tpl.descKey)}</div>
             </button>
           ))}
         </div>
       </Card>
 
       <div className="grid gap-3 lg:grid-cols-5">
-        <Card title="Kurallar ve öncelik sırası" className="lg:col-span-3">
+        <Card title={t("v1ui.s2.rulesCard")} className="lg:col-span-3">
           <ul className="divide-y divide-slate-200">
             {rules.rules.map((r, i) => {
               const meta = RULE_META[r.id];
@@ -145,17 +147,17 @@ export default function Screen2() {
               return (
                 <li key={r.id} className={clsx("flex items-start gap-2 py-2", !r.enabled && "opacity-60")} data-testid={`rule-${r.id}`}>
                   <div className="flex flex-col">
-                    <button aria-label="Yukarı taşı" className="rounded p-0.5 hover:bg-slate-100 disabled:opacity-30" disabled={i === 0} onClick={() => move(i, -1)}>
+                    <button aria-label={t("v1ui.s2.up")} className="rounded p-0.5 hover:bg-slate-100 disabled:opacity-30" disabled={i === 0} onClick={() => move(i, -1)}>
                       <ArrowUp className="h-3.5 w-3.5" />
                     </button>
-                    <button aria-label="Aşağı taşı" className="rounded p-0.5 hover:bg-slate-100 disabled:opacity-30" disabled={i === rules.rules.length - 1} onClick={() => move(i, 1)}>
+                    <button aria-label={t("v1ui.s2.down")} className="rounded p-0.5 hover:bg-slate-100 disabled:opacity-30" disabled={i === rules.rules.length - 1} onClick={() => move(i, 1)}>
                       <ArrowDown className="h-3.5 w-3.5" />
                     </button>
                   </div>
                   <div className="w-5 pt-0.5 text-center text-xs font-semibold text-slate-500">{i + 1}</div>
                   <div className="min-w-0 flex-1">
                     <label className="flex cursor-pointer items-center gap-2 text-[13px] font-medium text-slate-900">
-                      <input type="checkbox" checked={r.enabled} onChange={(e) => patchRule(i, { enabled: e.target.checked })} aria-label={`${meta.label} aç/kapa`} />
+                      <input type="checkbox" checked={r.enabled} onChange={(e) => patchRule(i, { enabled: e.target.checked })} aria-label={t("v1ui.s2.toggle", { label: meta.label })} />
                       {meta.label}
                     </label>
                     <div className="ml-6 text-[11.5px] text-slate-600">{meta.desc}</div>
@@ -165,10 +167,10 @@ export default function Screen2() {
                     disabled={!r.enabled || !canMandatory}
                     value={r.mandatory ? "z" : "t"}
                     onChange={(e) => patchRule(i, { mandatory: e.target.value === "z" })}
-                    aria-label={`${meta.label} zorunlu veya tercih`}
+                    aria-label={t("v1ui.s2.mandOrPref", { label: meta.label })}
                   >
-                    <option value="z">Zorunlu</option>
-                    <option value="t">Tercih</option>
+                    <option value="z">{t("v1ui.s2.opt.mandatory")}</option>
+                    <option value="t">{t("v1ui.s2.opt.preferred")}</option>
                   </select>
                 </li>
               );
@@ -176,40 +178,40 @@ export default function Screen2() {
           </ul>
         </Card>
 
-        <Card title="Parametreler" className="lg:col-span-2">
+        <Card title={t("v1ui.s2.params")} className="lg:col-span-2">
           <div className="space-y-2.5">
-            <Field label="Kapasite birimi" hint="Görüşme puanında kır işi çarpanla ağırlıklandırılır.">
-              <select className={inputCls} value={rules.kapasiteBirimi} onChange={(e) => upd({ kapasiteBirimi: e.target.value as RuleSet["kapasiteBirimi"] })} aria-label="Kapasite birimi">
-                <option value="puan">Görüşme puanı (önerilen)</option>
-                <option value="is">İş sayısı</option>
+            <Field label={t("v1ui.s2.p.unit")} hint={t("v1ui.s2.p.unit.hint")}>
+              <select className={inputCls} value={rules.kapasiteBirimi} onChange={(e) => upd({ kapasiteBirimi: e.target.value as RuleSet["kapasiteBirimi"] })} aria-label={t("v1ui.s2.p.unit")}>
+                <option value="puan">{t("v1ui.s2.p.unit.puan")}</option>
+                <option value="is">{t("v1ui.s2.p.unit.is")}</option>
               </select>
             </Field>
-            <Field label="Kır çarpanı" hint="Örn. 1,5: 2 görüşmelik kır işi = 3 puan.">
-              <input className={inputCls} type="number" step="0.1" min="0.5" max="5" value={rules.kirCarpan} onChange={(e) => upd({ kirCarpan: Number(e.target.value) || 1 })} aria-label="Kır çarpanı" />
+            <Field label={t("v1ui.s2.p.mult")} hint={t("v1ui.s2.p.mult.hint")}>
+              <input className={inputCls} type="number" step="0.1" min="0.5" max="5" value={rules.kirCarpan} onChange={(e) => upd({ kirCarpan: Number(e.target.value) || 1 })} aria-label={t("v1ui.s2.p.mult")} />
             </Field>
-            <Field label="Kapasite kullanım modu">
-              <select className={inputCls} value={rules.kapasiteModu} onChange={(e) => upd({ kapasiteModu: e.target.value as RuleSet["kapasiteModu"] })} aria-label="Kapasite modu">
-                <option value="sert">Sert limit — kapasite hiç aşılmaz</option>
-                <option value="orantili">Orantılı hedef — herkes aynı doluluk oranına yaklaşır</option>
+            <Field label={t("v1ui.s2.p.mode")}>
+              <select className={inputCls} value={rules.kapasiteModu} onChange={(e) => upd({ kapasiteModu: e.target.value as RuleSet["kapasiteModu"] })} aria-label={t("v1ui.s2.p.mode")}>
+                <option value="sert">{t("v1ui.s2.p.mode.hard")}</option>
+                <option value="orantili">{t("v1ui.s2.p.mode.prop")}</option>
               </select>
             </Field>
-            <Field label="İzin verilen doluluk sapması (yüzde puan)" hint="İyileştirme turu, en dolu ve en az dolu çalışan arasındaki fark bunu aşarsa iş taşır.">
-              <input className={inputCls} type="number" min="0" max="50" value={rules.sapma} onChange={(e) => upd({ sapma: Math.max(0, Number(e.target.value) || 0) })} aria-label="Sapma" />
+            <Field label={t("v1ui.s2.p.dev")} hint={t("v1ui.s2.p.dev.hint")}>
+              <input className={inputCls} type="number" min="0" max="50" value={rules.sapma} onChange={(e) => upd({ sapma: Math.max(0, Number(e.target.value) || 0) })} aria-label={t("v1ui.s2.p.dev.aria")} />
             </Field>
-            <Field label="Geçen ay kuralı yönü">
-              <select className={inputCls} value={rules.gecenAyYon} onChange={(e) => upd({ gecenAyYon: e.target.value as RuleSet["gecenAyYon"] })} aria-label="Geçen ay yönü">
-                <option value="rotasyon">Rotasyon — farklı kişiye ver</option>
-                <option value="sureklilik">Süreklilik — aynı kişide kalsın</option>
+            <Field label={t("v1ui.s2.p.dir")}>
+              <select className={inputCls} value={rules.gecenAyYon} onChange={(e) => upd({ gecenAyYon: e.target.value as RuleSet["gecenAyYon"] })} aria-label={t("v1ui.s2.p.dir")}>
+                <option value="rotasyon">{t("v1ui.s2.p.dir.rot")}</option>
+                <option value="sureklilik">{t("v1ui.s2.p.dir.cont")}</option>
               </select>
             </Field>
-            <Field label="Kapasite aşılırsa">
-              <select className={inputCls} value={rules.kapasiteAsimi} onChange={(e) => upd({ kapasiteAsimi: e.target.value as RuleSet["kapasiteAsimi"] })} aria-label="Kapasite aşımı">
-                <option value="atanamadi">Fazla işler atanamadı listesine düşsün</option>
-                <option value="uyari">En az dolu çalışana atanıp uyarı verilsin</option>
+            <Field label={t("v1ui.s2.p.over")}>
+              <select className={inputCls} value={rules.kapasiteAsimi} onChange={(e) => upd({ kapasiteAsimi: e.target.value as RuleSet["kapasiteAsimi"] })} aria-label={t("v1ui.s2.p.over")}>
+                <option value="atanamadi">{t("v1ui.s2.p.over.un")}</option>
+                <option value="uyari">{t("v1ui.s2.p.over.warn")}</option>
               </select>
             </Field>
             <label className="flex cursor-pointer items-center gap-2 text-[12.5px]">
-              <input type="checkbox" checked={rules.iyilestirme} onChange={(e) => upd({ iyilestirme: e.target.checked })} /> İyileştirme turunu çalıştır
+              <input type="checkbox" checked={rules.iyilestirme} onChange={(e) => upd({ iyilestirme: e.target.checked })} /> {t("v1ui.s2.p.improve")}
             </label>
           </div>
         </Card>
@@ -229,11 +231,11 @@ export default function Screen2() {
       </div>
 
       <div className="mt-3 flex items-center justify-between">
-        <Button onClick={() => go(1)}>← Personel</Button>
+        <Button onClick={() => go(1)}>{t("v1ui.s2.toStaff")}</Button>
         <div className="flex items-center gap-2">
-          {rulesConfirmed && <Badge tone="green">Kaydedildi</Badge>}
+          {rulesConfirmed && <Badge tone="green">{t("v1ui.saved")}</Badge>}
           <Button variant="primary" disabled={errors.length > 0} onClick={save} data-testid="rules-next">
-            Kaydet ve iş yüklemeye geç <ArrowRight className="h-3.5 w-3.5" />
+            {t("v1ui.s2.nextBtn")} <ArrowRight className="h-3.5 w-3.5" />
           </Button>
         </div>
       </div>

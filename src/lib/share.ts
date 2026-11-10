@@ -1,4 +1,5 @@
 import JSZip from "jszip";
+import { nedenText, reasonText, uyariText } from "./engine";
 import { toCsv, yesNo } from "./csv";
 import type { Assignment, Employee, Job } from "./types";
 
@@ -18,8 +19,8 @@ export function resultRows(jobs: Job[], A: Assignment[], emps: Employee[]) {
       ...j,
       atanan_calisan_id: a?.empId ?? "",
       atanan_calisan_adi: a?.empId ? em.get(a.empId)?.ad_soyad ?? "" : "",
-      atama_nedeni: a?.empId ? a.neden : "",
-      uyari: a?.uyari ?? "",
+      atama_nedeni: a?.empId ? nedenText(a.neden) : "",
+      uyari: uyariText(a?.uyari ?? ""),
       manuel_degisti: yesNo(!!a?.manuel),
     };
   });
@@ -27,7 +28,7 @@ export function resultRows(jobs: Job[], A: Assignment[], emps: Employee[]) {
 
 export function unassignedRows(jobs: Job[], A: Assignment[]) {
   const am = new Map(A.map((a) => [a.jobId, a]));
-  return jobs.filter((j) => !am.get(j.is_id)?.empId).map((j) => ({ ...j, sebep: am.get(j.is_id)?.sebep ?? "" }));
+  return jobs.filter((j) => !am.get(j.is_id)?.empId).map((j) => ({ ...j, sebep: reasonText(am.get(j.is_id)?.sebep ?? "") }));
 }
 
 /** Çalışana giden dosya: yalnızca kendi işleri, önceki ay çalışan ID'si ve başka çalışan bilgisi yok. */

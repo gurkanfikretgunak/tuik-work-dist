@@ -5,6 +5,7 @@ import { useConfirm, Modal } from "@/components/confirm";
 import { DataTable, type Col, type TRow } from "@/components/DataTable";
 import { FileDrop } from "@/components/FileDrop";
 import { Badge, Button, Card, Collapsible, Field, InfoCard, ScreenTitle, Stat, inputCls } from "@/components/ui";
+import { useT } from "@/i18n";
 import { parseEmployees, revalidateEmployee, toCsv, yesNo, EMP_COLS } from "@/lib/csv";
 import { effCap, round1 } from "@/lib/engine";
 import { activeEmployees, saveSet, useStore } from "@/lib/store";
@@ -13,29 +14,30 @@ import type { EmpRow, Employee } from "@/lib/types";
 
 export default function Screen1() {
   const confirm = useConfirm();
+  const { t, rt, locale } = useT();
   const { employees, empFile, empConfirmed, rules, setEmployees, patchEmployees, setEmpConfirmed, go, log } = useStore();
   const [bulk, setBulk] = useState(false);
-  const [err, setErr] = useState("");
+  const [miss, setMiss] = useState<string[]>([]);
 
   const onText = async (text: string, name: string) => {
     const r = parseEmployees(text);
     if (r.fatal) {
-      setErr(r.fatal);
+      setMiss(r.missingColumns);
       return;
     }
-    setErr("");
+    setMiss([]);
     const bad = r.rows.filter((x) => x.errors.length).length;
     if (employees.length) {
-      const ok = await confirm({ title: "Mevcut personel listesi değiştirilsin mi?", body: "Yüklenmiş personel ve yaptığınız kapasite düzenlemeleri yeni dosyayla değişecek.", confirmLabel: "Değiştir", tone: "danger" });
+      const ok = await confirm({ title: t("v1ui.s1.replace.title"), body: t("v1ui.s1.replace.body"), confirmLabel: t("v1ui.replace"), tone: "danger" });
       if (!ok) return;
     }
     setEmployees(r.rows, { name, total: r.rows.length, errorRows: bad, at: new Date().toISOString() });
-    log("personel_yuklendi", `Personel dosyası yüklendi: ${name} (${r.rows.length} satır, ${bad} hatalı)`, { dosya: name, satir: r.rows.length, hatali: bad });
+    log("personel_yuklendi", t("v1ui.s1.log.loaded", { name, rows: r.rows.length, bad }), { dosya: name, satir: r.rows.length, hatali: bad });
   };
 
   const loadSample = async () => {
-    const t = await (await fetch("/ornek/calisanlar.csv")).text();
-    onText(t, "calisanlar.csv (örnek)");
+    const csv = await (await fetch("/ornek/calisanlar.csv")).text();
+    onText(csv, `calisanlar.csv (${t("v1ui.exampleWord")})`);
   };
 
   const toggle = (id: number) => patchEmployees((rs) => rs.map((r) => (r.rowNo === id ? (r.errors.length && !r.included ? r : { ...r, included: !r.included }) : r)));
@@ -53,7 +55,7 @@ export default function Screen1() {
     const errors = revalidateEmployee(d);
     patchEmployees((rs) => rs.map((r) => (r.rowNo === id ? { ...r, data: d, errors, included: r.included && errors.length === 0 } : r)));
     if (key === "donemlik_kapasite" || key === "musait_oran" || key === "aktif" || key === "kir_gorevi_yapabilir")
-      log("kapasite_degisti", `${d.calisan_id}: ${key} → ${typeof value === "boolean" ? yesNo(value) : value} (tek tek düzenleme)`, { calisan: d.calisan_id, alan: key });
+      log("kapasite_degisti", t("v1ui.s1.log.edit", { id: d.calisan_id, key, val: typeof value === "boolean" ? (value ? t("c.yes") : t("c.no")) : value }), { calisan: d.calisan_id, alan: key });
   };
 
   const rows: TRow[] = employees.map((r) => ({
@@ -72,8 +74,8 @@ export default function Screen1() {
     { key: "ilce", label: "ilce", width: 90 },
     { key: "donemlik_kapasite", label: "donemlik_kapasite", type: "num", editable: true, width: 120 },
     { key: "musait_oran", label: "musait_oran %", type: "num", editable: true, width: 100 },
-    { key: "efektif", label: "efektif kapasite", type: "num", width: 100 },
-    { key: "kir_gorevi_yapabilir", label: "kır görevi", type: "bool", editable: true, width: 80 },
+    { key: "efektif", label: t("v1ui.s1.col.eff"), type: "num", width: 100 },
+    { key: "kir_gorevi_yapabilir", label: t("v1ui.s1.col.kir"), type: "bool", editable: true, width: 80 },
     { key: "aktif", label: "aktif", type: "bool", editable: true, width: 60 },
     { key: "kapasite_notu", label: "kapasite_notu", editable: true, width: 200 },
   ];
@@ -89,117 +91,109 @@ export default function Screen1() {
       x.cap += effCap(e);
       m.set(e.il, x);
     }
-    return [...m.entries()].sort((a, b) => a[0].localeCompare(b[0], "tr"));
-  }, [activeOnes]);
+    return [...m.entries()].sort((a, b) => a[0].localeCompare(b[0], locale));
+  }, [activeOnes, locale]);
 
   const warnings: string[] = [];
   for (const e of act) {
-    if (e.aktif && effCap(e) === 0) warnings.push(`${e.calisan_id} (${e.ad_soyad}): efektif kapasite 0`);
-    else if (e.donemlik_kapasite > 100) warnings.push(`${e.calisan_id}: kapasite ${e.donemlik_kapasite} sıra dışı yüksek`);
+    if (e.aktif && effCap(e) === 0) warnings.push(t("v1ui.s1.w.zero", { id: e.calisan_id, name: e.ad_soyad }));
+    else if (e.donemlik_kapasite > 100) warnings.push(t("v1ui.s1.w.high", { id: e.calisan_id, cap: e.donemlik_kapasite }));
   }
   const caps = act.map((e) => e.donemlik_kapasite).filter((x) => x > 0);
   if (caps.length > 3) {
     const mean = caps.reduce((a, b) => a + b, 0) / caps.length;
-    for (const e of act) if (e.donemlik_kapasite > mean * 2.5) warnings.push(`${e.calisan_id}: kapasite ortalamanın (${Math.round(mean)}) çok üzerinde`);
+    for (const e of act) if (e.donemlik_kapasite > mean * 2.5) warnings.push(t("v1ui.s1.w.mean", { id: e.calisan_id, mean: Math.round(mean) }));
   }
 
   const exportCsv = async () => {
-    const ok = await confirm({ title: "Personel listesi indirilsin mi?", body: "Seçili satırlar güncel kapasite ayarlarıyla calisanlar.csv olarak indirilecek. Dosya çalışan adlarını içerir; yalnızca yetkili kişilerle paylaşın.", confirmLabel: "İndir" });
+    const ok = await confirm({ title: t("v1ui.s1.exp.title"), body: t("v1ui.s1.exp.body"), confirmLabel: t("c.download") });
     if (!ok) return;
     download("calisanlar.csv", toCsv(employees.filter((r) => r.included).map((r) => ({ ...r.data, kir_gorevi_yapabilir: yesNo(r.data.kir_gorevi_yapabilir), aktif: yesNo(r.data.aktif) })), EMP_COLS), "text/csv;charset=utf-8");
-    log("indirme", "Güncel personel listesi (calisanlar.csv) dışa aktarıldı");
+    log("indirme", t("v1ui.s1.exp.log"));
   };
 
   const save = async () => {
-    const ok = await confirm({ title: "Set kaydedilsin mi?", body: "Personel, kapasite ayarları ve kural seti bu tarayıcıda saklanır; sonraki dönemde Karşılama ekranından yüklenebilir. Mevcut kayıtlı set üzerine yazılır.", confirmLabel: "Kaydet" });
+    const ok = await confirm({ title: t("v1ui.s1.save.title"), body: t("v1ui.s1.save.body"), confirmLabel: t("v1ui.save") });
     if (!ok) return;
     saveSet({ employees, rules, savedAt: new Date().toISOString() });
-    log("oturum", "Personel ve kapasite seti tarayıcıya kaydedildi");
+    log("oturum", t("v1ui.s1.save.log"));
   };
 
   const next = async () => {
     const noIl = act.length === 0;
     if (noIl) return;
     const ok = await confirm({
-      title: "Personel ve kapasite ayarları onaylansın mı?",
-      body: (
-        <>
-          <b>{act.length}</b> satır kullanılacak, <b>{activeOnes.length}</b> aktif çalışan, toplam efektif kapasite <b>{round1(total)}</b>. Onaydan sonra kural seçimine geçilir.
-        </>
-      ),
-      confirmLabel: "Onayla ve devam et",
+      title: t("v1ui.s1.next.title"),
+      body: rt("v1ui.s1.next.body", { rows: act.length, active: activeOnes.length, cap: round1(total) }),
+      confirmLabel: t("v1ui.confirmContinue"),
     });
     if (!ok) return;
     setEmpConfirmed(true);
-    log("personel_onaylandi", `Personel ve kapasite ayarları onaylandı (${act.length} satır, kapasite ${round1(total)})`, { aktif: activeOnes.length, kapasite: round1(total) });
+    log("personel_onaylandi", t("v1ui.s1.next.log", { rows: act.length, cap: round1(total) }), { aktif: activeOnes.length, kapasite: round1(total) });
     go(2);
   };
 
   return (
     <div>
-      <ScreenTitle no={1} title="Personel Yükleme ve Kapasite Ayarı">
+      <ScreenTitle no={1} title={t("v1ui.s1.title")}>
         <Button onClick={loadSample} data-testid="load-sample-emp">
-          <FileUp className="h-3.5 w-3.5" /> Örnek veri yükle
+          <FileUp className="h-3.5 w-3.5" /> {t("v1ui.sample")}
         </Button>
       </ScreenTitle>
 
       <div className="mb-3 space-y-2">
-        <Collapsible title="Bu ekranda ne yapılır?">
+        <Collapsible title={t("v1ui.s1.help.title")}>
           <ul className="list-inside list-disc space-y-0.5">
-            <li>
-              <b>calisanlar.csv</b> yüklenir; tablo MS Excel görünümünde önizlenir. Satır başındaki kutu, o çalışanın dağıtımda <b>kullanılıp kullanılmayacağını</b> belirler.
-            </li>
-            <li>Kapasite, müsaitlik %, kır görevi, aktif ve not alanları hücre içinde düzenlenir (Enter ile onaylanır).</li>
-            <li>
-              <b>Efektif kapasite = dönemlik kapasite × müsaitlik oranı</b>. Örnek: 30 kapasite, %50 müsaitlik → 15.
-            </li>
-            <li>Hatalı satırlar kırmızı işaretlenir ve varsayılan olarak seçili gelmez.</li>
+            <li>{rt("v1ui.s1.help.1")}</li>
+            <li>{t("v1ui.s1.help.2")}</li>
+            <li>{rt("v1ui.s1.help.3")}</li>
+            <li>{t("v1ui.s1.help.4")}</li>
           </ul>
         </Collapsible>
       </div>
 
-      {err && (
+      {miss.length > 0 && (
         <div className="mb-3">
-          <InfoCard tone="error" title="Dosya okunamadı">
-            {err}
+          <InfoCard tone="error" title={t("v1ui.fileErr")}>
+            {t("v1ui.fatal.missing", { cols: miss.join(", ") })}
           </InfoCard>
         </div>
       )}
 
       {employees.length === 0 ? (
-        <FileDrop onText={onText} label="calisanlar.csv dosyasını sürükleyin veya seçin" />
+        <FileDrop onText={onText} label={t("v1ui.s1.drop")} />
       ) : (
         <>
           <div className="mb-3 grid grid-cols-2 gap-2 md:grid-cols-5">
-            <Stat label="Seçili satır" value={act.length} sub={`toplam ${employees.length}`} />
-            <Stat label="Aktif çalışan" value={activeOnes.length} />
-            <Stat label="Toplam efektif kapasite" value={round1(total)} />
-            <Stat label="İl sayısı" value={byIl.length} />
-            <Stat label="Hatalı satır" value={employees.filter((r) => r.errors.length).length} tone={employees.some((r) => r.errors.length) ? "red" : "green"} />
+            <Stat label={t("v1ui.s1.stat.rows")} value={act.length} sub={t("v1ui.stat.rowsTotal", { n: employees.length })} />
+            <Stat label={t("v1ui.s1.stat.active")} value={activeOnes.length} />
+            <Stat label={t("v1ui.s1.stat.cap")} value={round1(total)} />
+            <Stat label={t("v1ui.stat.ilCount")} value={byIl.length} />
+            <Stat label={t("v1ui.stat.badRows")} value={employees.filter((r) => r.errors.length).length} tone={employees.some((r) => r.errors.length) ? "red" : "green"} />
           </div>
 
           <div className="mb-3 grid gap-3 lg:grid-cols-3">
-            <Card title="İl bazında kapasite dağılımı" className="lg:col-span-2">
+            <Card title={t("v1ui.s1.byIl.title")} className="lg:col-span-2">
               <div className="flex flex-wrap gap-2">
                 {byIl.map(([il, x]) => (
                   <div key={il} className="rounded border border-slate-200 px-2.5 py-1.5">
                     <div className="text-xs font-semibold text-[#1F2A44]">{il}</div>
                     <div className="text-[11.5px] text-slate-600">
-                      {x.n} çalışan · kapasite {round1(x.cap)}
+                      {t("v1ui.s1.byIl.item", { n: x.n, cap: round1(x.cap) })}
                     </div>
                   </div>
                 ))}
-                {byIl.length === 0 && <span className="text-slate-500">Seçili aktif çalışan yok.</span>}
+                {byIl.length === 0 && <span className="text-slate-500">{t("v1ui.s1.byIl.none")}</span>}
               </div>
             </Card>
-            <Card title="Uyarılar">
+            <Card title={t("v1ui.s1.warn.title")}>
               {warnings.length === 0 && !employees.some((r) => r.errors.length) ? (
-                <Badge tone="green">Uyarı yok</Badge>
+                <Badge tone="green">{t("v1ui.s1.warn.none")}</Badge>
               ) : (
                 <ul className="max-h-24 list-inside list-disc space-y-0.5 overflow-auto text-[12px] text-amber-900">
                   {employees.filter((r) => r.errors.length).map((r) => (
                     <li key={r.rowNo} className="text-red-800">
-                      Satır {r.rowNo}: {r.errors.map((e) => `${e.col} ${e.msg}`).join("; ")}
+                      {t("v1ui.s1.warn.row", { row: r.rowNo, errs: r.errors.map((e) => `${e.col} ${e.msg}`).join("; ") })}
                     </li>
                   ))}
                   {warnings.map((w, i) => (
@@ -221,13 +215,13 @@ export default function Screen1() {
             toolbar={
               <>
                 <Button size="sm" onClick={() => setBulk(true)} data-testid="bulk-open">
-                  <Settings2 className="h-3.5 w-3.5" /> Toplu işlem
+                  <Settings2 className="h-3.5 w-3.5" /> {t("v1ui.s1.bulkOpen")}
                 </Button>
                 <Button size="sm" onClick={exportCsv}>
-                  <Download className="h-3.5 w-3.5" /> CSV dışa aktar
+                  <Download className="h-3.5 w-3.5" /> {t("v1ui.s1.exportBtn")}
                 </Button>
                 <Button size="sm" onClick={save}>
-                  <Save className="h-3.5 w-3.5" /> Seti kaydet
+                  <Save className="h-3.5 w-3.5" /> {t("v1ui.s1.saveBtn")}
                 </Button>
               </>
             }
@@ -237,11 +231,11 @@ export default function Screen1() {
 
       {employees.length > 0 && (
         <div className="mt-3 flex items-center justify-between">
-          <Button onClick={() => go(0)}>← Karşılama</Button>
+          <Button onClick={() => go(0)}>{t("v1ui.s1.toWelcome")}</Button>
           <div className="flex items-center gap-2">
-            {empConfirmed && <Badge tone="green">Onaylandı</Badge>}
+            {empConfirmed && <Badge tone="green">{t("v1ui.confirmed")}</Badge>}
             <Button variant="primary" onClick={next} disabled={act.length === 0} data-testid="emp-next">
-              Onayla ve kurallara geç <ArrowRight className="h-3.5 w-3.5" />
+              {t("v1ui.s1.nextBtn")} <ArrowRight className="h-3.5 w-3.5" />
             </Button>
           </div>
         </div>
@@ -254,12 +248,13 @@ export default function Screen1() {
 
 function BulkModal({ open, onClose, rows }: { open: boolean; onClose: () => void; rows: EmpRow[] }) {
   const confirm = useConfirm();
+  const { t, locale } = useT();
   const { patchEmployees, log } = useStore();
   const [scope, setScope] = useState("secili");
   const [value, setValue] = useState("");
   const [field, setField] = useState<"donemlik_kapasite" | "musait_oran">("donemlik_kapasite");
   const [op, setOp] = useState<"set" | "inc" | "dec">("set");
-  const iller = [...new Set(rows.map((r) => r.data.il))].sort((a, b) => a.localeCompare(b, "tr"));
+  const iller = [...new Set(rows.map((r) => r.data.il))].sort((a, b) => a.localeCompare(b, locale));
   const roller = [...new Set(rows.map((r) => r.data.rol).filter(Boolean))];
 
   const match = (r: EmpRow) => {
@@ -274,9 +269,9 @@ function BulkModal({ open, onClose, rows }: { open: boolean; onClose: () => void
   const valid = value !== "" && Number.isFinite(num) && num >= 0;
 
   const apply = async () => {
-    const lbl = field === "donemlik_kapasite" ? "dönemlik kapasite" : "müsaitlik oranı";
-    const opLbl = op === "set" ? `${num} olarak ayarlanacak` : op === "inc" ? `%${num} artırılacak` : `%${num} azaltılacak`;
-    const ok = await confirm({ title: "Toplu işlem uygulansın mı?", body: <>{n} çalışanın {lbl} değeri {opLbl}.</>, confirmLabel: "Uygula" });
+    const lbl = field === "donemlik_kapasite" ? t("v1ui.bulk.l.cap") : t("v1ui.bulk.l.avail");
+    const opLbl = op === "set" ? t("v1ui.bulk.d.set", { v: num }) : op === "inc" ? t("v1ui.bulk.d.inc", { v: num }) : t("v1ui.bulk.d.dec", { v: num });
+    const ok = await confirm({ title: t("v1ui.bulk.confirm.title"), body: t("v1ui.bulk.confirm.body", { n, field: lbl, op: opLbl }), confirmLabel: t("v1ui.apply") });
     if (!ok) return;
     patchEmployees((rs) =>
       rs.map((r) => {
@@ -290,7 +285,7 @@ function BulkModal({ open, onClose, rows }: { open: boolean; onClose: () => void
         return { ...r, data: d, errors };
       }),
     );
-    log("kapasite_degisti", `Toplu işlem: ${n} çalışan, ${lbl} ${opLbl} (kapsam: ${scope})`, { kisi: n, alan: field, islem: op, deger: num, kapsam: scope });
+    log("kapasite_degisti", t("v1ui.bulk.log", { n, field: lbl, op: opLbl, scope }), { kisi: n, alan: field, islem: op, deger: num, kapsam: scope });
     onClose();
   };
 
@@ -298,50 +293,50 @@ function BulkModal({ open, onClose, rows }: { open: boolean; onClose: () => void
     <Modal
       open={open}
       onClose={onClose}
-      title="Toplu kapasite işlemi"
+      title={t("v1ui.bulk.title")}
       footer={
         <>
-          <Button onClick={onClose}>Vazgeç</Button>
+          <Button onClick={onClose}>{t("c.cancel")}</Button>
           <Button variant="primary" disabled={!valid || n === 0} onClick={apply} data-testid="bulk-apply">
-            Uygula ({n} kişi)
+            {t("v1ui.bulk.applyN", { n })}
           </Button>
         </>
       }
     >
       <div className="space-y-2.5">
-        <Field label="Kapsam">
-          <select className={inputCls} value={scope} onChange={(e) => setScope(e.target.value)} aria-label="Kapsam">
-            <option value="secili">Seçili satırlar</option>
-            <option value="tumu">Tüm satırlar</option>
+        <Field label={t("v1ui.bulk.scope")}>
+          <select className={inputCls} value={scope} onChange={(e) => setScope(e.target.value)} aria-label={t("v1ui.bulk.scope")}>
+            <option value="secili">{t("v1ui.bulk.scope.sel")}</option>
+            <option value="tumu">{t("v1ui.bulk.scope.all")}</option>
             {iller.map((i) => (
               <option key={i} value={`il:${i}`}>
-                İl: {i}
+                {t("v1ui.bulk.scope.il", { v: i })}
               </option>
             ))}
             {roller.map((i) => (
               <option key={i} value={`rol:${i}`}>
-                Rol: {i}
+                {t("v1ui.bulk.scope.rol", { v: i })}
               </option>
             ))}
           </select>
         </Field>
-        <Field label="Alan">
-          <select className={inputCls} value={field} onChange={(e) => setField(e.target.value as typeof field)} aria-label="Alan">
-            <option value="donemlik_kapasite">Dönemlik kapasite</option>
-            <option value="musait_oran">Müsaitlik oranı (%)</option>
+        <Field label={t("v1ui.bulk.field")}>
+          <select className={inputCls} value={field} onChange={(e) => setField(e.target.value as typeof field)} aria-label={t("v1ui.bulk.field")}>
+            <option value="donemlik_kapasite">{t("v1ui.bulk.f.cap")}</option>
+            <option value="musait_oran">{t("v1ui.bulk.f.avail")}</option>
           </select>
         </Field>
-        <Field label="İşlem">
-          <select className={inputCls} value={op} onChange={(e) => setOp(e.target.value as typeof op)} aria-label="İşlem">
-            <option value="set">Aynı değeri ata</option>
-            <option value="inc">Yüzde olarak artır</option>
-            <option value="dec">Yüzde olarak azalt</option>
+        <Field label={t("v1ui.bulk.op")}>
+          <select className={inputCls} value={op} onChange={(e) => setOp(e.target.value as typeof op)} aria-label={t("v1ui.bulk.op")}>
+            <option value="set">{t("v1ui.bulk.op.set")}</option>
+            <option value="inc">{t("v1ui.bulk.op.inc")}</option>
+            <option value="dec">{t("v1ui.bulk.op.dec")}</option>
           </select>
         </Field>
-        <Field label={op === "set" ? "Değer" : "Yüzde (%)"} hint="Sayı girin; ondalık için virgül veya nokta.">
-          <input className={inputCls} value={value} onChange={(e) => setValue(e.target.value)} inputMode="decimal" aria-label="Değer" data-testid="bulk-value" />
+        <Field label={op === "set" ? t("v1ui.bulk.value") : t("v1ui.bulk.percent")} hint={t("v1ui.bulk.hint")}>
+          <input className={inputCls} value={value} onChange={(e) => setValue(e.target.value)} inputMode="decimal" aria-label={t("v1ui.bulk.value")} data-testid="bulk-value" />
         </Field>
-        <InfoCard>Bu işlem {n} satırı etkiler. Uygulamadan önce onayınız istenecek.</InfoCard>
+        <InfoCard>{t("v1ui.bulk.info", { n })}</InfoCard>
       </div>
     </Modal>
   );

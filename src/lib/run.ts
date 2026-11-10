@@ -1,3 +1,4 @@
+import { tx } from "@/i18n";
 import { runDistribution } from "./engine";
 import { activeEmployees, activeJobs, useStore } from "./store";
 import { RULE_META } from "./types";
@@ -16,12 +17,12 @@ export async function executeDistribution(onProgress?: (p: number) => void) {
     durationMs,
     runCount,
     at: new Date().toISOString(),
-    unitLabel: s.rules.kapasiteBirimi === "puan" ? "puan" : "iş",
+    unitLabel: s.rules.kapasiteBirimi,
   });
   const ok = assignments.filter((a) => a.empId).length;
   s.log(
     "dagitim",
-    `Dağıtım çalıştırıldı (${runCount}. kez): ${ok} atanan, ${assignments.length - ok} atanamayan, ${durationMs} ms`,
+    tx("v1core.run.log", { n: runCount, ok, un: assignments.length - ok, ms: durationMs }),
     { sure_ms: durationMs, calistirma: runCount, atanan: ok, atanamayan: assignments.length - ok, kurallar: s.rules.rules.filter((r) => r.enabled).map((r) => RULE_META[r.id].label) },
   );
   return assignments;

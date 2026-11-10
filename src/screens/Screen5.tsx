@@ -2,17 +2,20 @@
 import clsx from "clsx";
 import { ArrowRight, MoveRight, RotateCw } from "lucide-react";
 import { useMemo, useState } from "react";
+import { collate, useT } from "@/i18n";
 import { Modal, useConfirm } from "@/components/confirm";
 import { Badge, Button, Card, Collapsible, FillBar, InfoCard, ScreenTitle, Stat, inputCls } from "@/components/ui";
-import { checkMove, computeLoads, effCap, round1, weightOf } from "@/lib/engine";
+import { checkMove, computeLoads, effCap, reasonText, round1, uyariText, violText, weightOf } from "@/lib/engine";
 import { executeDistribution } from "@/lib/run";
 import { activeEmployees, activeJobs, useStore } from "@/lib/store";
+import { pct } from "@/lib/outputs";
 import type { Job } from "@/lib/types";
 
-const TABS = ["Il / mahalle dağılımı", "Uyarılar", "Atanamayanlar", "Doluluk dengesi"] as const;
+const TABS = ["dist", "warn", "unassigned", "balance"] as const;
 
 export default function Screen5() {
   const confirm = useConfirm();
+  const { t } = useT();
   const { employees, jobs, rules, result, patchAssignments, log, go } = useStore();
   const emps = useMemo(() => activeEmployees(employees).filter((e) => e.aktif), [employees]);
   const allEmps = useMemo(() => activeEmployees(employees), [employees]);
@@ -29,20 +32,20 @@ export default function Screen5() {
   if (!result) {
     return (
       <div>
-        <ScreenTitle no={5} title="Ön Onay" />
-        <InfoCard tone="warn" title="Geçerli bir dağıtım sonucu yok">
-          Personel, kural veya iş listesi değişti ya da dağıtım henüz çalıştırılmadı. Devam etmek için dağıtımı çalıştırın.
+        <ScreenTitle no={5} title={t("v1core.s5.title")} />
+        <InfoCard tone="warn" title={t("v1core.s5.noResultTitle")}>
+          {t("v1core.s5.noResultBody")}
         </InfoCard>
         <div className="mt-3">
           <Button variant="primary" onClick={() => go(4)}>
-            Dağıtım ekranına git
+            {t("v1core.s5.goRun")}
           </Button>
         </div>
       </div>
     );
   }
 
-  const unit = rules.kapasiteBirimi === "puan" ? "puan" : "iş";
+  const unit = t(rules.kapasiteBirimi === "puan" ? "v1core.unit.puan" : "v1core.unit.is");
   const assigned = A.filter((a) => a.empId);
   const unassigned = A.filter((a) => !a.empId);
   const fills = emps.map((e) => (effCap(e) > 0 ? (loads.get(e.calisan_id) ?? 0) / effCap(e) : 0));
@@ -53,9 +56,9 @@ export default function Screen5() {
 
   const redo = async () => {
     const ok = await confirm({
-      title: "Yeniden dağıtılsın mı?",
-      body: <>Mevcut sonuç{A.some((a) => a.manuel) ? " ve manuel değişiklikleriniz" : ""} silinip dağıtım baştan yapılacak.</>,
-      confirmLabel: "Yeniden dağıt",
+      title: t("v1core.s5.redoTitle"),
+      body: <>{t(A.some((a) => a.manuel) ? "v1core.s5.redoBodyManual" : "v1core.s5.redoBody")}</>,
+      confirmLabel: t("v1core.s4.redo"),
       tone: "danger",
     });
     if (!ok) return;
@@ -67,9 +70,9 @@ export default function Screen5() {
   const toApprove = async () => {
     if (unassigned.length > 0) {
       const ok = await confirm({
-        title: "Atanamayan işler var",
-        body: <>{unassigned.length} iş atanamadı. Yine de onay ekranına geçmek istiyor musunuz? Bu işler ayrı dosyada (atanamayan_isler.csv) çıktı olarak verilecek.</>,
-        confirmLabel: "Yine de geç",
+        title: t("v1core.s5.unTitle"),
+        body: <>{t("v1core.s5.unBody", { n: unassigned.length })}</>,
+        confirmLabel: t("v1core.s5.unConfirm"),
       });
       if (!ok) return;
     }
@@ -78,35 +81,34 @@ export default function Screen5() {
 
   return (
     <div>
-      <ScreenTitle no={5} title="Ön Onay">
-        <Button onClick={() => go(1)}>Kapasiteleri değiştir</Button>
-        <Button onClick={() => go(2)}>Kuralları değiştir</Button>
+      <ScreenTitle no={5} title={t("v1core.s5.title")}>
+        <Button onClick={() => go(1)}>{t("v1core.s5.editCap")}</Button>
+        <Button onClick={() => go(2)}>{t("v1core.s5.editRules")}</Button>
         <Button onClick={redo} disabled={busy}>
-          <RotateCw className="h-3.5 w-3.5" /> Yeniden dağıt
+          <RotateCw className="h-3.5 w-3.5" /> {t("v1core.s4.redo")}
         </Button>
         <Button variant="primary" onClick={toApprove} data-testid="to-approve">
-          Onaya geç <ArrowRight className="h-3.5 w-3.5" />
+          {t("v1core.s5.toApprove")} <ArrowRight className="h-3.5 w-3.5" />
         </Button>
       </ScreenTitle>
 
       <div className="mb-3">
-        <Collapsible title="Bu ekranda ne yapılır?">
-          Sonucu inceleyin. Soldan bir çalışan seçin, sağda işlerini görün ve &quot;Taşı&quot; ile başka çalışana verin. Her manuel değişiklikte kapasite ve zorunlu kural kontrolü yapılır; ihlal varsa
-          uyarılır ve onayınız istenir. Tüm değişiklikler süreç raporuna işlenir.
+        <Collapsible title={t("v1core.s5.helpTitle")}>
+          {t("v1core.s5.helpBody")}
         </Collapsible>
       </div>
 
       <div className="mb-3 grid grid-cols-2 gap-2 md:grid-cols-6">
-        <Stat label="Toplam iş" value={A.length} />
-        <Stat label="Atanan" value={assigned.length} tone="green" />
-        <Stat label="Atanamayan" value={unassigned.length} tone={unassigned.length ? "red" : "green"} />
-        <Stat label="Uyarı" value={warnA.length} tone={warnA.length ? "amber" : undefined} />
-        <Stat label="Ortalama doluluk" value={`%${Math.round(avg * 100)}`} />
-        <Stat label="Manuel değişiklik" value={A.filter((a) => a.manuel).length} />
+        <Stat label={t("v1core.l.totalJobs")} value={A.length} />
+        <Stat label={t("v1core.l.assigned")} value={assigned.length} tone="green" />
+        <Stat label={t("v1core.l.unassigned")} value={unassigned.length} tone={unassigned.length ? "red" : "green"} />
+        <Stat label={t("v1core.s5.warnings")} value={warnA.length} tone={warnA.length ? "amber" : undefined} />
+        <Stat label={t("v1core.l.avgFill")} value={pct(avg)} />
+        <Stat label={t("v1core.l.manualChanges")} value={A.filter((a) => a.manuel).length} />
       </div>
 
       <div className="grid gap-3 lg:grid-cols-5">
-        <Card title="Çalışanlar" className="lg:col-span-2">
+        <Card title={t("v1core.l.employees")} className="lg:col-span-2">
           <ul className="max-h-[360px] divide-y divide-slate-100 overflow-auto">
             {emps.map((e) => {
               const l = loads.get(e.calisan_id) ?? 0;
@@ -135,16 +137,16 @@ export default function Screen5() {
           </ul>
         </Card>
 
-        <Card title={sel ? `${sel.ad_soyad} — işleri (${selJobs.length})` : "İşler"} className="lg:col-span-3">
+        <Card title={sel ? t("v1core.s5.empJobs", { name: sel.ad_soyad, n: selJobs.length }) : t("v1core.s5.jobs")} className="lg:col-span-3">
           <div className="max-h-[360px] overflow-auto">
             <table className="w-full text-[12.5px]">
               <thead className="sticky top-0 bg-white text-left text-slate-500">
                 <tr>
-                  <th className="pr-2">İş</th>
-                  <th className="pr-2">İl</th>
-                  <th className="pr-2">Mahalle</th>
-                  <th className="pr-2">K/K</th>
-                  <th className="pr-2 text-right">Görüşme</th>
+                  <th className="pr-2">{t("v1core.s5.job")}</th>
+                  <th className="pr-2">{t("v1core.l.province")}</th>
+                  <th className="pr-2">{t("v1core.l.neighbourhood")}</th>
+                  <th className="pr-2">{t("v1core.s5.ruralUrbanShort")}</th>
+                  <th className="pr-2 text-right">{t("v1core.s5.interviews")}</th>
                   <th className="pr-2 text-right">{unit}</th>
                   <th />
                 </tr>
@@ -153,7 +155,7 @@ export default function Screen5() {
                 {selJobs.map(({ a, j }) => (
                   <tr key={j.is_id} className="border-t border-slate-100">
                     <td className="py-1 pr-2 font-mono">
-                      {j.is_id} {a.manuel && <Badge tone="amber">manuel</Badge>} {a.uyari && <Badge tone="red">{a.uyari}</Badge>}
+                      {j.is_id} {a.manuel && <Badge tone="amber">{t("v1core.s5.manualBadge")}</Badge>} {a.uyari && <Badge tone="red">{uyariText(a.uyari)}</Badge>}
                     </td>
                     <td className="pr-2">{j.il}</td>
                     <td className="pr-2">{j.mahalle}</td>
@@ -162,7 +164,7 @@ export default function Screen5() {
                     <td className="pr-2 text-right tabular-nums">{round1(weightOf(j, rules))}</td>
                     <td className="text-right">
                       <Button size="sm" onClick={() => setMoving(j)} data-testid={`move-${j.is_id}`}>
-                        <MoveRight className="h-3 w-3" /> Başka çalışana taşı
+                        <MoveRight className="h-3 w-3" /> {t("v1core.s5.moveToOther")}
                       </Button>
                     </td>
                   </tr>
@@ -170,7 +172,7 @@ export default function Screen5() {
                 {selJobs.length === 0 && (
                   <tr>
                     <td colSpan={7} className="py-6 text-center text-slate-500">
-                      Bu çalışana iş atanmadı.
+                      {t("v1core.s5.noJobsForEmp")}
                     </td>
                   </tr>
                 )}
@@ -182,40 +184,40 @@ export default function Screen5() {
 
       <div className="mt-3">
         <div className="flex gap-0.5 border-b border-slate-200">
-          {TABS.map((t) => (
+          {TABS.map((k) => (
             <button
-              key={t}
-              onClick={() => setTab(t)}
-              className={clsx("px-3 py-1.5 text-xs font-medium", tab === t ? "border-b-2 border-[#C92830] text-[#1F2A44]" : "text-slate-600 hover:bg-slate-50")}
+              key={k}
+              onClick={() => setTab(k)}
+              className={clsx("px-3 py-1.5 text-xs font-medium", tab === k ? "border-b-2 border-[#C92830] text-[#1F2A44]" : "text-slate-600 hover:bg-slate-50")}
             >
-              {t === "Uyarılar" ? `Uyarılar (${warnA.length})` : t === "Atanamayanlar" ? `Atanamayanlar (${unassigned.length})` : t}
+              {k === "warn" ? `${t("v1core.s5.tabWarn")} (${warnA.length})` : k === "unassigned" ? `${t("v1core.s5.tabUn")} (${unassigned.length})` : t(k === "dist" ? "v1core.s5.tabDist" : "v1core.s5.tabBalance")}
             </button>
           ))}
         </div>
         <div className="rounded-b-md border border-t-0 border-slate-200 p-3">
-          {tab === "Il / mahalle dağılımı" && <IlMahalle A={A} jm={jm} />}
-          {tab === "Uyarılar" &&
+          {tab === "dist" && <IlMahalle A={A} jm={jm} />}
+          {tab === "warn" &&
             (warnA.length === 0 ? (
-              <Badge tone="green">Uyarı yok</Badge>
+              <Badge tone="green">{t("v1core.s5.noWarn")}</Badge>
             ) : (
               <ul className="list-inside list-disc text-[12.5px]">
                 {warnA.map((a) => (
                   <li key={a.jobId}>
-                    {a.jobId} → {a.empId}: {a.uyari}
+                    {a.jobId} → {a.empId}: {uyariText(a.uyari)}
                   </li>
                 ))}
               </ul>
             ))}
-          {tab === "Atanamayanlar" &&
+          {tab === "unassigned" &&
             (unassigned.length === 0 ? (
-              <Badge tone="green">Atanamayan iş yok</Badge>
+              <Badge tone="green">{t("v1core.s5.noUnassigned")}</Badge>
             ) : (
               <table className="w-full text-[12.5px]">
                 <thead className="text-left text-slate-500">
                   <tr>
-                    <th>İş</th>
-                    <th>İl / mahalle</th>
-                    <th>Sebep</th>
+                    <th>{t("v1core.s5.job")}</th>
+                    <th>{t("v1core.s5.provNeigh")}</th>
+                    <th>{t("v1core.s5.reason")}</th>
                     <th />
                   </tr>
                 </thead>
@@ -228,10 +230,10 @@ export default function Screen5() {
                         <td>
                           {j.il} / {j.mahalle} ({j.yerlesim_tipi})
                         </td>
-                        <td className="text-red-800">{a.sebep}</td>
+                        <td className="text-red-800">{reasonText(a.sebep)}</td>
                         <td className="text-right">
                           <Button size="sm" onClick={() => setMoving(j)}>
-                            Elle ata
+                            {t("v1core.s5.assignManually")}
                           </Button>
                         </td>
                       </tr>
@@ -240,7 +242,7 @@ export default function Screen5() {
                 </tbody>
               </table>
             ))}
-          {tab === "Doluluk dengesi" && (
+          {tab === "balance" && (
             <div className="grid gap-x-6 gap-y-1.5 md:grid-cols-2">
               {emps.map((e) => (
                 <div key={e.calisan_id} className="flex items-center gap-2 text-[12px]">
@@ -248,10 +250,10 @@ export default function Screen5() {
                   <div className="flex-1">
                     <FillBar value={effCap(e) > 0 ? (loads.get(e.calisan_id) ?? 0) / effCap(e) : 0} target={avg} />
                   </div>
-                  <span className="w-10 text-right tabular-nums">%{Math.round(effCap(e) > 0 ? ((loads.get(e.calisan_id) ?? 0) / effCap(e)) * 100 : 0)}</span>
+                  <span className="w-10 text-right tabular-nums">{pct(effCap(e) > 0 ? (loads.get(e.calisan_id) ?? 0) / effCap(e) : 0)}</span>
                 </div>
               ))}
-              <div className="text-[11px] text-slate-500 md:col-span-2">Çubuk üzerindeki dikey çizgi ortalama doluluğu gösterir.</div>
+              <div className="text-[11px] text-slate-500 md:col-span-2">{t("v1core.s5.barHint")}</div>
             </div>
           )}
         </div>
@@ -266,33 +268,33 @@ export default function Screen5() {
           const cur = A.find((a) => a.jobId === job.is_id);
           const from = cur?.empId ?? null;
           const ok = await confirm({
-            title: violations.length ? "Kural ihlaliyle taşınsın mı?" : "İş taşınsın mı?",
+            title: t(violations.length ? "v1core.s5.moveViolTitle" : "v1core.s5.moveTitle"),
             body: (
               <>
                 <p>
-                  <b>{job.is_id}</b>: {from ? employees.find((r) => r.data.calisan_id === from)?.data.ad_soyad : "atanamayanlar"} → <b>{to.ad_soyad}</b>
+                  <b>{job.is_id}</b>: {from ? employees.find((r) => r.data.calisan_id === from)?.data.ad_soyad : t("v1core.s5.fromUnassigned")} → <b>{to.ad_soyad}</b>
                 </p>
                 {violations.length > 0 && (
                   <ul className="mt-1 list-inside list-disc text-[#C92830]">
                     {violations.map((v) => (
-                      <li key={v}>{v}</li>
+                      <li key={v}>{violText(v)}</li>
                     ))}
                   </ul>
                 )}
               </>
             ),
-            confirmLabel: violations.length ? "İhlale rağmen taşı" : "Taşı",
+            confirmLabel: t(violations.length ? "v1core.s5.moveAnyway" : "v1core.s5.move"),
             tone: violations.length ? "danger" : "primary",
           });
           if (!ok) return false;
           patchAssignments((as) =>
             as.map((a) =>
               a.jobId === job.is_id
-                ? { ...a, empId: to.calisan_id, manuel: true, sebep: "", neden: "manuel atama", uyari: violations.length ? `Manuel: ${violations.join("; ")}` : "" }
+                ? { ...a, empId: to.calisan_id, manuel: true, sebep: "", neden: "manual", uyari: violations.length ? `manual:${violations.join(";")}` : "" }
                 : a,
             ),
           );
-          log("manuel", `${job.is_id}: ${from ?? "atanamayan"} → ${to.calisan_id}${violations.length ? ` (kural ihlali: ${violations.join("; ")})` : ""}`, {
+          log("manuel", t(violations.length ? "v1core.s5.logViol" : "v1core.s5.log", { job: job.is_id, from: from ?? t("v1core.s5.fromUnassignedLog"), to: to.calisan_id, viol: violations.map(violText).join("; ") }), {
             is: job.is_id, kimden: from, kime: to.calisan_id, ihlal: violations,
           });
           return true;
@@ -304,6 +306,7 @@ export default function Screen5() {
 }
 
 function IlMahalle({ A, jm }: { A: { jobId: string; empId: string | null }[]; jm: Map<string, Job> }) {
+  const { t, lang } = useT();
   const rows = useMemo(() => {
     const m = new Map<string, { il: string; mah: string; total: number; assigned: number; emps: Set<string> }>();
     for (const a of A) {
@@ -318,18 +321,19 @@ function IlMahalle({ A, jm }: { A: { jobId: string; empId: string | null }[]; jm
       }
       m.set(k, x);
     }
-    return [...m.values()].sort((a, b) => a.il.localeCompare(b.il, "tr") || a.mah.localeCompare(b.mah, "tr"));
-  }, [A, jm]);
+    return [...m.values()].sort((a, b) => collate(a.il, b.il) || collate(a.mah, b.mah));
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- lang: çevrilmiş etiketler dile bağlı
+  }, [A, jm, lang]);
   return (
     <div className="max-h-64 overflow-auto">
       <table className="w-full text-[12.5px]">
         <thead className="sticky top-0 bg-white text-left text-slate-500">
           <tr>
-            <th>İl</th>
-            <th>İlçe / mahalle</th>
-            <th className="text-right">İş</th>
-            <th className="text-right">Atanan</th>
-            <th className="text-right">Farklı çalışan</th>
+            <th>{t("v1core.l.province")}</th>
+            <th>{t("v1core.s5.distNeigh")}</th>
+            <th className="text-right">{t("v1core.s5.job")}</th>
+            <th className="text-right">{t("v1core.l.assignedShort")}</th>
+            <th className="text-right">{t("v1core.s5.distinctEmps")}</th>
           </tr>
         </thead>
         <tbody>
@@ -363,6 +367,7 @@ function MoveModal({
   onMove: (j: Job, to: ReturnType<typeof activeEmployees>[number], v: string[]) => Promise<boolean>;
   check: (j: Job, to: ReturnType<typeof activeEmployees>[number]) => string[];
 }) {
+  const { t } = useT();
   const [to, setTo] = useState("");
   const target = emps.find((e) => e.calisan_id === to);
   const viol = job && target ? check(job, target) : [];
@@ -373,10 +378,10 @@ function MoveModal({
         setTo("");
         onClose();
       }}
-      title={job ? `${job.is_id} — başka çalışana taşı` : ""}
+      title={job ? t("v1core.s5.modalTitle", { id: job.is_id }) : ""}
       footer={
         <>
-          <Button onClick={onClose}>Vazgeç</Button>
+          <Button onClick={onClose}>{t("c.cancel")}</Button>
           <Button
             variant="primary"
             disabled={!target}
@@ -388,7 +393,7 @@ function MoveModal({
               }
             }}
           >
-            Taşı
+            {t("v1core.s5.move")}
           </Button>
         </>
       }
@@ -396,10 +401,10 @@ function MoveModal({
       {job && (
         <div className="space-y-2.5">
           <div className="text-[12.5px] text-slate-700">
-            {job.il} / {job.ilce} / {job.mahalle} · {job.yerlesim_tipi} · {job.gorusme_sayisi} görüşme
+            {job.il} / {job.ilce} / {job.mahalle} · {job.yerlesim_tipi} · {t("v1core.s5.nInterviews", { n: job.gorusme_sayisi })}
           </div>
-          <select className={inputCls} value={to} onChange={(e) => setTo(e.target.value)} aria-label="Hedef çalışan" data-testid="move-target">
-            <option value="">Çalışan seçin…</option>
+          <select className={inputCls} value={to} onChange={(e) => setTo(e.target.value)} aria-label={t("v1core.s5.targetEmp")} data-testid="move-target">
+            <option value="">{t("v1core.s5.pickEmp")}</option>
             {emps.map((e) => (
               <option key={e.calisan_id} value={e.calisan_id}>
                 {e.calisan_id} · {e.ad_soyad} ({e.il}) — {round1(loads.get(e.calisan_id) ?? 0)}/{round1(effCap(e))}
@@ -407,15 +412,15 @@ function MoveModal({
             ))}
           </select>
           {target && (viol.length ? (
-            <InfoCard tone="error" title="Kural / kapasite ihlali">
+            <InfoCard tone="error" title={t("v1core.s5.violTitle")}>
               <ul className="list-inside list-disc">
                 {viol.map((v) => (
-                  <li key={v}>{v}</li>
+                  <li key={v}>{violText(v)}</li>
                 ))}
               </ul>
             </InfoCard>
           ) : (
-            <InfoCard tone="ok">Kapasite ve zorunlu kurallar açısından uygun.</InfoCard>
+            <InfoCard tone="ok">{t("v1core.s5.ok")}</InfoCard>
           ))}
         </div>
       )}

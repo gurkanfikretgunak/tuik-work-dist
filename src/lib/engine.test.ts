@@ -26,7 +26,7 @@ describe("dağıtım motoru", () => {
     const jobs = Array.from({ length: 30 }, (_, i) => job(i));
     const a = await runDistribution([emp("X", 10), emp("Y", 10)], jobs, rs());
     expect(a.filter((x) => x.empId).length).toBe(20);
-    expect(a.filter((x) => !x.empId).every((x) => x.sebep === "Kapasite yetersiz")).toBe(true);
+    expect(a.filter((x) => !x.empId).every((x) => x.sebep === "capacity")).toBe(true);
   });
 
   it("kapasite aşımı 'uyarı' modunda atanır ve uyarı yazılır", async () => {
@@ -39,8 +39,8 @@ describe("dağıtım motoru", () => {
   it("ilde çalışan yok ve kır görevi sebepleri", async () => {
     const jobs = [job(1, { il: "Van" }), job(2, { yerlesim_tipi: "Kır" })];
     const a = await runDistribution([emp("X", 10, { kir_gorevi_yapabilir: false })], jobs, rs());
-    expect(a[0].sebep).toBe("İlde çalışan yok");
-    expect(a[1].sebep).toBe("Kır görevi yapabilen çalışan yok");
+    expect(a[0].sebep).toBe("noProvince");
+    expect(a[1].sebep).toBe("noRural");
   });
 
   it("kır çarpanı puanı artırır (2 görüşmelik kır = 3 puan)", async () => {
@@ -77,7 +77,7 @@ describe("dağıtım motoru", () => {
     const c = computeCompliance(a, emps, jobs, rs());
     expect(c.il.ok).toBe(c.il.total);
     const v = checkMove(jobs[0], emps[1], a, emps, jobs, rs());
-    expect(v.some((x) => x.includes("İl uyuşmuyor"))).toBe(true);
+    expect(v.some((x) => x.startsWith("provinceMismatch"))).toBe(true);
   });
 });
 

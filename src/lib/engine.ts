@@ -1,3 +1,4 @@
+import { tx } from "@/i18n";
 import type { Assignment, Employee, Job, RuleId, RuleSet } from "./types";
 
 const EPS = 1e-9;
@@ -47,23 +48,23 @@ function prevOk(rs: RuleSet, ctx: Ctx, j: Job, e: Employee): boolean {
 function filterCands(ctx: Ctx, j: Job, withCapacity: boolean): { cands: Employee[]; reason: string } {
   const { rs } = ctx;
   let c = ctx.emps.filter((e) => e.aktif && effCap(e) > 0);
-  if (!c.length) return { cands: [], reason: "Uygun aktif çalışan yok" };
+  if (!c.length) return { cands: [], reason: "noActive" };
   if (ruleMandatory(rs, "il")) {
     c = c.filter((e) => e.il === j.il);
-    if (!c.length) return { cands: [], reason: "İlde çalışan yok" };
+    if (!c.length) return { cands: [], reason: "noProvince" };
   }
   if (ruleMandatory(rs, "kir") && j.yerlesim_tipi === "Kır") {
     c = c.filter((e) => e.kir_gorevi_yapabilir);
-    if (!c.length) return { cands: [], reason: "Kır görevi yapabilen çalışan yok" };
+    if (!c.length) return { cands: [], reason: "noRural" };
   }
   if (ruleMandatory(rs, "gecenAy")) {
     c = c.filter((e) => prevOk(rs, ctx, j, e));
-    if (!c.length) return { cands: [], reason: "Geçen ay kuralı nedeniyle uygun çalışan yok" };
+    if (!c.length) return { cands: [], reason: "prevRule" };
   }
   if (withCapacity) {
     const w = weightOf(j, rs);
     const ok = c.filter((e) => (ctx.load.get(e.calisan_id) ?? 0) + w <= effCap(e) + EPS);
-    if (!ok.length) return { cands: [], reason: "Kapasite yetersiz" };
+    if (!ok.length) return { cands: [], reason: "capacity" };
     c = ok;
   }
   return { cands: c, reason: "" };
@@ -78,17 +79,17 @@ function score(ctx: Ctx, j: Job, e: Employee): { s: number; why: string[] } {
   const why: string[] = [];
   if (ruleOn(rs, "il") && e.il === j.il) {
     s += 60 * prioW(rs, "il");
-    why.push("aynı il");
+    why.push("province");
   }
   if (ruleOn(rs, "mahalle") && (ctx.mCount.get(mKey(j))?.get(e.calisan_id) ?? 0) > 0) {
     s += 50 * prioW(rs, "mahalle");
-    why.push("aynı mahalle");
+    why.push("neighbourhood");
   }
   if (ruleOn(rs, "denge")) {
     const tgt = ctx.target.get(e.calisan_id) ?? effCap(e);
     const f = tgt > 0 ? ((ctx.load.get(e.calisan_id) ?? 0) + w) / tgt : 2;
     s += (1 - Math.min(f, 1.5)) * 40 * prioW(rs, "denge");
-    why.push("doluluk dengesi");
+    why.push("balance");
   }
   if (ruleOn(rs, "kir") && j.yerlesim_tipi === "Kır" && !e.kir_gorevi_yapabilir) s -= 80 * prioW(rs, "kir");
   if (ruleOn(rs, "gecenAy") && j.onceki_ay_gorusen_calisan_id && ctx.empIds.has(j.onceki_ay_gorusen_calisan_id)) {
@@ -96,7 +97,7 @@ function score(ctx: Ctx, j: Job, e: Employee): { s: number; why: string[] } {
     const good = rs.gecenAyYon === "rotasyon" ? !same : same;
     if (good) {
       s += 30 * prioW(rs, "gecenAy");
-      why.push(rs.gecenAyYon === "rotasyon" ? "geçen ay farklı kişi" : "geçen ay aynı kişi");
+      why.push(rs.gecenAyYon === "rotasyon" ? "prevDiff" : "prevSame");
     }
   }
   return { s, why };
@@ -170,20 +171,20 @@ export async function runDistribution(
       out.set(j.is_id, {
         jobId: j.is_id,
         empId: best.calisan_id,
-        neden: bestWhy.length ? bestWhy.join(", ") : "uygun en az dolu çalışan",
+        neden: bestWhy.length ? bestWhy.join(",") : "leastFull",
         uyari: "",
         manuel: false,
         sebep: "",
       });
-    } else if (reason === "Kapasite yetersiz" && rs.kapasiteAsimi === "uyari") {
+    } else if (reason === "capacity" && rs.kapasiteAsimi === "uyari") {
       const { cands: pre } = filterCands(ctx, j, false);
       const best = pre.sort((a, b) => fill(ctx, a) - fill(ctx, b))[0];
       commit(ctx, j, best, 1);
       out.set(j.is_id, {
         jobId: j.is_id,
         empId: best.calisan_id,
-        neden: "kapasite üstü atama (en az dolu çalışan)",
-        uyari: "Kapasite aşıldı",
+        neden: "overCapacity",
+        uyari: "capacityExceeded",
         manuel: false,
         sebep: "",
       });
@@ -238,7 +239,7 @@ function improve(ctx: Ctx, out: Map<string, Assignment>) {
         (byEmp.get(B.calisan_id) ?? byEmp.set(B.calisan_id, []).get(B.calisan_id)!).push(bestJ);
         const a = out.get(bestJ.is_id)!;
         a.empId = B.calisan_id;
-        a.neden = "doluluk dengesi iyileştirmesi";
+        a.neden = "improve";
         a.uyari = "";
         moved = true;
       }
@@ -278,19 +279,37 @@ export function checkMove(
   const cur = assignments.find((a) => a.jobId === job.is_id);
   let load = loads.get(to.calisan_id) ?? 0;
   if (cur?.empId === to.calisan_id) load -= weightOf(job, rs);
-  if (!to.aktif) v.push("Çalışan pasif");
-  if (ruleMandatory(rs, "il") && to.il !== job.il) v.push(`İl uyuşmuyor (${to.il} ≠ ${job.il}) — zorunlu kural`);
+  if (!to.aktif) v.push("inactive");
+  if (ruleMandatory(rs, "il") && to.il !== job.il) v.push(`provinceMismatch|${to.il}|${job.il}`);
   if (ruleMandatory(rs, "kir") && job.yerlesim_tipi === "Kır" && !to.kir_gorevi_yapabilir)
-    v.push("Çalışan kır görevi yapamıyor — zorunlu kural");
+    v.push("noRuralDuty");
   if (ruleMandatory(rs, "gecenAy")) {
     const ctx = { empIds: new Set(employees.map((e) => e.calisan_id)) } as Ctx;
-    if (!prevOk(rs, ctx, job, to)) v.push("Geçen ay kuralı ihlal ediliyor — zorunlu kural");
+    if (!prevOk(rs, ctx, job, to)) v.push("prevRuleViolated");
   }
   const w = weightOf(job, rs);
   if (load + w > effCap(to) + EPS)
-    v.push(`Kapasite aşılıyor (${round1(load + w)} / ${round1(effCap(to))})`);
+    v.push(`capacityOver|${round1(load + w)}|${round1(effCap(to))}`);
   return v;
 }
+
+/** Atanamama sebebi kodunu (noActive, noProvince, ...) geçerli dilde metne çevirir. */
+export const reasonText = (code: string) => (code ? tx(`v1core.reason.${code}`) : "");
+/** Atama nedeni kod listesini ("province,balance") metne çevirir. */
+export const nedenText = (codes: string) =>
+  codes ? codes.split(",").filter(Boolean).map((c) => tx(`v1core.why.${c}`)).join(", ") : "";
+/** checkMove ihlal kodunu ("kod|a|b") metne çevirir. */
+export const violText = (v: string) => {
+  const [c, a, b] = v.split("|");
+  return tx(`v1core.viol.${c}`, { a: a ?? "", b: b ?? "" });
+};
+/** Uyarı kodunu ("capacityExceeded" veya "manual:ihlal;ihlal") metne çevirir. */
+export const uyariText = (u: string) => {
+  if (!u) return "";
+  if (u === "capacityExceeded") return tx("v1core.warn.capacityExceeded");
+  if (u.startsWith("manual:")) return tx("v1core.warn.manual", { list: u.slice(7).split(";").map(violText).join("; ") });
+  return u;
+};
 
 export const round1 = (n: number) => Math.round(n * 10) / 10;
 

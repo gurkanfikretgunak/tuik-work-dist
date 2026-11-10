@@ -1,3 +1,4 @@
+import { tx } from "@/i18n";
 import { calcTargets, type Strategy, type Targets } from "./math";
 
 /** Plan[ay][defter] = o ay o defteri alan kişi indeksi; -1 = defter açıkta (boş bırakma). */
@@ -59,7 +60,7 @@ export function validatePlan(plan: Plan, rules: RotRules): Validation {
   let openCount = 0;
   let actualD = 0;
 
-  if (plan.length !== m) monthlyErrors.push(`Plan ${plan.length} ay içeriyor, ${m} bekleniyordu.`);
+  if (plan.length !== m) monthlyErrors.push(tx("v2ui.val.planMonths", { a: plan.length, b: m }));
   for (let t = 0; t < plan.length; t++) {
     const row = plan[t] ?? [];
     const k = targets.k[t] ?? n;
@@ -67,14 +68,14 @@ export function validatePlan(plan: Plan, rules: RotRules): Validation {
     let open = 0;
     for (let d = 0; d < n; d++) {
       const p = row[d];
-      if (p === undefined || p < -1 || p >= n) { monthlyErrors.push(`Ay ${t + 1}, defter ${d + 1}: geçersiz kişi.`); continue; }
+      if (p === undefined || p < -1 || p >= n) { monthlyErrors.push(tx("v2ui.val.badPerson", { t: t + 1, d: d + 1 })); continue; }
       if (p === -1) {
         open++;
         openCount++;
         if (strategy === "ek" && k > 0) monthlyErrors.push(`Ay ${t + 1}: defter ${d + 1} sahipsiz.`);
         continue;
       }
-      if (absent[t]?.[p]) monthlyErrors.push(`Ay ${t + 1}: izinli kişiye (${p + 1}) defter ${d + 1} verilmiş.`);
+      if (absent[t]?.[p]) monthlyErrors.push(tx("v2ui.val.absentGiven", { t: t + 1, p: p + 1, d: d + 1 }));
       loads[t][p]++;
       actualD++;
       counts[p][d]++;
@@ -91,11 +92,11 @@ export function validatePlan(plan: Plan, rules: RotRules): Validation {
         if (a !== undefined && a >= 0 && a !== p) pairCounts[a][p]++;
       }
     }
-    if (strategy === "bos" && k > 0 && open !== n - Math.min(k, n)) monthlyErrors.push(`Ay ${t + 1}: ${open} defter açıkta, ${n - Math.min(k, n)} bekleniyordu.`);
+    if (strategy === "bos" && k > 0 && open !== n - Math.min(k, n)) monthlyErrors.push(tx("v2ui.val.open", { t: t + 1, open, exp: n - Math.min(k, n) }));
     for (let p = 0; p < n; p++) {
       if (absent[t]?.[p]) continue;
-      if (loads[t][p] > cap) monthlyErrors.push(`Ay ${t + 1}: kişi ${p + 1} ${loads[t][p]} defter almış (en fazla ${cap}).`);
-      if (k > 0 && loads[t][p] === 0) monthlyErrors.push(`Ay ${t + 1}: müsait kişi ${p + 1} defter almamış.`);
+      if (loads[t][p] > cap) monthlyErrors.push(tx("v2ui.val.cap", { t: t + 1, p: p + 1, l: loads[t][p], c: cap }));
+      if (k > 0 && loads[t][p] === 0) monthlyErrors.push(tx("v2ui.val.noLoad", { t: t + 1, p: p + 1 }));
     }
   }
 

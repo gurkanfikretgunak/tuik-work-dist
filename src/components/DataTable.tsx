@@ -2,7 +2,7 @@
 import clsx from "clsx";
 import { Search } from "lucide-react";
 import { useMemo, useState, type ReactNode } from "react";
-import type { CellError } from "@/lib/types";
+import { useT } from "@/i18n";
 
 export type Col = {
   key: string;
@@ -16,7 +16,7 @@ export type Col = {
 export type TRow = {
   id: number; // benzersiz (CSV satır no)
   cells: Record<string, unknown>;
-  errors?: CellError[];
+  errors?: { col: string; readonly msg: string }[];
   checked?: boolean;
   /** true ise satır soluk gösterilir (ör. kullanılmayacak) */
   dim?: boolean;
@@ -57,19 +57,20 @@ export function DataTable({
   toolbar?: ReactNode;
   maxRows?: number;
 }) {
+  const { t, locale } = useT();
   const [q, setQ] = useState("");
   const [onlyErr, setOnlyErr] = useState(false);
   const [sel, setSel] = useState<{ r: number; c: number } | null>(null);
   const hasCheck = !!onToggle;
 
   const view = useMemo(() => {
-    const t = q.trim().toLocaleLowerCase("tr");
+    const needle = q.trim().toLocaleLowerCase(locale);
     return rows.filter((r) => {
       if (onlyErr && !(r.errors && r.errors.length)) return false;
-      if (!t) return true;
-      return columns.some((c) => String(r.cells[c.key] ?? "").toLocaleLowerCase("tr").includes(t));
+      if (!needle) return true;
+      return columns.some((c) => String(r.cells[c.key] ?? "").toLocaleLowerCase(locale).includes(needle));
     });
-  }, [rows, q, onlyErr, columns]);
+  }, [rows, q, onlyErr, columns, locale]);
 
   const shown = view.slice(0, maxRows);
   const checkedCount = rows.filter((r) => r.checked).length;
@@ -91,15 +92,15 @@ export function DataTable({
           <input
             value={q}
             onChange={(e) => setQ(e.target.value)}
-            placeholder="Tabloda ara…"
-            aria-label="Tabloda ara"
+            placeholder={t("v1ui.tbl.search")}
+            aria-label={t("v1ui.tbl.searchAria")}
             className="h-7 w-44 rounded border border-slate-300 bg-white pl-6 pr-2 text-xs focus:border-emerald-700 focus:outline-none"
           />
         </div>
         {errCount > 0 && (
           <label className="flex cursor-pointer items-center gap-1 text-xs text-slate-700">
             <input type="checkbox" checked={onlyErr} onChange={(e) => setOnlyErr(e.target.checked)} />
-            Yalnızca hatalı satırlar ({errCount})
+            {t("v1ui.tbl.onlyErr", { n: errCount })}
           </label>
         )}
         <div className="ml-auto flex items-center gap-1.5">{toolbar}</div>
@@ -111,7 +112,7 @@ export function DataTable({
         </div>
         <div className="px-2 italic text-slate-400">fx</div>
         <div className="flex-1 truncate px-2 py-1 text-slate-900" data-testid="cell-value">
-          {selVal === undefined || selVal === null ? "" : typeof selVal === "boolean" ? (selVal ? "Evet" : "Hayır") : String(selVal)}
+          {selVal === undefined || selVal === null ? "" : typeof selVal === "boolean" ? (selVal ? t("c.yes") : t("c.no")) : String(selVal)}
         </div>
         {selErr && selErr.length > 0 && <div className="px-2 text-[#C92830]">⚠ {selErr.map((e) => e.msg).join("; ")}</div>}
       </div>
@@ -132,7 +133,7 @@ export function DataTable({
                 {hasCheck && (
                   <input
                     type="checkbox"
-                    aria-label="Tümünü seç / bırak"
+                    aria-label={t("v1ui.tbl.checkAll")}
                     data-testid="check-all"
                     checked={allChecked}
                     ref={(el) => {
@@ -168,7 +169,7 @@ export function DataTable({
                       {hasCheck ? (
                         <input
                           type="checkbox"
-                          aria-label={`Satır ${r.id} kullanılsın`}
+                          aria-label={t("v1ui.tbl.useRow", { id: r.id })}
                           checked={!!r.checked}
                           onChange={() => onToggle?.(r.id)}
                         />
@@ -205,7 +206,7 @@ export function DataTable({
             {shown.length === 0 && (
               <tr>
                 <td colSpan={columns.length + 1} className="px-3 py-8 text-center text-slate-500">
-                  Gösterilecek satır yok.
+                  {t("v1ui.tbl.empty")}
                 </td>
               </tr>
             )}
@@ -218,10 +219,10 @@ export function DataTable({
           <div className="border-r border-t-2 border-slate-300 border-t-emerald-700 bg-white px-3 py-1 font-medium text-emerald-800">{sheetName}</div>
         </div>
         <div className="flex gap-4 px-3 py-1 text-slate-600" data-testid="status-bar">
-          <span>Satır: {rows.length}</span>
-          {hasCheck && <span>Kullanılacak: {checkedCount}</span>}
-          {errCount > 0 && <span className="text-[#C92830]">Hatalı: {errCount}</span>}
-          {view.length > maxRows && <span>İlk {maxRows} satır gösteriliyor</span>}
+          <span>{t("v1ui.tbl.rows", { n: rows.length })}</span>
+          {hasCheck && <span>{t("v1ui.tbl.used", { n: checkedCount })}</span>}
+          {errCount > 0 && <span className="text-[#C92830]">{t("v1ui.tbl.errors", { n: errCount })}</span>}
+          {view.length > maxRows && <span>{t("v1ui.tbl.firstN", { n: maxRows })}</span>}
         </div>
       </div>
     </div>
@@ -229,13 +230,14 @@ export function DataTable({
 }
 
 function Cell({ col, value, row, onEdit }: { col: Col; value: unknown; row: TRow; onEdit?: (id: number, key: string, v: string | boolean) => void }) {
+  const { t } = useT();
   if (col.render) return <>{col.render(value, row)}</>;
   if (col.editable && onEdit) {
     if (col.type === "bool")
       return (
         <input
           type="checkbox"
-          aria-label={`${col.label} satır ${row.id}`}
+          aria-label={t("v1ui.tbl.cellAria", { col: col.label, id: row.id })}
           checked={!!value}
           onChange={(e) => onEdit(row.id, col.key, e.target.checked)}
         />
@@ -243,7 +245,7 @@ function Cell({ col, value, row, onEdit }: { col: Col; value: unknown; row: TRow
     if (col.type === "select")
       return (
         <select
-          aria-label={`${col.label} satır ${row.id}`}
+          aria-label={t("v1ui.tbl.cellAria", { col: col.label, id: row.id })}
           value={String(value)}
           onChange={(e) => onEdit(row.id, col.key, e.target.value)}
           className="w-full bg-transparent text-[12.5px] focus:outline-none"
@@ -255,7 +257,7 @@ function Cell({ col, value, row, onEdit }: { col: Col; value: unknown; row: TRow
       );
     return (
       <input
-        aria-label={`${col.label} satır ${row.id}`}
+        aria-label={t("v1ui.tbl.cellAria", { col: col.label, id: row.id })}
         defaultValue={String(value ?? "")}
         key={String(value)}
         inputMode={col.type === "num" ? "decimal" : undefined}
@@ -265,6 +267,6 @@ function Cell({ col, value, row, onEdit }: { col: Col; value: unknown; row: TRow
       />
     );
   }
-  if (typeof value === "boolean") return <span>{value ? "Evet" : "Hayır"}</span>;
+  if (typeof value === "boolean") return <span>{value ? t("c.yes") : t("c.no")}</span>;
   return <span className="whitespace-nowrap">{value === undefined || value === null ? "" : String(value)}</span>;
 }

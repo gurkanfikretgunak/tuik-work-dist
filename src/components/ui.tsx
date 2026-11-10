@@ -2,6 +2,7 @@
 import clsx from "clsx";
 import { ChevronDown, Info, AlertTriangle, CheckCircle2, XCircle } from "lucide-react";
 import { useState, type ReactNode } from "react";
+import { useT } from "@/i18n";
 
 export function Button({
   variant = "secondary",
@@ -133,10 +134,11 @@ export const inputCls =
   "h-8 w-full rounded border border-slate-300 bg-white px-2 text-[13px] text-slate-900 focus:border-[#1F2A44] focus:outline-none focus:ring-1 focus:ring-[#1F2A44]";
 
 export function ScreenTitle({ no, title, children }: { no: number; title: string; children?: ReactNode }) {
+  const { t } = useT();
   return (
     <div className="mb-3 flex flex-wrap items-end justify-between gap-2">
       <div>
-        <div className="text-[11px] font-semibold uppercase tracking-wider text-[#C92830]">Ekran {no}</div>
+        <div className="text-[11px] font-semibold uppercase tracking-wider text-[#C92830]">{t("v1ui.screen", { no })}</div>
         <h1 className="text-lg font-semibold text-[#1F2A44]">{title}</h1>
       </div>
       <div className="flex flex-wrap items-center gap-1.5">{children}</div>

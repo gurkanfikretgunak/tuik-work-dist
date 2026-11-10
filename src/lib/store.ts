@@ -1,5 +1,6 @@
 "use client";
 import { create } from "zustand";
+import { tx } from "@/i18n";
 import {
   DEFAULT_RULESET,
   type Assignment,
@@ -96,10 +97,10 @@ export const useStore = create<State>((set, get) => ({
   setApproved: (b) => set({ approved: b }),
   reset: () => {
     set({ ...fresh() });
-    get().log("oturum", "Yeni dağıtım başlatıldı");
+    get().log("oturum", tx("v1core.store.reset"));
   },
   loadSaved: (sv) =>
-    set({ ...fresh(), employees: sv.employees, rules: sv.rules, empFile: { name: "kayıtlı set", total: sv.employees.length, errorRows: 0, at: new Date().toISOString() } }),
+    set({ ...fresh(), employees: sv.employees, rules: sv.rules, empFile: { name: tx("v1core.store.savedSet"), total: sv.employees.length, errorRows: 0, at: new Date().toISOString() } }),
 }));
 
 /** Seçili (onay kutusu işaretli) ve geçerli satırlar */

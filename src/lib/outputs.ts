@@ -1,4 +1,6 @@
+import { fmtDateTime, fmtTime, tx, useLangStore } from "@/i18n";
 import { toCsv } from "./csv";
+import { reasonText } from "./engine";
 import type { Report } from "./report";
 import { RULE_META, type EmpRow, type EventLog, type RuleSet } from "./types";
 
@@ -20,9 +22,10 @@ export function ruleJson(employees: EmpRow[], rules: RuleSet): string {
   );
 }
 
-const pct = (n: number) => `%${Math.round(n * 100)}`;
+/** Oran (0–1) → yerel yüzde gösterimi. */
+export const pct = (n: number) => tx("v1core.pct", { n: Math.round(n * 100) });
 const esc = (s: unknown) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]!);
-const hhmm = (iso: string) => new Date(iso).toLocaleTimeString("tr-TR");
+const hhmm = (iso: string) => fmtTime(iso);
 
 export function reportCsvs(r: Report) {
   return {
@@ -39,38 +42,39 @@ export function reportCsvs(r: Report) {
 
 export function reportHtml(r: Report, events: EventLog[]): string {
   const t = r.totals;
+  const lang = useLangStore.getState().lang;
   const tbl = (head: string[], rows: unknown[][]) =>
     `<table><thead><tr>${head.map((h) => `<th>${esc(h)}</th>`).join("")}</tr></thead><tbody>${rows.map((x) => `<tr>${x.map((c) => `<td>${esc(c)}</td>`).join("")}</tr>`).join("")}</tbody></table>`;
-  return `<!doctype html><html lang="tr"><head><meta charset="utf-8"><title>Süreç Raporu</title>
+  const kind = (m: boolean) => tx(m ? "v1core.mand" : "v1core.pref");
+  return `<!doctype html><html lang="${lang}"><head><meta charset="utf-8"><title>${esc(tx("v1core.rep.docTitle"))}</title>
 <style>body{font:13px Segoe UI,Arial,sans-serif;color:#1b2233;margin:24px;max-width:1000px}h1{color:#1F2A44}h2{color:#1F2A44;border-bottom:2px solid #C92830;padding-bottom:2px;margin-top:22px}
 table{border-collapse:collapse;width:100%;margin:6px 0}th,td{border:1px solid #cbd5e1;padding:3px 6px;text-align:left;font-size:12px}th{background:#f1f5f9}.k{display:flex;gap:8px;flex-wrap:wrap}.k div{border:1px solid #cbd5e1;padding:6px 10px;border-radius:4px}.k b{display:block;font-size:18px}</style></head><body>
-<h1>TÜİK İş Dağıtım Aracı — Süreç Raporu</h1><p>Oluşturma: ${new Date().toLocaleString("tr-TR")}</p>
-<h2>Özet</h2><div class="k"><div>Toplam iş<b>${t.toplamIs}</b></div><div>Atanan<b>${t.atanan}</b></div><div>Atanamayan<b>${t.atanamayan}</b></div><div>Çalışan<b>${t.calisan}</b></div><div>Ortalama doluluk<b>${pct(r.fill.avg)}</b></div><div>Manuel değişiklik<b>${t.manuelSayisi}</b></div></div>
-<h2>Süreç zaman çizelgesi</h2>${tbl(["Saat", "Olay"], events.map((e) => [hhmm(e.ts), e.message]))}
-<h2>Kural ve kapasite özeti</h2>${tbl(["Öncelik", "Kural", "Tip"], r.rs.rules.filter((x) => x.enabled).map((x, i) => [i + 1, RULE_META[x.id].label, x.mandatory ? "zorunlu" : "tercih"]))}
-<p>Kapasite modu: ${r.rs.kapasiteModu === "sert" ? "sert limit" : "orantılı hedef"} · birim: ${r.rs.kapasiteBirimi} · toplam efektif kapasite: ${r.totals.efektifKapasite}</p>
-<h2>Dağıtım sonuç metrikleri</h2><p>Doluluk — ortalama ${pct(r.fill.avg)}, en düşük ${pct(r.fill.min)}, en yüksek ${pct(r.fill.max)}, standart sapma ${(r.fill.sd * 100).toFixed(1)} puan.</p>
-${tbl(["Kural", "Uyumlu", "Toplam", "Oran"], r.uyum.map((u) => [u.label, u.ok, u.total, u.total ? pct(u.ok / u.total) : "—"]))}
-<p>Kır/kent: ${r.kirKent.kir} / ${r.kirKent.kent}. Geçen ay: ${r.gecenAy.toplam} işten ${r.gecenAy.ayni} aynı kişide kaldı, ${r.gecenAy.degisen} değişti.</p>
-<h2>Atanamayan işler</h2>${r.sebepler.length ? tbl(["Sebep", "Adet", "İşler"], r.sebepler.map((s) => [s.sebep, s.adet, s.ids.join(", ")])) : "<p>Yok.</p>"}
-<h2>Manuel değişiklik günlüğü</h2>${r.manuel.length ? tbl(["Saat", "Değişiklik"], r.manuel.map((e) => [hhmm(e.ts), e.message])) : "<p>Manuel değişiklik yapılmadı.</p>"}
-<h2>Çalışan bazlı</h2>${tbl(["Çalışan", "Kapasite", "Atanan", "Doluluk", "Kır", "Kent", "Mahalle"], r.perEmp.map((p) => [`${p.id} ${p.ad}`, p.kapasite, p.atanan, pct(p.doluluk), p.kir, p.kent, p.mahalle]))}
-<h2>İl bazlı</h2>${tbl(["İl", "Toplam iş", "Atanan", "Çalışan", "Kapasite", "Doluluk"], r.perIl.map((p) => [p.il, p.toplam, p.atanan, p.calisan, p.kapasite, pct(p.doluluk)]))}
+<h1>${esc(tx("v1core.rep.h1"))}</h1><p>${esc(tx("v1core.rep.created", { ts: fmtDateTime(new Date()) }))}</p>
+<h2>${esc(tx("v1core.rep.summary"))}</h2><div class="k"><div>${esc(tx("v1core.l.totalJobs"))}<b>${t.toplamIs}</b></div><div>${esc(tx("v1core.l.assigned"))}<b>${t.atanan}</b></div><div>${esc(tx("v1core.l.unassigned"))}<b>${t.atanamayan}</b></div><div>${esc(tx("v1core.l.employees"))}<b>${t.calisan}</b></div><div>${esc(tx("v1core.l.avgFill"))}<b>${pct(r.fill.avg)}</b></div><div>${esc(tx("v1core.l.manualChanges"))}<b>${t.manuelSayisi}</b></div></div>
+<h2>${esc(tx("v1core.rep.timeline"))}</h2>${tbl([tx("v1core.rep.time"), tx("v1core.rep.event")], events.map((e) => [hhmm(e.ts), e.message]))}
+<h2>${esc(tx("v1core.rep.rulesCap"))}</h2>${tbl([tx("v1core.rep.priority"), tx("v1core.rep.rule"), tx("v1core.rep.type")], r.rs.rules.filter((x) => x.enabled).map((x, i) => [i + 1, RULE_META[x.id].label, kind(x.mandatory)]))}
+<p>${esc(tx("v1core.rep.capLine", { mode: tx(r.rs.kapasiteModu === "sert" ? "v1core.mode.sert" : "v1core.mode.orantili"), unit: tx(`v1core.unit.${r.rs.kapasiteBirimi}`), cap: r.totals.efektifKapasite }))}</p>
+<h2>${esc(tx("v1core.rep.metrics"))}</h2><p>${esc(tx("v1core.rep.fillLine", { avg: pct(r.fill.avg), min: pct(r.fill.min), max: pct(r.fill.max), sd: (r.fill.sd * 100).toFixed(1) }))}</p>
+${tbl([tx("v1core.rep.rule"), tx("v1core.rep.compliant"), tx("v1core.rep.total"), tx("v1core.rep.ratio")], r.uyum.map((u) => [u.label, u.ok, u.total, u.total ? pct(u.ok / u.total) : "—"]))}
+<p>${esc(tx("v1core.rep.ruralLine", { rural: r.kirKent.kir, urban: r.kirKent.kent, total: r.gecenAy.toplam, same: r.gecenAy.ayni, changed: r.gecenAy.degisen }))}</p>
+<h2>${esc(tx("v1core.rep.unassigned"))}</h2>${r.sebepler.length ? tbl([tx("v1core.rep.reason"), tx("v1core.rep.count"), tx("v1core.rep.jobs")], r.sebepler.map((s) => [reasonText(s.sebep), s.adet, s.ids.join(", ")])) : `<p>${esc(tx("v1core.rep.none"))}</p>`}
+<h2>${esc(tx("v1core.rep.manualLog"))}</h2>${r.manuel.length ? tbl([tx("v1core.rep.time"), tx("v1core.rep.change")], r.manuel.map((e) => [hhmm(e.ts), e.message])) : `<p>${esc(tx("v1core.rep.noManual"))}</p>`}
+<h2>${esc(tx("v1core.rep.perEmp"))}</h2>${tbl([tx("v1core.l.employee"), tx("v1core.l.capacity"), tx("v1core.l.assignedShort"), tx("v1core.l.fill"), tx("v1core.l.rural"), tx("v1core.l.urban"), tx("v1core.l.neighbourhood")], r.perEmp.map((p) => [`${p.id} ${p.ad}`, p.kapasite, p.atanan, pct(p.doluluk), p.kir, p.kent, p.mahalle]))}
+<h2>${esc(tx("v1core.rep.perIl"))}</h2>${tbl([tx("v1core.l.province"), tx("v1core.l.totalJobs"), tx("v1core.l.assignedShort"), tx("v1core.l.employees"), tx("v1core.l.capacity"), tx("v1core.l.fill")], r.perIl.map((p) => [p.il, p.toplam, p.atanan, p.calisan, p.kapasite, pct(p.doluluk)]))}
 </body></html>`;
 }
 
 export function summaryText(r: Report): string {
   const t = r.totals;
   const flags: string[] = [];
-  if (t.atanamayan) flags.push(`${t.atanamayan} iş atanamadı`);
+  if (t.atanamayan) flags.push(tx("v1core.sum.unassigned", { n: t.atanamayan }));
   const hi = r.perEmp.filter((p) => p.doluluk >= 0.95).length;
   const lo = r.perEmp.filter((p) => p.kapasite > 0 && p.doluluk < 0.5).length;
-  if (hi) flags.push(`${hi} çalışan %95 ve üzeri dolu`);
-  if (lo) flags.push(`${lo} çalışan %50 altı dolu`);
-  if (t.uyariSayisi) flags.push(`${t.uyariSayisi} atamada uyarı var`);
-  return `İş dağıtımı özeti
-Toplam iş: ${t.toplamIs} · Atanan: ${t.atanan} · Atanamayan: ${t.atanamayan}
-Çalışan: ${t.calisan} · İl: ${t.il} · Ortalama doluluk: ${pct(r.fill.avg)}
-Manuel değişiklik: ${t.manuelSayisi}
-Dikkat: ${flags.length ? flags.join("; ") : "özel bir uyarı yok"}`;
+  if (hi) flags.push(tx("v1core.sum.high", { n: hi }));
+  if (lo) flags.push(tx("v1core.sum.low", { n: lo }));
+  if (t.uyariSayisi) flags.push(tx("v1core.sum.warn", { n: t.uyariSayisi }));
+  return tx("v1core.sum.text", {
+    total: t.toplamIs, assigned: t.atanan, unassigned: t.atanamayan, emps: t.calisan, il: t.il,
+    fill: pct(r.fill.avg), manual: t.manuelSayisi, flags: flags.length ? flags.join("; ") : tx("v1core.sum.noFlags"),
+  });
 }
