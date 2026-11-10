@@ -104,7 +104,7 @@ describe("paylaşım (KVKK)", () => {
     const files = employeeZipFiles(emps, jobs, a);
     const x = employeeShareCsv("X", jobs, a);
     const idsX = new Set(a.filter((q) => q.empId === "X").map((q) => q.jobId));
-    const lines = x.replace("﻿", "").trim().split("\n");
+    const lines = x.replace("﻿", "").trim().split(/\r?\n/);
     expect(lines[0].split(",")).toEqual([...SHARE_COLS]);
     for (const l of lines.slice(1)) expect(idsX.has(l.split(",")[0])).toBe(true);
     expect(x).not.toMatch(/onceki_ay/);
