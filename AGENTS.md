@@ -32,7 +32,7 @@ node scripts/ornek-veri.mjs      # regenerates the public/ornek/*.csv sample dat
 Before finishing a change, `npx tsc --noEmit`, `npx eslint src` and `npx vitest run` must be clean.
 
 ## Architecture
-Three independent tools, selected on the home screen (`src/lib/appstore.ts`: `engine = "home" | "v1" | "v2" | "v3"`).
+Four independent tools, selected on the home screen (`src/lib/appstore.ts`: `engine = "home" | "v1" | "v2" | "v3" | "v4"`).
 
 ### v1 — Job Distribution Engine (`src/screens`, `src/lib`)
 Flow (9 screens, `Screen0..8`): Staff → Capacity → Rules → Job upload → Distribution → Pre-approval → Approval/Output → Process report → Overall summary/sharing.
@@ -49,6 +49,14 @@ A monthly rotation plan for N staff / N notebooks. Flow (`RotationApp.tsx`): R0 
 
 ### v3 — Open Data Explorer (`src/opendata`, `src/app/api/tuik`, `src/lib/{tuikProxy,tuikCatalog,jsonstat}.ts`)
 Browses TÜİK Veri Portalı datasets (`databrowser2.tuik.gov.tr`; no CORS, hence the proxy). `tuikProxy.ts` holds the validators (`validDatasetId`, `sanitizeCriteria`), `sameOrigin` and `relay` (fixed upstream, 45 s timeout, 25 MB cap) used by the three route handlers (`catalog`, `structure`, `data`). `jsonstat.ts` parses JSON-stat 2.0 and builds rows/pivot/series/CSV; `tuikCatalog.ts` builds and searches the catalogue (offline snapshots `public/tuik/catalog.{tr,en}.json`, script `scripts/tuik-catalog.mjs`). The upstream language is chosen with the `UserLang: tr|en` header (proxy param `?lang=`, `toApiLang`: every UI language except `tr` uses `en`); `opendata/store.ts` `switchLang` reloads the catalogue and re-labels the open dataset. Display-only translation of data enums (Kent/Kır, Yüksek/Normal/Düşük) uses `enumLabel()`; CSV values stay unchanged. Screens D0 (catalogue) and D1 (dataset); store in `opendata/store.ts`. Route handlers must not use route-segment config (`cacheComponents` is on) — they are dynamic because they read the request. Tests: `src/lib/jsonstat.test.ts`.
+
+### v4 — Notebook Rotation Engine - 2 (`src/rotation2`)
+Two-tier variant of v2; v2 stays untouched and v4 reuses its engine/validator/leave code (`../rotation/*`). Every month each person gets **1 in-city + 1 out-of-city notebook**; each tier is an independent n×n problem (`engine.ts` runs `generatePlans` per tier, `K1/K2/K3/K6` are counted separately per tier). Out-of-city notebooks belong to user-defined **regions** (`model.ts`: `Region{code,name,size}`, sizes must sum to `n`; names are never hard-coded, the Adıyaman/Kilis/Nizip case is only the "reference study" preset). `n` is a variable (default 10, `store.ts`).
+- Weekly (★) notebooks: in-city default 1, 3, 6; out-of-city default last notebook of each region; editable. K6 gap is shared but applied per tier.
+- **Region balance** (soft rule, `validator.ts: regionStats`, `REGION_TOL = 1.5`): a person's out-of-city count per region targets a share proportional to the region's notebook count; exact equality is not expected. `engine.ts` generates 16 out-of-city candidates and keeps the 3 with the best region score.
+- Screens: `P` parameters (+`L` leave K7) → `G` generation → `V` review (click-to-swap per tier/month with live rule impact) → `O` approval/outputs. `report.ts` builds a self-contained HTML report (view in iframe, download after approval, print → "Save as PDF"). `rules.ts`/`absence.ts` derive `Rules2`/absence from the store.
+- Outputs: `defter_plani_2.csv`, `bolge_dengesi.csv`, `dogrulama_raporu_2.json`, `parametreler_2.json`, `rapor_2.html`, ZIP. Dictionary: `src/i18n/dict/v4.ts` (reuses many `v2ui.*`/`v2core.lv.*` keys). Tests: `src/rotation2/rotation2.test.ts`.
+- Not yet: carry-over from a previous period (K1/K2 history), forbidden/fixed assignments, per-tier weekly gap.
 
 ## Internationalization (i18n) — mandatory
 Languages: tr (default), en, fr, de, ja, zh. Core: `src/i18n/index.ts`; detailed rules are in **`docs-i18n.md`** (read it first — note it is written in Turkish).

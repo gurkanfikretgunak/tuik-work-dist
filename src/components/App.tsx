@@ -17,6 +17,7 @@ import Screen8 from "@/screens/Screen8";
 import Home from "@/screens/Home";
 import RotationApp from "@/rotation/RotationApp";
 import OpenDataApp from "@/opendata/OpenDataApp";
+import Rot2App from "@/rotation2/Rot2App";
 import { useApp } from "@/lib/appstore";
 import { useConfirm } from "./confirm";
 
@@ -45,7 +46,7 @@ function Inner() {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/tuik-logo.svg" alt="TÜİK" className="h-8 w-auto" />
           <div className="border-l border-slate-300 pl-4">
-            <div className="text-[13px] font-semibold text-[#1F2A44]">{engine === "v3" ? t("app.v3") : engine === "v2" ? t("app.v2") : engine === "v1" ? t("app.v1") : t("app.tools")}</div>
+            <div className="text-[13px] font-semibold text-[#1F2A44]">{engine === "v4" ? t("app.v4") : engine === "v3" ? t("app.v3") : engine === "v2" ? t("app.v2") : engine === "v1" ? t("app.v1") : t("app.tools")}</div>
             <div className="text-[11px] text-slate-500">{t("app.privacy")}</div>
           </div>
           {engine === "home" && <span className="ml-auto" />}
@@ -103,7 +104,7 @@ function Inner() {
         )}
       </div>
       <main className="mx-auto max-w-[1400px] px-4 py-4">
-        {mounted ? engine === "home" ? <Home /> : engine === "v1" ? <Screen /> : engine === "v2" ? <RotationApp /> : <OpenDataApp /> : null}
+        {mounted ? engine === "home" ? <Home /> : engine === "v1" ? <Screen /> : engine === "v2" ? <RotationApp /> : engine === "v4" ? <Rot2App /> : <OpenDataApp /> : null}
       </main>
     </>
   );

@@ -6,6 +6,7 @@ import { v1core } from "./dict/v1core";
 import { v2core } from "./dict/v2core";
 import { v2ui } from "./dict/v2ui";
 import { v3 } from "./dict/v3";
+import { v4 } from "./dict/v4";
 
 export const LANGS = ["tr", "en", "fr", "de", "ja", "zh"] as const;
 export type Lang = (typeof LANGS)[number];
@@ -20,7 +21,7 @@ export const LANG_META: Record<Lang, { name: string; locale: string; short: stri
   zh: { name: "简体中文", locale: "zh-CN", short: "ZH" },
 };
 
-const ALL: Dict[] = [common, v1ui, v1core, v2core, v2ui, v3];
+const ALL: Dict[] = [common, v1ui, v1core, v2core, v2ui, v3, v4];
 const TABLE: Record<Lang, Record<string, string>> = { tr: {}, en: {}, fr: {}, de: {}, ja: {}, zh: {} };
 for (const d of ALL) for (const l of LANGS) Object.assign(TABLE[l], d[l]);
 export const TABLES = TABLE;

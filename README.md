@@ -16,11 +16,11 @@
 
 ![Languages](https://img.shields.io/badge/languages-TR_·_EN_·_FR_·_DE_·_JA_·_ZH-C92830?style=flat-square)
 ![Privacy](https://img.shields.io/badge/privacy-100%25_client--side-1F2A44?style=flat-square)
-![Engines](https://img.shields.io/badge/engines-v1_·_v2-1F2A44?style=flat-square)
+![Engines](https://img.shields.io/badge/engines-v1_·_v2_·_v4-1F2A44?style=flat-square)
 ![Purpose](https://img.shields.io/badge/purpose-educational-F59E0B?style=flat-square)
 ![Status](https://img.shields.io/badge/status-active_development-success?style=flat-square)
 
-[**Guide (PDF, Turkish)**](docs/Is_Dagitim_Araci_Kullanim_Kilavuzu.pdf) &nbsp;·&nbsp; [**Quick start**](#quick-start) &nbsp;·&nbsp; [**v1 Engine**](#v1--work-allocation-engine) &nbsp;·&nbsp; [**v2 Engine**](#v2--notebook-rotation-engine) &nbsp;·&nbsp; [**Data formats**](#data-formats) &nbsp;·&nbsp; [**Structure**](#project-structure) &nbsp;·&nbsp; [**i18n**](#internationalisation)
+[**Guide (PDF, Turkish)**](docs/Is_Dagitim_Araci_Kullanim_Kilavuzu.pdf) &nbsp;·&nbsp; [**Quick start**](#quick-start) &nbsp;·&nbsp; [**v1 Engine**](#v1--work-allocation-engine) &nbsp;·&nbsp; [**v2 Engine**](#v2--notebook-rotation-engine) &nbsp;·&nbsp; [**v4 Engine**](#v4--notebook-rotation-engine---2) &nbsp;·&nbsp; [**Data formats**](#data-formats) &nbsp;·&nbsp; [**Structure**](#project-structure) &nbsp;·&nbsp; [**i18n**](#internationalisation)
 
 </div>
 
@@ -111,6 +111,22 @@ Rules:
 
 Measured on the reference setup (M = 12, G = 2): N = 4–11 reach the theoretical hand-over lower bound within milliseconds; N = 12–15 reach it +1; N = 3 with G = 2 has no solution (use G = 1).
 
+## v4 – Notebook Rotation Engine - 2
+
+A two-tier sibling of v2 (v2 is unchanged). Notebooks come in two types, **in-city** and **out-of-city**; every month each person holds one of each. Each tier is solved independently with the v2 search, so the rules are counted separately per tier.
+
+| Rule | v4 behaviour |
+|---|---|
+| K1 / K2 / K3 | As in v2, per tier (hand-over limit is the automatic lower bound, relaxed and reported if needed) |
+| K6 | Weekly (★) notebooks never go to the same person in consecutive months, per tier (in-city default 1, 3, 6; out-of-city default: last notebook of each region) |
+| K7 | Leave (shared by both tiers), same threshold rule as v2 |
+| Region balance | Out-of-city duties are spread across regions in proportion to each region's notebook count (e.g. 4/3/3), as close to equal as possible; soft rule, tolerance 1.5 |
+
+- **Variable size:** the number of people is a parameter (default 10) and equals the notebook count of each tier; the regions' notebook counts must add up to it. Region names are free text; "Load the reference study" fills in 10 people with Adıyaman 4 / Kilis 3 / Nizip 3.
+- **Review:** colour-coded plan per tier, click two cells in a month to swap with live rule impact, per-person region table.
+- **Outputs:** `defter_plani_2.csv`, `bolge_dengesi.csv`, `dogrulama_raporu_2.json`, `parametreler_2.json`, ZIP, and a self-contained HTML **report** (`rapor_2.html`): view it in the page, download it after approval, or use *Print / PDF* and choose "Save as PDF". Nothing leaves the browser.
+- Not yet: carry-over from a previous period, forbidden/fixed assignments, a separate weekly gap per tier.
+
 ## v3 – Open Data Explorer
 
 Source: the TurkStat Data Portal (`databrowser2.tuik.gov.tr`, a .Stat-style data browser). Its REST API is public and anonymous but sends **no CORS headers**, so the browser cannot call it directly; the app therefore exposes three small Next.js route handlers:
@@ -157,6 +173,7 @@ src/
   screens/        Home (engine selection) and v1 screens 0–8
   lib/            v1 engine, CSV parsing/validation (PapaParse + Zod), store, report, outputs
   rotation/       v2 engine, validator, maths, leave model, R0–R4 screens
+  rotation2/      v4 two-tier engine wrapper, region balance, report, screens
   i18n/           language store, t()/rt()/tx(), dictionaries (dict/*.ts), consistency test
 public/ornek/     sample data
 scripts/          sample-data generator, i18n leftover scanner
